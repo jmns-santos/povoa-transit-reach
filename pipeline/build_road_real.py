@@ -16,6 +16,13 @@ Por isso as velocidades usadas aqui vêm de uma tabela por classe funcional da
 via (suposição documentada, não medição), da mesma forma que o resto do
 projeto assume velocidades quando não há dados reais calibrados — mas agora
 sobre a geometria e a topologia REAIS da rede, não sobre uma grelha inventada.
+Para além da velocidade de circulação, soma-se um atraso fixo assumido em
+cada cruzamento real (nó onde convergem 3+ troços) a quem o atravessa de
+carro, para aproximar o efeito de cedências, sinais e semáforos que a
+velocidade nominal por tipo de via, sozinha, não capta — sem isto, uma rota
+com muitos cruzamentos dava tempos otimistas (ex. 56 km/h médios observados
+numa rota real de 103 cruzamentos). Nenhum dos dois valores é medido; são
+suposições documentadas a rever quando houver dados de velocidade reais.
 
 Uso:
     python3 build_road_real.py <rede_viaria.shp>
@@ -48,19 +55,27 @@ WALK_KMH = 5.0  # velocidade de marcha uniforme assumida (não medida)
 
 # velocidade assumida por classe funcional da via (km/h) — suposição
 # documentada, não medição (ver nota acima); "default" cobre classes não
-# listadas ou em branco.
+# listadas ou em branco. Valores reduzidos face à primeira versão: os
+# anteriores (ex. 50 km/h numa CM, 40 numa ARR) descreviam velocidade de
+# ponteiro em troço livre, não a velocidade média real de uma viagem urbana
+# com cruzamentos — ver também INTERSECTION_DELAY_S abaixo.
 SPEED_BY_CLASSE = {
-    "A": 120, "A (fora limite PV)": 120,
-    "EN": 80, "EN (fora limite PV)": 80, "Ramal EN13": 80,
-    "ER": 70, "ER (fora limite PV)": 70,
-    "EM": 60,
-    "CM": 50,
-    "ARR": 40,
-    "OUT": 30,
-    "Outras Vias (fora limite PV)": 50,
+    "A": 100, "A (fora limite PV)": 100,
+    "EN": 70, "EN (fora limite PV)": 70, "Ramal EN13": 70,
+    "ER": 60, "ER (fora limite PV)": 60,
+    "EM": 45,
+    "CM": 35,
+    "ARR": 25,
+    "OUT": 20,
+    "Outras Vias (fora limite PV)": 40,
     "PED": 5, "CIC": 15,  # não usadas para carro (ver allowed_car), só de reserva
 }
-DEFAULT_SPEED = 30
+DEFAULT_SPEED = 25
+
+# atraso fixo assumido (segundos) ao atravessar de carro um cruzamento real
+# (nó onde convergem 3+ troços) — aproxima cedências/sinais/semáforos que a
+# velocidade nominal, sozinha, não capta (suposição documentada, não medida).
+INTERSECTION_DELAY_S = 10.0
 
 # classes funcionais que NÃO são seguras/legais para andar a pé (auto-estrada)
 CLASSES_SEM_PEAO = {"A", "A (fora limite PV)"}
@@ -155,8 +170,25 @@ def main():
     all_w_car = np.concatenate([car_seconds_fwd, car_seconds_rev])
     all_w_walk = np.concatenate([ped_seconds, ped_seconds])
 
+    # grau de cada nó (nº de troços distintos que nele convergem) — um cruzamento
+    # real tem 3+; um nó de grau 2 é só uma emenda entre dois troços digitalizados,
+    # 1 é um beco sem saída, nenhum dos dois justifica atraso de cruzamento.
+    node_degree = np.bincount(np.concatenate([edges_u, edges_v]), minlength=n_nodes)
+    is_crossing = node_degree >= 3
+    # o atraso soma-se à chegada (nó de destino de cada arco), só em arcos já
+    # utilizáveis — não altera o HUGE que marca um arco proibido.
+    arrival_is_crossing = is_crossing[all_v]
+    all_w_car = np.where(
+        (all_w_car < HUGE) & arrival_is_crossing,
+        all_w_car + INTERSECTION_DELAY_S,
+        all_w_car,
+    )
+    n_crossings = int(is_crossing.sum())
+
     print(f"arcos a carro utilizáveis: {(all_w_car < HUGE).sum()} / {len(all_w_car)}")
     print(f"arcos a pé utilizáveis: {(all_w_walk < HUGE).sum()} / {len(all_w_walk)}")
+    print(f"cruzamentos reais (grau >= 3): {n_crossings} / {n_nodes} nós "
+          f"(atraso assumido: {INTERSECTION_DELAY_S:.0f}s cada, só a carro)")
 
     # nó do grafo mais próximo de cada célula do grid FINO (o mesmo do modo TP),
     # com correção de compressão da longitude nesta latitude
@@ -188,6 +220,8 @@ def main():
                 "motorways excluídas do modo a pé). As velocidades por tipo de via são uma suposição documentada "
                 "(os campos de velocidade do próprio ficheiro estavam todos preenchidos com o mesmo valor genérico, "
                 "não calibrado) — mas aplicadas sobre a topologia real da rede, não sobre uma grelha inventada. "
+                f"A carro soma-se ainda um atraso fixo de {INTERSECTION_DELAY_S:.0f}s por cruzamento real "
+                f"(nó com 3+ troços; {n_crossings} cruzamentos na rede) para aproximar cedências/sinais/semáforos. "
                 "O modo \"A pé\" já pode usar troços só pedonais/cicláveis que o carro não pode.",
     }
 
