@@ -43,6 +43,9 @@
   .search input { flex: 1; min-width: 0; font: 400 14px 'Open Sans', sans-serif; color: var(--text); background: #11162B; border: 1px solid var(--rule); border-radius: 10px; padding: 9px 11px; }
   .search input::placeholder { color: var(--text2); }
   .search button { font: 600 13px 'Open Sans', sans-serif; color: #fff; background: var(--blue); border: 0; border-radius: 10px; padding: 0 14px; cursor: pointer; }
+  .search button#geoloc { padding: 0 11px; background: #2A3156; font-size: 15px; }
+  .search button:disabled { opacity: .5; cursor: wait; }
+  .dest-pin { width: 16px; height: 16px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #FF6B4A; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
   .where { font-size: 12.5px; color: var(--text2); min-height: 18px; }
   .where b { color: var(--text); font-weight: 500; }
 
@@ -74,6 +77,10 @@
   .legend div { height: 10px; border-radius: 2px; }
   .legend-l { display: grid; font: 500 11px 'Open Sans', sans-serif; color: var(--text2); }
   .legend-title { font: 600 11px 'Open Sans', sans-serif; letter-spacing: 1px; color: var(--text2); text-transform: uppercase; margin: 14px 0 4px; }
+  .poi-ctl { margin: 14px 0 4px; }
+  .poi-legend { display: flex; flex-wrap: wrap; gap: 6px 10px; margin: 8px 0 0 26px; }
+  .poi-legend span { display: flex; align-items: center; gap: 5px; font: 500 11px 'Open Sans', sans-serif; color: var(--text2); }
+  .poi-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 
   .stats { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 14px; }
   .stats h2 { font: 600 12px 'Open Sans', sans-serif; letter-spacing: 2px; color: var(--text2); margin: 0 0 10px; text-transform: uppercase; }
@@ -117,8 +124,15 @@
   <form class="search" id="search">
     <input id="q" type="search" autocomplete="off" placeholder="Morada ou local, ex. Câmara Municipal" aria-label="Morada">
     <button type="submit">Ir</button>
+    <button type="button" id="geoloc" title="Usar a minha localização" aria-label="Usar a minha localização">📍</button>
   </form>
   <div class="where" id="where"></div>
+
+  <form class="search" id="destino-form">
+    <input id="destq" type="search" autocomplete="off" placeholder="Chegar a: morada ou &quot;lat, lon&quot;" aria-label="Destino">
+    <button type="submit">Calcular</button>
+  </form>
+  <div class="where" id="destino-resultado"></div>
 
   <div class="view" role="group" aria-label="Modo">
     <button type="button" data-view="tp" aria-pressed="true">Transporte público</button>
@@ -152,6 +166,14 @@
     <h2 id="statsh"></h2>
     <div id="rows"></div>
     <div class="note" id="note"></div>
+  </div>
+
+  <div class="poi-ctl" id="poi-ctl" style="display:none">
+    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font:600 13px 'Open Sans',sans-serif;color:var(--text)">
+      <input type="checkbox" id="poi-toggle">
+      <span>Pontos de interesse (OpenStreetMap)</span>
+    </label>
+    <div class="poi-legend" id="poi-legend"></div>
   </div>
 
   <details>
@@ -219,7 +241,8 @@ const fmtT = s => `${String(Math.floor(s / 3600)).padStart(2, "0")}:${String(Mat
 Promise.all([
   fetch("data/tp/meta.json").then(r => r.json()),
   fetch("data/road/graph.json").then(r => r.json()),
-]).then(([M, G]) => {
+  fetch("data/poi/poi.json").then(r => r.ok ? r.json() : null).catch(() => null),
+]).then(([M, G, POI]) => {
   const badgeText = { real: "DADOS REAIS", misto: "METRO REAL + AUTOCARRO DEMO", demo: "DEMONSTRAÇÃO" }[M.source] || "DEMONSTRAÇÃO";
   const badgeColor = { real: "#2FE38A", misto: "#7FD6FF", demo: "#FFC94A" }[M.source] || "#FFC94A";
   $("demo-badge").textContent = badgeText;
@@ -430,6 +453,35 @@ Promise.all([
   const inside = p => p[0] > S && p[0] < N && p[1] > W && p[1] < E;
   function setOrigin(p, name) { origin = p; placeName = name; marker.setLatLng(p); draw(); }
 
+  // destino (ponto de chegada, só para calcular um tempo estimado — não desenha isócrona a partir dele)
+  let destino = null, destName = "";
+  const destMarker = L.marker([0, 0], { opacity: 0, keyboard: false,
+    icon: L.divIcon({ className: "", iconSize: [18, 18], iconAnchor: [9, 18], html: '<div class="dest-pin"></div>' }) }).addTo(map);
+  function setDestino(p, name) { destino = p; destName = name; destMarker.setLatLng(p); destMarker.setOpacity(1); updateDestino(); }
+  function fmtMin(s) {
+    if (s == null || !isFinite(s)) return "mais de 60 min";
+    if (s <= 3600) return s < 60 ? "menos de 1 min" : Math.round(s / 60) + " min";
+    return "mais de 60 min";
+  }
+  function updateDestino() {
+    if (!destino) return;
+    if (!inside(destino)) { $("destino-resultado").innerHTML = `<b>${destName}</b> está fora da área com dados.`; return; }
+    const cell = cellAt(destino[0], destino[1]);
+    const linhas = [];
+    if (view === "tp" || view === "compare") linhas.push(`Transporte público: <b>${fmtMin(tt ? tt[cell] : null)}</b>`);
+    if (view === "road" || view === "compare") linhas.push(`De carro: <b>${fmtMin(ttRoad ? ttRoad[cell] : null)}</b>`);
+    if (view === "walk") linhas.push(`A pé: <b>${fmtMin(ttWalk ? ttWalk[cell] : null)}</b>`);
+    $("destino-resultado").innerHTML = `Chegada estimada a <b>${destName}</b> (a partir da partida):<br>${linhas.join("<br>")}`;
+  }
+
+  // últimos tempos calculados (acessíveis fora do draw(), para a consulta de "chegar a")
+  let tt = null, base = null, ttRoad = null, ttWalk = null;
+  function cellAt(lat, lon) {
+    const r = Math.floor((lat - S) / DLAT), c = Math.floor((lon - W) / DLON);
+    if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return -1;
+    return r * COLS + c;
+  }
+
   let seq = 0;
   async function draw() {
     const my = ++seq, level = +$("rel").value, T0 = 5 * 3600 + 15 * 60 * +$("dep").value, h = Math.floor(T0 / 3600);
@@ -449,7 +501,7 @@ Promise.all([
     if (!inside(origin)) { $("rows").innerHTML = ""; return; }
 
     $("busy").style.display = (view !== "road" && view !== "walk" && !(chunks.has(h) && chunks.has(h + 1))) ? "block" : "none";
-    let tt = null, base = null, ttRoad = null, ttWalk = null;
+    tt = null; base = null; ttRoad = null; ttWalk = null;
     if (view === "tp" || view === "compare") {
       const parts = await Promise.all([chunk(h), chunk(h + 1)]);
       $("busy").style.display = "none";
@@ -502,6 +554,8 @@ Promise.all([
       });
     }
 
+    updateDestino();
+
     // estatísticas de população — só mostra se houver grelha real (ver data/tp/meta.json)
     const totalPop = pop.reduce((a, b) => a + b, 0);
     if (!totalPop) {
@@ -551,6 +605,58 @@ Promise.all([
       setOrigin(p, res[0].display_name.split(",").slice(0, 2).join(","));
     } catch (e) { $("where").textContent = "Não encontrei nada na área para isso."; }
   });
+
+  $("geoloc").addEventListener("click", () => {
+    if (!navigator.geolocation) { $("where").textContent = "Este browser não suporta localização."; return; }
+    $("geoloc").disabled = true;
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        $("geoloc").disabled = false;
+        const p = [pos.coords.latitude, pos.coords.longitude];
+        if (!inside(p)) { $("where").innerHTML = "A tua localização está fora da área com dados (Póvoa de Varzim / Vila do Conde)."; return; }
+        map.setView(p, Math.max(map.getZoom(), 14));
+        setOrigin(p, "A minha localização");
+      },
+      err => { $("geoloc").disabled = false; $("where").textContent = `Não foi possível obter a localização (${err.message}).`; },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  });
+
+  $("destino-form").addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const q = $("destq").value.trim();
+    if (!q) return;
+    const coordMatch = q.match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
+    if (coordMatch) { setDestino([+coordMatch[1], +coordMatch[2]], q); return; }
+    $("destino-resultado").textContent = "A procurar...";
+    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&bounded=1&countrycodes=pt` +
+                `&viewbox=${W},${N},${E},${S}&accept-language=pt-PT&q=${encodeURIComponent(q)}`;
+    try {
+      const res = await (await fetch(url)).json();
+      if (!res.length) { $("destino-resultado").textContent = "Não encontrei esse destino na área."; return; }
+      setDestino([+res[0].lat, +res[0].lon], res[0].display_name.split(",").slice(0, 2).join(","));
+    } catch (e) { $("destino-resultado").textContent = "Não encontrei esse destino na área."; }
+  });
+
+  // pontos de interesse (OpenStreetMap, opcional — só aparece se data/poi/poi.json existir)
+  if (POI && POI.points && POI.points.length) {
+    const POI_COLORS = { praia: "#FFD24A", patrimonio: "#C98CFF", alojamento: "#4AC9FF",
+      restauracao: "#FF8A4A", saude: "#FF5C7A", servicos: "#8A95B8", lazer: "#5CE0A0", comercio: "#B8A25C" };
+    const poiLayer = L.layerGroup();
+    POI.points.forEach(p => {
+      L.circleMarker([p.lat, p.lon], {
+        radius: 5, weight: 1.5, color: "#fff", fillColor: POI_COLORS[p.cat] || "#B8A25C",
+        fillOpacity: .9, opacity: .9,
+      }).bindTooltip(p.name, { direction: "top", offset: [0, -4] }).addTo(poiLayer);
+    });
+    $("poi-ctl").style.display = "block";
+    $("poi-legend").innerHTML = Object.keys(POI.labels || {}).map(cat =>
+      `<span><i style="background:${POI_COLORS[cat] || "#B8A25C"}"></i>${POI.labels[cat]}</span>`).join("");
+    $("poi-toggle").addEventListener("change", ev => {
+      if (ev.target.checked) poiLayer.addTo(map); else map.removeLayer(poiLayer);
+    });
+  }
+
   draw();
 });
 </script>

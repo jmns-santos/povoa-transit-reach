@@ -13,6 +13,7 @@ Protótipo da Câmara Municipal da Póvoa de Varzim.
 | Fiabilidade (atrasos/cancelamentos) | **Não incluída** (todos os níveis = horário) | a UNIR tem GTFS-RT em produção (posições de veículos), mas falta a agregação por paragem+linha+hora |
 | Rede viária (carro e a pé) | **Real** (geometria e classificação), velocidades por tipo de via assumidas | ver nota sobre a rede viária municipal abaixo |
 | População em grelha | **Real** | BGRI 2021 (Censos), por subsecção estatística — ver nota abaixo |
+| Pontos de interesse | Opcional, script pronto | OpenStreetMap (Overpass) — ver "Pontos de interesse" abaixo |
 
 A área de estudo cobre agora todo o concelho da Póvoa de Varzim (as 7 freguesias, incluindo Balazar e Rates) mais Vila do Conde.
 
@@ -34,7 +35,11 @@ Abrir `index.html` (ou a página publicada). Quatro modos no painel à esquerda:
 - **A pé** — Dijkstra sobre a mesma rede real, incluindo passeios, ciclovias e atalhos só pedonais que o carro não pode usar; exclui auto-estradas.
 - **Comparar** — transporte público e carro sobrepostos no mesmo mapa (TP a verde-água, carro a laranja).
 
-Clicar no mapa ou arrastar o marcador branco muda o ponto de partida; a pesquisa usa o Nominatim (OpenStreetMap), limitado à caixa da Póvoa/Vila do Conde.
+Clicar no mapa ou arrastar o marcador branco muda o ponto de partida; a pesquisa usa o Nominatim (OpenStreetMap), limitado à caixa da Póvoa/Vila do Conde. O botão 📍 usa a localização do browser (pede autorização) como ponto de partida.
+
+**Chegar a um destino.** O segundo campo de pesquisa ("Chegar a") aceita uma morada/local ou coordenadas `lat, lon`, e mostra o tempo estimado de chegada a esse ponto a partir da partida escolhida, no(s) modo(s) ativo(s).
+
+**Pontos de interesse** (praias, património, alojamento, restauração, saúde, serviços públicos, lazer, comércio) — camada opcional, via OpenStreetMap, só aparece se `data/poi/poi.json` existir (ver `pipeline/importar_poi_osm.py`).
 
 ## Estrutura
 
@@ -51,6 +56,7 @@ pipeline/
   build_road_real.py            lê a rede viária municipal real (shapefile) → data/road/graph.json
   build_road_demo.py            alternativa de reserva: grelha sintética (carro + a pé), só se não houver shapefile
   importar_censos2021.py        lê um ficheiro BGRI 2021 do INE e preenche a população em data/tp/meta.json
+  importar_poi_osm.py           descarrega pontos de interesse do OpenStreetMap (Overpass) → data/poi/poi.json
 data_src/                       GTFS brutos usados para gerar data/ (não precisam de ir para o site publicado)
 ```
 
@@ -81,6 +87,15 @@ python importar_censos2021.py "C:\caminho\para\BGRI2021_Porto.gpkg"
 
 Descarregar primeiro o ficheiro do distrito do Porto em http://mapas.ine.pt/download/index2021.phtml (ver nota acima se o portal estiver em manutenção). O script filtra ao concelho da Póvoa de Varzim automaticamente e atualiza `data/tp/meta.json` — é o único ficheiro que precisa de ser publicado de novo depois.
 
+### Pontos de interesse (OpenStreetMap)
+
+```powershell
+pip install requests
+python importar_poi_osm.py
+```
+
+Corre a partir de uma máquina com acesso normal à internet (este ambiente de desenvolvimento não consegue chegar à Overpass API). Gera `data/poi/poi.json` — é o único ficheiro que precisa de ser publicado de novo depois. Como o OpenStreetMap é mantido continuamente pela comunidade, basta voltar a correr este script de vez em quando para atualizar a camada, sem precisar de carregar nada à mão.
+
 `--dia` tem de estar dentro do período coberto pelo `calendar.txt` de **todos** os GTFS combinados — por exemplo, o GTFS do Metro descarregado em 2026-09 só é válido até 2026-10-25, enquanto o da UNIR vai até 2027-08-31; ao atualizar qualquer um dos ficheiros, verificar o novo período de validade e ajustar `--dia` (uma terça-feira normal, dentro da interseção dos dois calendários).
 
 ## O que falta para ficar mais completo
@@ -89,6 +104,7 @@ Descarregar primeiro o ficheiro do distrito do Porto em http://mapas.ine.pt/down
 2. ~~**Rede viária real**~~ — feito: geometria e classificação reais (`build_road_real.py`). Falta: velocidades por troço calibradas (hoje são uma suposição por tipo de via, ver nota acima), capacidade por troço.
 3. ~~**População em grelha**~~ — feito: BGRI 2021 já importado (64 255 habitantes no concelho, por 793 subsecções estatísticas).
 4. **Calibração pontual com o Google Maps Platform**: usar a Directions/Distance Matrix API para validar as velocidades sintéticas contra algumas rotas reais — a correr a partir de uma máquina com acesso de rede normal, e sem exceder o limite gratuito mensal.
+5. **Pontos de interesse**: script pronto (`importar_poi_osm.py`), falta correr numa máquina com acesso normal à internet para gerar `data/poi/poi.json` (ver secção abaixo). Sem esse ficheiro, a camada fica simplesmente desligada (o painel não mostra o controlo).
 
 Nada disto exige mudar o front-end: `index.html` já lê o formato final; só os pipelines em `pipeline/` precisam de outra fonte.
 
@@ -102,4 +118,5 @@ Site estático — qualquer alojamento serve. Para GitHub Pages: criar o reposit
 - UNIR Mobilidade da Área Metropolitana do Porto: GTFS oficial (https://unirmobilidade.pt), filtrado à zona de estudo.
 - Mapa base: Esri (World Dark Gray Canvas + Reference), © Esri, HERE, Garmin, © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors.
 - Geocodificação: Nominatim.
+- Pontos de interesse: OpenStreetMap, © colaboradores do OpenStreetMap (ODbL) — camada opcional, via Overpass API (ver "Pontos de interesse" acima).
 - Motor de mapa: [Leaflet](https://leafletjs.com/). Motor de isócronas inspirado em [munich-transit-reach](https://github.com/ilyas-ku/munich-transit-reach) / [rhein-main-transit-reach](https://github.com/ilyas-ku/rhein-main-transit-reach) (ilyas-ku).
