@@ -14,15 +14,13 @@ Protótipo da Câmara Municipal da Póvoa de Varzim.
 | Autocarros (UNIR) | **Real**, filtrado à zona | GTFS oficial da UNIR, filtrado por coordenadas à Póvoa/Vila do Conde |
 | Autocarros (Mov Cávado) | **Real**, filtrado à zona | GTFS oficial da AITC/Mov Cávado (linhas 106/107/111/120, Braga–Barcelos–Esposende–Viana do Castelo), filtrado por coordenadas |
 | Fiabilidade (atrasos/cancelamentos) | **Não incluída** — mostra sempre o horário teórico | falta agregação histórica por paragem+linha+hora |
-| Rede viária (carro e a pé) | **Real** (geometria e classificação); velocidades por tipo de via e atraso por cruzamento assumidos | shapefile da rede viária municipal |
+| Rede viária (carro e a pé) | **Real**, só concelho da Póvoa de Varzim (geometria e classificação); velocidades por tipo de via e atraso por cruzamento assumidos | shapefile da rede viária municipal |
 | População em grelha | **Real** | BGRI 2021 (Censos), por subsecção estatística |
 | Pontos de interesse | Opcional, script pronto, camada ligada por omissão | OpenStreetMap (Overpass) |
 | Linhas de transporte público | **Real** (Metro, UNIR); **aproximada** (Mov Cávado, sem shapes.txt na fonte) | GTFS `shapes.txt` |
 | Simulação em tempo real | Simulada a partir do horário (não é GTFS-RT) | horário real do dia de referência |
 
-
-
-Área de estudo: concelho da Póvoa de Varzim (7 freguesias) + Vila do Conde.
+Área de estudo: concelho da Póvoa de Varzim (7 freguesias) + Vila do Conde. A rede viária (modos "De carro" e "A pé") é a rede municipal da Póvoa de Varzim — não inclui Vila do Conde, que é outro concelho com rede própria; por isso esses dois modos não alcançam Vila do Conde, mesmo estando dentro da moldura de estudo. O transporte público (Metro, UNIR, Mov Cávado) não tem esta limitação.
 
 Tudo ficheiro estático (`data/tp/*.json`, `data/road/graph.json`) gerado pelo pipeline e servido pelo GitHub Pages — a página nunca acede a nenhuma base de dados ao vivo.
 
