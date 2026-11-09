@@ -1,5 +1,7 @@
 # Transit Reach — Póvoa de Varzim
 
+**https://jmns-santos.github.io/povoa-transit-reach/**
+
 Até onde se chega, a partir de um ponto e hora escolhidos, em transporte público ou de carro, na Póvoa de Varzim e Vila do Conde — e como compara um com o outro. Inspirado em [munich-transit-reach](https://github.com/ilyas-ku/munich-transit-reach) e [rhein-main-transit-reach](https://github.com/ilyas-ku/rhein-main-transit-reach), de `ilyas-ku`; `index.html` reaproveita o motor desses projetos (Connection Scan no browser + contornos d3), adaptado e traduzido para português de Portugal, com um segundo modo ("De carro") acrescentado.
 
 Protótipo da Câmara Municipal da Póvoa de Varzim.
@@ -9,21 +11,15 @@ Protótipo da Câmara Municipal da Póvoa de Varzim.
 | Camada | Estado | Fonte |
 |---|---|---|
 | Metro do Porto | **Real** | GTFS oficial da Metro do Porto |
-| Autocarros (UNIR) | **Real**, filtrado à zona | GTFS estático oficial da UNIR — cobre toda a Área Metropolitana do Porto (12 067 paragens); filtrado às viagens que tocam a Póvoa/Vila do Conde e zona próxima antes de entrar no pipeline (ver nota abaixo) |
-| Fiabilidade (atrasos/cancelamentos) | **Não incluída** — o painel mostra sempre o horário teórico | a UNIR tem GTFS-RT em produção (posições de veículos), mas falta a agregação por paragem+linha+hora |
-| Rede viária (carro e a pé) | **Real** (geometria e classificação), velocidades por tipo de via assumidas | ver nota sobre a rede viária municipal abaixo |
-| População em grelha | **Real** | BGRI 2021 (Censos), por subsecção estatística — ver nota abaixo |
-| Pontos de interesse | Opcional, script pronto | OpenStreetMap (Overpass) — ver "Pontos de interesse" abaixo |
+| Autocarros (UNIR) | **Real**, filtrado à zona | GTFS oficial da UNIR, filtrado por coordenadas à Póvoa/Vila do Conde |
+| Fiabilidade (atrasos/cancelamentos) | **Não incluída** — mostra sempre o horário teórico | falta agregação histórica por paragem+linha+hora |
+| Rede viária (carro e a pé) | **Real** (geometria e classificação); velocidades por tipo de via assumidas | shapefile da rede viária municipal |
+| População em grelha | **Real** | BGRI 2021 (Censos), por subsecção estatística |
+| Pontos de interesse | Opcional, script pronto | OpenStreetMap (Overpass) |
 
-A área de estudo cobre agora todo o concelho da Póvoa de Varzim (as 7 freguesias, incluindo Balazar e Rates) mais Vila do Conde.
+Área de estudo: concelho da Póvoa de Varzim (7 freguesias) + Vila do Conde.
 
-**Tudo é ficheiro estático** — `data/tp/*.json` e `data/road/graph.json` são gerados pelo pipeline e servidos tal e qual pelo GitHub Pages. A página nunca acede a nenhuma base de dados ao vivo, por segurança: só lê estes JSON.
-
-**Nota sobre o filtro da UNIR.** O GTFS da UNIR cobre toda a AMP; a filtragem por nome de paragem (`grep "póvoa"`) dá falsos positivos — várias zonas da AMP têm localidades chamadas "Póvoa" sem ser a de Varzim. Por isso `filter_gtfs_bbox.py` filtra por **coordenadas** (viagens que tocam pelo menos uma paragem dentro de uma caixa alargada à volta da Póvoa/Vila do Conde), mantendo cada viagem completa — algumas linhas seguem para fora da caixa visível no mapa (ex. Barcelos, Esposende); isso é esperado e não é um erro.
-
-**Nota sobre a rede viária municipal.** `pipeline/build_road_real.py` lê um shapefile da rede viária municipal (geometria de cada troço + classificação por tipo de via, sentido, e lista de modos de transporte autorizados por troço) e gera o grafo routável. A geometria, a topologia (que ruas se cruzam) e a classificação (que troços são só pedonais/cicláveis, que sentidos são permitidos, que vias são auto-estrada) são reais. O que **não** é real: os campos de velocidade/tempo do próprio ficheiro vinham todos com o mesmo valor genérico (50 km/h, incluindo em troços pedonais) — claramente um valor de teste, nunca calibrado — por isso as velocidades usadas vêm de uma tabela por tipo de via (suposição documentada no próprio script), aplicada sobre a topologia real. `pipeline/build_road_demo.py` (grelha sintética) fica como alternativa de reserva, caso não haja shapefile disponível.
-
-**Nota sobre o INE/Censos 2021.** `pipeline/importar_censos2021.py` lê um ficheiro BGRI 2021 (GeoPackage/Shapefile, por subsecção estatística), filtra ao concelho da Póvoa de Varzim, soma a população residente à grelha fina do projeto e atualiza `data/tp/meta.json`. A fonte pode ser o download público do INE (http://mapas.ine.pt/download/index2021.phtml — a 2026-11-09 esse portal estava temporariamente em manutenção) ou qualquer outro extrato do mesmo BGRI 2021 com geometria e um campo de população residente; o script detecta automaticamente os nomes de coluna mais comuns (ver "Preencher a população" abaixo).
+Tudo ficheiro estático (`data/tp/*.json`, `data/road/graph.json`) gerado pelo pipeline e servido pelo GitHub Pages — a página nunca acede a nenhuma base de dados ao vivo.
 
 ## Como usar
 
@@ -76,6 +72,8 @@ python3 build_road_real.py <shapefile .shp da rede viária municipal>
 # (ou, só se não houver shapefile disponível: python3 build_road_demo.py)
 ```
 
+`--dia` tem de estar dentro da validade do `calendar.txt` de todos os GTFS combinados (uma terça-feira normal, na interseção dos dois calendários).
+
 ### Preencher a população (Censos 2021)
 
 ```powershell
@@ -83,7 +81,7 @@ pip install geopandas pyogrio
 python importar_censos2021.py "C:\caminho\para\BGRI2021_Porto.gpkg"
 ```
 
-Descarregar primeiro o ficheiro do distrito do Porto em http://mapas.ine.pt/download/index2021.phtml (ver nota acima se o portal estiver em manutenção). O script filtra ao concelho da Póvoa de Varzim automaticamente e atualiza `data/tp/meta.json` — é o único ficheiro que precisa de ser publicado de novo depois.
+Fonte: INE (http://mapas.ine.pt/download/index2021.phtml), ficheiro do distrito do Porto. O script filtra ao concelho automaticamente e atualiza `data/tp/meta.json`.
 
 ### Pontos de interesse (OpenStreetMap)
 
@@ -92,23 +90,11 @@ pip install requests
 python importar_poi_osm.py
 ```
 
-Corre a partir de uma máquina com acesso normal à internet (este ambiente de desenvolvimento não consegue chegar à Overpass API). Gera `data/poi/poi.json` — é o único ficheiro que precisa de ser publicado de novo depois. Como o OpenStreetMap é mantido continuamente pela comunidade, basta voltar a correr este script de vez em quando para atualizar a camada, sem precisar de carregar nada à mão.
-
-`--dia` tem de estar dentro do período coberto pelo `calendar.txt` de **todos** os GTFS combinados — por exemplo, o GTFS do Metro descarregado em 2026-09 só é válido até 2026-10-25, enquanto o da UNIR vai até 2027-08-31; ao atualizar qualquer um dos ficheiros, verificar o novo período de validade e ajustar `--dia` (uma terça-feira normal, dentro da interseção dos dois calendários).
-
-## O que falta para ficar mais completo
-
-1. **Fiabilidade real**: construir, a partir do histórico de GTFS-RT já em produção, uma agregação por paragem+linha+hora (mediana, p80/p90/p95, taxa de cancelamento) e passá-la a `build_explore_povoa.py --fiabilidade ficheiro.csv` (colunas: `route_id,stop_id,hour,delay_p50_s,delay_p90_s,cancel_rate` — ver a função `load_reliability` para o formato exato esperado). O seletor de fiabilidade foi retirado do painel por não ter ainda dados reais por trás; ao ligar esta agregação, é preciso voltar a acrescentar o controlo ao `index.html`.
-2. ~~**Rede viária real**~~ — feito: geometria e classificação reais (`build_road_real.py`). Falta: velocidades por troço calibradas (hoje são uma suposição por tipo de via, ver nota acima), capacidade por troço.
-3. ~~**População em grelha**~~ — feito: BGRI 2021 já importado (64 255 habitantes no concelho, por 793 subsecções estatísticas).
-4. **Calibração pontual com o Google Maps Platform**: usar a Directions/Distance Matrix API para validar as velocidades sintéticas contra algumas rotas reais — a correr a partir de uma máquina com acesso de rede normal, e sem exceder o limite gratuito mensal.
-5. **Pontos de interesse**: script pronto (`importar_poi_osm.py`), falta correr numa máquina com acesso normal à internet para gerar `data/poi/poi.json` (ver secção abaixo). Sem esse ficheiro, a camada fica simplesmente desligada (o painel não mostra o controlo).
-
-Fora a fiabilidade (item 1), nada disto exige mudar o front-end: `index.html` já lê o formato final; só os pipelines em `pipeline/` precisam de outra fonte.
+Gera `data/poi/poi.json`. Pode voltar a correr-se de vez em quando para atualizar a camada.
 
 ## Publicar
 
-Site estático — qualquer alojamento serve. Para GitHub Pages: criar o repositório, `git push`, ativar Pages a servir a raiz do `main`. Uma página estática no GitHub Pages não define `X-Frame-Options`/`frame-ancestors`, por isso **pode ser embebida num iframe** (ex. um widget doutra aplicação municipal), ao contrário do planeador do Metro do Porto (bloqueado por CSP).
+Site estático. GitHub Pages: Settings → Pages → Deploy from a branch → `clean-main`, pasta raiz. Pode ser embebido num iframe (ex. noutra aplicação municipal), ao contrário do planeador do Metro do Porto.
 
 ## Fontes e licenças
 
