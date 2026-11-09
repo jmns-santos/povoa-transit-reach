@@ -158,7 +158,7 @@
     <summary>Como isto é calculado</summary>
     <p><b>Transporte público:</b> o browser percorre o horário do dia útil de referência (Connection Scan) a partir da hora de partida escolhida, e encontra a chegada mais cedo a cada paragem dentro de uma hora. Acesso a pé: 4,8 km/h por um caminho 1,3× a linha reta, até 1 km de/para paragens; mudar de veículo demora pelo menos 2 minutos. O <b>Metro do Porto</b> e os <b>autocarros da UNIR</b> usam agora GTFS <b>real</b> dos dois operadores (dia de referência: terça-feira, ver legenda/badge); a UNIR cobre toda a Área Metropolitana do Porto, por isso foi filtrada às linhas que tocam a Póvoa de Varzim/Vila do Conde e zona próxima antes de entrar aqui.</p>
     <p><b>Fiabilidade:</b> ainda não há dados reais de atraso/cancelamento agregados por paragem, linha e hora (só existem posições brutas de GTFS-RT) — por isso todos os níveis acima de "horário" dão hoje o mesmo resultado que o horário teórico. Quando essa agregação existir, cada nível vai atrasar a chegada de cada troço pelo atraso típico nesse nível de fiabilidade.</p>
-    <p><b>De carro</b> e <b>a pé:</b> Dijkstra sobre uma rede viária <b>sintética</b> (grelha de ruas locais a 22 km/h, com cruzamentos, e alguns eixos a 65 km/h a imitar vias principais; o modo a pé usa a mesma topologia a 4,8 km/h, sem o atalho dos eixos rápidos) — ainda não é o OSM real nem a rede viária municipal. A fonte municipal que teria essa rede real com velocidade e capacidade por troço também ainda só foi testada com uma rede sintética (não é uma limitação só desta ferramenta). Numa área deste tamanho, de carro cobre-se rapidamente a maior parte da área em 60 min — é precisamente o contraste que vale a pena ver contra o transporte público e contra o alcance a pé. O modo a pé também não distingue passeios, atravessamentos nem atalhos só pedonais (praças, parques): segue as mesmas vias do carro. Ver o README do projeto para o que falta para usar a rede viária real.</p>
+    <p><b>De carro</b> e <b>a pé:</b> Dijkstra sobre a rede viária municipal <b>real</b> (geometria e classificação por tipo de via, sentido e vias só pedonais/cicláveis) — o carro usa só as vias com acesso automóvel, respeitando os sentidos únicos; o modo a pé já pode usar passeios, ciclovias e atalhos só pedonais que o carro não pode, e exclui auto-estradas. As velocidades por tipo de via são uma suposição documentada (os campos de velocidade do próprio ficheiro municipal estavam todos preenchidos com um valor genérico, não calibrado), aplicada sobre a topologia real — não uma velocidade inventada numa grelha inventada. Numa área deste tamanho, de carro cobre-se rapidamente a maior parte da área em 60 min — é precisamente o contraste que vale a pena ver contra o transporte público e contra o alcance a pé. Ver o README do projeto para mais detalhe sobre esta suposição.</p>
     <p>Esta versão cobre a Póvoa de Varzim e Vila do Conde (moldura tracejada); o alcance é cortado na borda.</p>
   </details>
   <div class="foot">Protótipo — ver README no repositório para o estado de cada fonte de dados. Inspirado em <a href="https://github.com/ilyas-ku/rhein-main-transit-reach" target="_blank" rel="noopener" style="color:inherit">rhein-main-transit-reach</a> / <a href="https://github.com/ilyas-ku/munich-transit-reach" target="_blank" rel="noopener" style="color:inherit">munich-transit-reach</a> (ilyas-ku), com <a href="https://leafletjs.com/" target="_blank" rel="noopener" style="color:inherit">Leaflet</a>. Basemap © <a href="https://www.esri.com" style="color:inherit">Esri</a>, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" style="color:inherit">OpenStreetMap</a> contributors. Geocodificação Nominatim.</div>
@@ -318,7 +318,7 @@ Promise.all([
     return tt;
   }
 
-  // ---------------- de carro: Dijkstra O(V^2) sobre a rede sintética (poucos nós)
+  // ---------------- de carro / a pé: Dijkstra O(V^2) sobre a rede viária (poucos nós)
   const NN = G.n_nodes;
   const nLat = b64(G.node_lat, Float32Array), nLon = b64(G.node_lon, Float32Array);
   const eu = b64(G.edge_u, Uint32Array), ev = b64(G.edge_v, Uint32Array), ew = b64(G.edge_w, Float32Array);
@@ -336,20 +336,38 @@ Promise.all([
     cursor[u]++;
   }
 
-  function nearestRoadNode(lat, lon) {
+  // nem todos os nós têm aresta utilizável em todos os modos (ex.: um troço só
+  // pedonal não tem nenhuma aresta de carro) — ao agarrar o nó mais próximo do
+  // ponto de partida, só considera nós com pelo menos uma aresta desse modo,
+  // senão o ponto de partida ficava "isolado" nesse modo mesmo estando a dois
+  // passos de uma rua normal
+  const HUGE_W = 1e8;
+  function usableMask(weights) {
+    const mask = new Uint8Array(NN);
+    for (let i = 0; i < NN; i++) {
+      for (let k = adjStart[i]; k < adjStart[i + 1]; k++) {
+        if (weights[k] < HUGE_W) { mask[i] = 1; break; }
+      }
+    }
+    return mask;
+  }
+  const carUsable = usableMask(adjW), walkUsable = usableMask(adjWWalk);
+
+  function nearestRoadNode(lat, lon, mask) {
     let best = -1, bd = Infinity;
     const ox = lon * KX, oy = lat * KY;
     for (let i = 0; i < NN; i++) {
+      if (mask && !mask[i]) continue;
       const d = Math.hypot(nLon[i] * KX - ox, nLat[i] * KY - oy);
       if (d < bd) { bd = d; best = i; }
     }
     return best;
   }
 
-  function reachRoad(T, weights) {
+  function reachRoad(T, weights, mask) {
     const dist = new Float64Array(NN).fill(Infinity);
     const visited = new Uint8Array(NN);
-    const startNode = nearestRoadNode(origin[0], origin[1]);
+    const startNode = nearestRoadNode(origin[0], origin[1], mask);
     dist[startNode] = 0;
     for (let iter = 0; iter < NN; iter++) {
       let u = -1, best = Infinity;
@@ -440,10 +458,10 @@ Promise.all([
       base = level > 0 ? reachTP(parts, T0, 0) : tt;
     }
     if (view === "road" || view === "compare") {
-      ttRoad = reachRoad(T0, adjW);
+      ttRoad = reachRoad(T0, adjW, carUsable);
     }
     if (view === "walk") {
-      ttWalk = reachRoad(T0, adjWWalk);
+      ttWalk = reachRoad(T0, adjWWalk, walkUsable);
     }
     if (my !== seq) return;
 

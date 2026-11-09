@@ -11,7 +11,7 @@ Protótipo da Câmara Municipal da Póvoa de Varzim.
 | Metro do Porto | **Real** | GTFS oficial da Metro do Porto |
 | Autocarros (UNIR) | **Real**, filtrado à zona | GTFS estático oficial da UNIR — cobre toda a Área Metropolitana do Porto (12 067 paragens); filtrado às viagens que tocam a Póvoa/Vila do Conde e zona próxima antes de entrar no pipeline (ver nota abaixo) |
 | Fiabilidade (atrasos/cancelamentos) | **Não incluída** (todos os níveis = horário) | a UNIR tem GTFS-RT em produção (posições de veículos), mas falta a agregação por paragem+linha+hora |
-| Rede viária (carro e a pé) | **Sintética** (grelha + eixos rápidos inventados) | ver nota sobre a rede viária municipal abaixo — essa fonte também ainda não tem rede real carregada |
+| Rede viária (carro e a pé) | **Real** (geometria e classificação), velocidades por tipo de via assumidas | ver nota sobre a rede viária municipal abaixo |
 | População em grelha | **Real** | BGRI 2021 (Censos), por subsecção estatística — ver nota abaixo |
 
 A área de estudo cobre agora todo o concelho da Póvoa de Varzim (as 7 freguesias, incluindo Balazar e Rates) mais Vila do Conde.
@@ -20,9 +20,9 @@ A área de estudo cobre agora todo o concelho da Póvoa de Varzim (as 7 freguesi
 
 **Nota sobre o filtro da UNIR.** O GTFS da UNIR cobre toda a AMP; a filtragem por nome de paragem (`grep "póvoa"`) dá falsos positivos — várias zonas da AMP têm localidades chamadas "Póvoa" sem ser a de Varzim. Por isso `filter_gtfs_bbox.py` filtra por **coordenadas** (viagens que tocam pelo menos uma paragem dentro de uma caixa alargada à volta da Póvoa/Vila do Conde), mantendo cada viagem completa — algumas linhas seguem para fora da caixa visível no mapa (ex. Barcelos, Esposende); isso é esperado e não é um erro.
 
-**Nota sobre a rede viária municipal.** A fonte certa para uma rede viária real com velocidade e capacidade por troço ainda está, pelo que se sabe, só em fase de testes com uma rede sintética, nunca com dados reais de produção — a rede sintética desta ferramenta não é por isso uma limitação só dela.
+**Nota sobre a rede viária municipal.** `pipeline/build_road_real.py` lê um shapefile da rede viária municipal (geometria de cada troço + classificação por tipo de via, sentido, e lista de modos de transporte autorizados por troço) e gera o grafo routável. A geometria, a topologia (que ruas se cruzam) e a classificação (que troços são só pedonais/cicláveis, que sentidos são permitidos, que vias são auto-estrada) são reais. O que **não** é real: os campos de velocidade/tempo do próprio ficheiro vinham todos com o mesmo valor genérico (50 km/h, incluindo em troços pedonais) — claramente um valor de teste, nunca calibrado — por isso as velocidades usadas vêm de uma tabela por tipo de via (suposição documentada no próprio script), aplicada sobre a topologia real. `pipeline/build_road_demo.py` (grelha sintética) fica como alternativa de reserva, caso não haja shapefile disponível.
 
-**Nota sobre o Google Maps Platform.** Há uma chave de API do Google Maps Platform disponível, criada para testar a Air Quality API — não para routing. O crédito experimental de 300 $/90 dias já deve ter expirado; resta o limite gratuito mensal permanente por API. As APIs de rotas/distâncias (Directions, Distance Matrix) podiam, em teoria, calibrar ou validar pontualmente as velocidades da rede sintética — mas essa chamada teria de correr a partir de uma máquina com rede sem restrições (não é alcançável a partir deste pipeline de desenvolvimento), e sempre sem exceder o limite gratuito mensal nem fazer upgrade da conta.
+**Nota sobre o Google Maps Platform.** Há uma chave de API do Google Maps Platform disponível, criada para testar a Air Quality API — não para routing. O crédito experimental de 300 $/90 dias já deve ter expirado; resta o limite gratuito mensal permanente por API. As APIs de rotas/distâncias (Directions, Distance Matrix) podiam, em teoria, calibrar ou validar pontualmente as velocidades assumidas por tipo de via — mas essa chamada teria de correr a partir de uma máquina com rede sem restrições (não é alcançável a partir deste pipeline de desenvolvimento), e sempre sem exceder o limite gratuito mensal nem fazer upgrade da conta.
 
 **Nota sobre o INE/Censos 2021.** `pipeline/importar_censos2021.py` lê um ficheiro BGRI 2021 (GeoPackage/Shapefile, por subsecção estatística), filtra ao concelho da Póvoa de Varzim, soma a população residente à grelha fina do projeto e atualiza `data/tp/meta.json`. A fonte pode ser o download público do INE (http://mapas.ine.pt/download/index2021.phtml — a 2026-11-09 esse portal estava temporariamente em manutenção) ou qualquer outro extrato do mesmo BGRI 2021 com geometria e um campo de população residente; o script detecta automaticamente os nomes de coluna mais comuns (ver "Preencher a população" abaixo).
 
@@ -30,8 +30,8 @@ A área de estudo cobre agora todo o concelho da Póvoa de Varzim (as 7 freguesi
 
 Abrir `index.html` (ou a página publicada). Quatro modos no painel à esquerda:
 - **Transporte público** — Connection Scan sobre o horário combinado (Metro + UNIR, ambos reais), com o controlo de fiabilidade (ainda sem efeito real, ver tabela acima).
-- **De carro** — Dijkstra sobre a rede viária sintética, a 22/65 km/h.
-- **A pé** — Dijkstra sobre a mesma rede sintética, a 4,8 km/h (não distingue passeios nem atalhos só pedonais).
+- **De carro** — Dijkstra sobre a rede viária municipal real, só nas vias com acesso automóvel, a velocidades assumidas por tipo de via.
+- **A pé** — Dijkstra sobre a mesma rede real, incluindo passeios, ciclovias e atalhos só pedonais que o carro não pode usar; exclui auto-estradas.
 - **Comparar** — transporte público e carro sobrepostos no mesmo mapa (TP a verde-água, carro a laranja).
 
 Clicar no mapa ou arrastar o marcador branco muda o ponto de partida; a pesquisa usa o Nominatim (OpenStreetMap), limitado à caixa da Póvoa/Vila do Conde.
@@ -48,7 +48,8 @@ pipeline/
   filter_gtfs_bbox.py           filtra um GTFS grande (ex. UNIR, toda a AMP) às viagens perto da área de estudo
   combine_gtfs.py                junta vários GTFS (ex. Metro + UNIR, ambos reais) num só, com prefixos
   build_explore_povoa.py        lê o GTFS combinado → data/tp/*
-  build_road_demo.py            gera a rede viária sintética (carro + a pé) → data/road/graph.json
+  build_road_real.py            lê a rede viária municipal real (shapefile) → data/road/graph.json
+  build_road_demo.py            alternativa de reserva: grelha sintética (carro + a pé), só se não houver shapefile
   importar_censos2021.py        lê um ficheiro BGRI 2021 do INE e preenche a população em data/tp/meta.json
 data_src/                       GTFS brutos usados para gerar data/ (não precisam de ir para o site publicado)
 ```
@@ -67,7 +68,8 @@ python3 combine_gtfs.py --out ../data_src/gtfs_combined \
 
 # 3. gerar os dados de transporte público e a rede viária
 python3 build_explore_povoa.py ../data_src/gtfs_combined --dia 20261020 --fonte real
-python3 build_road_demo.py
+python3 build_road_real.py <shapefile .shp da rede viária municipal>
+# (ou, só se não houver shapefile disponível: python3 build_road_demo.py)
 ```
 
 ### Preencher a população (Censos 2021)
@@ -84,7 +86,7 @@ Descarregar primeiro o ficheiro do distrito do Porto em http://mapas.ine.pt/down
 ## O que falta para ficar mais completo
 
 1. **Fiabilidade real**: construir, a partir do histórico de GTFS-RT já em produção, uma agregação por paragem+linha+hora (mediana, p80/p90/p95, taxa de cancelamento) e passá-la a `build_explore_povoa.py --fiabilidade ficheiro.csv` (colunas: `route_id,stop_id,hour,delay_p50_s,delay_p90_s,cancel_rate` — ver a função `load_reliability` para o formato exato esperado).
-2. **Rede viária real** (carro e a pé): ligar a uma rede viária municipal real com velocidade e capacidade por troço, assim que existirem dados reais carregados (hoje só testado com rede sintética, ver nota acima), ou a um extrato OSM da área (teria também a rede só-pedonal, que a rede viária não tem), e escrever um `build_road_<fonte>.py` que gere o mesmo `data/road/graph.json` (nós + arestas `edge_w`/`edge_w_walk` + `cell_node`) a partir daí.
+2. ~~**Rede viária real**~~ — feito: geometria e classificação reais (`build_road_real.py`). Falta: velocidades por troço calibradas (hoje são uma suposição por tipo de via, ver nota acima), capacidade por troço.
 3. ~~**População em grelha**~~ — feito: BGRI 2021 já importado (64 255 habitantes no concelho, por 793 subsecções estatísticas).
 4. **Calibração pontual com o Google Maps Platform**: usar a Directions/Distance Matrix API para validar as velocidades sintéticas contra algumas rotas reais — a correr a partir de uma máquina com acesso de rede normal, e sem exceder o limite gratuito mensal.
 
