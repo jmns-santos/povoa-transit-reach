@@ -36,12 +36,12 @@ Clicar no mapa ou arrastar o marcador branco muda o ponto de partida; a pesquisa
 
 **Chegar a um destino.** O segundo campo de pesquisa ("Chegar a") aceita uma morada/local ou coordenadas `lat, lon`, e mostra o tempo estimado de chegada a esse ponto a partir da partida escolhida, no(s) modo(s) ativo(s).
 
-**Camadas de contexto** (painel à esquerda, por baixo das estatísticas):
+**Camadas de contexto** — painel flutuante sobre o mapa, canto superior direito ("Camadas de contexto ▾"), não no painel esquerdo:
 - **Pontos de interesse** (praias, património, alojamento, restauração, saúde, educação, multibancos, aeroportos, serviços públicos, lazer, comércio) — via OpenStreetMap, ligada por omissão; só aparece se `data/poi/poi.json` existir (ver `pipeline/importar_poi_osm.py`).
-- **Paragens de transporte público** — todas as paragens do horário combinado, coloridas por operadora.
-- **Linhas de transporte público** — uma polilinha por percurso; geometria real para o Metro e a UNIR (têm `shapes.txt`), aproximada por segmentos retos entre paragens para o Mov Cávado (a fonte da AITC não inclui `shapes.txt`).
+- **Paragens de transporte público** — sempre visíveis (sem interruptor, de propósito). Passar o cursor (ou tocar, em ecrã tátil) mostra o nome, a operadora e as próximas passagens por linha — com destino e hora — a partir da hora simulada abaixo.
+- **Linhas de transporte público** — uma polilinha por percurso; geometria real para o Metro e a UNIR (têm `shapes.txt`), aproximada por segmentos retos entre paragens para o Mov Cávado (a fonte da AITC não inclui `shapes.txt`). Cada linha tem um tom de cor próprio dentro da família de cor da sua operadora (Metro do Porto / UNIR / Mov Cávado).
 - **Rede viária (troços reais)** — os troços do grafo routável de carro/a pé, para conferir visualmente que as isócronas seguem a rede.
-- **Simulação em tempo real** — mostra, para a hora atual do dispositivo, onde cada veículo (Metro/UNIR/Cavado) devia estar segundo o horário real do dia de referência. **Não são posições reais** (não há integração GTFS tempo-real nesta versão) — é uma simulação a partir do horário estático, e entre duas paragens a posição é interpolada em linha reta pelo tempo decorrido, não pela curva exata da via.
+- **Simulação em tempo real** — mostra onde cada veículo (Metro/UNIR/Cávado) devia estar, segundo o horário real do dia de referência, à hora simulada — por omissão a hora atual do dispositivo, mas ajustável: scrubber de tempo, play/pausa, acelerador (1×–1800×), botão "Agora" e rasto opcional do movimento de cada veículo. Ícones distinguem autocarro de metro. **Não são posições reais** (não há integração GTFS tempo-real nesta versão) — é uma simulação a partir do horário estático, e entre duas paragens a posição é interpolada em linha reta pelo tempo decorrido, não pela curva exata da via.
 
 ## Estrutura
 
