@@ -141,14 +141,6 @@
     <button type="button" data-view="compare" aria-pressed="false">Comparar</button>
   </div>
 
-  <div class="ctl" id="rel-ctl">
-    <div class="ctl-head"><label for="rel">Preciso de chegar a horas</label><span class="val" id="relv"></span></div>
-    <input id="rel" type="range" min="0" max="4" step="1" value="0" aria-describedby="relh">
-    <div class="ticks"><span>horário</span><span>1/2</span><span>4/5</span><span>9/10</span><span>19/20</span></div>
-    <div class="hint" id="relh"></div>
-    <div class="modes" id="modes" aria-live="polite"></div>
-  </div>
-
   <div class="ctl">
     <div class="ctl-head"><label for="dep">Partir às</label><span class="val" id="depv"></span></div>
     <input id="dep" type="range" min="0" max="72" step="1" value="12">
@@ -179,7 +171,6 @@
   <details>
     <summary>Como isto é calculado</summary>
     <p><b>Transporte público:</b> o browser percorre o horário do dia útil de referência (Connection Scan) a partir da hora de partida escolhida, e encontra a chegada mais cedo a cada paragem dentro de uma hora. Acesso a pé: 4,8 km/h por um caminho 1,3× a linha reta, até 1 km de/para paragens; mudar de veículo demora pelo menos 2 minutos. O <b>Metro do Porto</b> e os <b>autocarros da UNIR</b> usam agora GTFS <b>real</b> dos dois operadores (dia de referência: terça-feira, ver legenda/badge); a UNIR cobre toda a Área Metropolitana do Porto, por isso foi filtrada às linhas que tocam a Póvoa de Varzim/Vila do Conde e zona próxima antes de entrar aqui.</p>
-    <p><b>Fiabilidade:</b> ainda não há dados reais de atraso/cancelamento agregados por paragem, linha e hora (só existem posições brutas de GTFS-RT) — por isso todos os níveis acima de "horário" dão hoje o mesmo resultado que o horário teórico. Quando essa agregação existir, cada nível vai atrasar a chegada de cada troço pelo atraso típico nesse nível de fiabilidade.</p>
     <p><b>De carro</b> e <b>a pé:</b> Dijkstra sobre a rede viária municipal <b>real</b> (geometria e classificação por tipo de via, sentido e vias só pedonais/cicláveis) — o carro usa só as vias com acesso automóvel, respeitando os sentidos únicos; o modo a pé já pode usar passeios, ciclovias e atalhos só pedonais que o carro não pode, e exclui auto-estradas. As velocidades por tipo de via são uma suposição documentada (os campos de velocidade do próprio ficheiro municipal estavam todos preenchidos com um valor genérico, não calibrado), aplicada sobre a topologia real — não uma velocidade inventada numa grelha inventada. Numa área deste tamanho, de carro cobre-se rapidamente a maior parte da área em 60 min — é precisamente o contraste que vale a pena ver contra o transporte público e contra o alcance a pé. Ver o README do projeto para mais detalhe sobre esta suposição.</p>
     <p>Esta versão cobre a Póvoa de Varzim e Vila do Conde (moldura tracejada); o alcance é cortado na borda.</p>
   </details>
@@ -198,19 +189,9 @@ const ROAD_COLORS = ["#FFD08A", "#FFB74D", "#FFA726", "#FB8C00", "#EF6C00"];
 const ROAD_FILL = [.34, .28, .22, .18, .14];
 const WALK_COLORS = ["#E3DAFF", "#C9B8FF", "#B39DFF", "#9676F2", "#7A54E0"];
 const WALK_FILL = [.36, .30, .24, .19, .15];
-const RISK = [5, 10, 20], RISK_COLORS = ["#AC1E63", "#D5287C", "#FF3396"], RISK_FILL = [.22, .30, .40];
 const WALK = 80 / 60 / 1.3;                       // m/s a pé: 4,8 km/h com desvio 1,3x
 const ACCESS_M = 1000, TRANSFER_M = 400, BUFFER_S = 120, HORIZON_S = 3600;
 const START = [41.3793, -8.7649];                 // Câmara Municipal da Póvoa de Varzim
-const LEVELS = ["Horário", "1 em 2 dias", "4 em 5 dias", "9 em 10 dias", "19 em 20 dias"];
-const HINTS = [
-  "Horário teórico: o que o planeador promete.",
-  "Chegar a horas num dia típico: metade dos dias corre pior. (ainda = horário, sem dados reais de atraso)",
-  "Chegar a horas 4 em 5 dias: cerca de uma vez por semana chegas atrasado. (ainda = horário, sem dados reais de atraso)",
-  "Chegar a horas 9 em 10 dias: cerca de duas vezes por mês chegas atrasado. (ainda = horário, sem dados reais de atraso)",
-  "Chegar a horas 19 em 20 dias: cerca de uma vez por mês chegas atrasado. (ainda = horário, sem dados reais de atraso)",
-];
-const MODES_PT = { "Autocarro": "Autocarro", "Elétrico": "Elétrico", "Metro": "Metro", "Comboio": "Comboio", "Ferry": "Ferry" };
 
 // ------------------------------------------------------------------ state
 const $ = id => document.getElementById(id);
@@ -221,7 +202,6 @@ const hash = location.hash.slice(1).split(",");
 if (hash.length >= 2 && !isNaN(+hash[0])) {
   origin = [+hash[0], +hash[1]]; placeName = "";
   if (hash[2] !== undefined) $("dep").value = hash[2];
-  if (hash[3] !== undefined) $("rel").value = hash[3];
   if (["tp", "road", "walk", "compare"].includes(hash[4])) view = hash[4];
 }
 
@@ -418,7 +398,7 @@ Promise.all([
   // ------------------------------------------------------------------ desenho
   const contour = d3.contours().size([COLS, ROWS]).smooth(true);
   const toLatLng = ring => ring.map(([x, y]) => [S + y * DLAT, W + x * DLON]);
-  const bandLayer = L.layerGroup().addTo(map), roadLayer = L.layerGroup().addTo(map), riskLayer = L.layerGroup().addTo(map);
+  const bandLayer = L.layerGroup().addTo(map), roadLayer = L.layerGroup().addTo(map);
   function rings(layer, values, thresholds, style) {
     layer.clearLayers();
     const shapes = contour.thresholds(thresholds)(values).sort((a, b) => a.value - b.value);
@@ -484,20 +464,14 @@ Promise.all([
 
   let seq = 0;
   async function draw() {
-    const my = ++seq, level = +$("rel").value, T0 = 5 * 3600 + 15 * 60 * +$("dep").value, h = Math.floor(T0 / 3600);
-    $("relv").textContent = LEVELS[level];
-    $("relh").textContent = HINTS[level];
+    const my = ++seq, T0 = 5 * 3600 + 15 * 60 * +$("dep").value, h = Math.floor(T0 / 3600);
     $("depv").textContent = fmtT(T0);
-    $("rel-ctl").classList.toggle("disabled", view === "road" || view === "walk");
-    const md = (view !== "road" && view !== "walk" && level > 0) ? (M.mode_delay[LEVELS[level]]?.[h] || {}) : {};
-    $("modes").innerHTML = Object.keys(md).length === 0 ? "" : `<span class="lbl">Atraso médio por troço:</span>` +
-      Object.keys(md).sort((a, b) => md[b] - md[a]).map(m => `<span>${MODES_PT[m] || m}<b>+${md[m].toFixed(1)} min</b></span>`).join("");
     $("where").innerHTML = inside(origin)
       ? `Partida: <b>${placeName || origin[0].toFixed(4) + ", " + origin[1].toFixed(4)}</b><br>Clica no mapa ou arrasta o ponto branco para mudar a partida.`
       : "Fora da área com dados — escolhe um ponto na Póvoa de Varzim ou Vila do Conde.";
     legend();
-    history.replaceState(null, "", `${location.search}#${origin[0].toFixed(5)},${origin[1].toFixed(5)},${$("dep").value},${level},${view}`);
-    bandLayer.clearLayers(); roadLayer.clearLayers(); riskLayer.clearLayers();
+    history.replaceState(null, "", `${location.search}#${origin[0].toFixed(5)},${origin[1].toFixed(5)},${$("dep").value},,${view}`);
+    bandLayer.clearLayers(); roadLayer.clearLayers();
     if (!inside(origin)) { $("rows").innerHTML = ""; return; }
 
     $("busy").style.display = (view !== "road" && view !== "walk" && !(chunks.has(h) && chunks.has(h + 1))) ? "block" : "none";
@@ -506,8 +480,8 @@ Promise.all([
       const parts = await Promise.all([chunk(h), chunk(h + 1)]);
       $("busy").style.display = "none";
       if (my !== seq) return;
-      tt = reachTP(parts, T0, level);
-      base = level > 0 ? reachTP(parts, T0, 0) : tt;
+      tt = reachTP(parts, T0, 0);
+      base = tt;
     }
     if (view === "road" || view === "compare") {
       ttRoad = reachRoad(T0, adjW, carUsable);
@@ -582,7 +556,7 @@ Promise.all([
 
   let pending = 0;
   const soon = () => { cancelAnimationFrame(pending); pending = requestAnimationFrame(draw); };
-  $("rel").addEventListener("input", soon); $("dep").addEventListener("input", soon);
+  $("dep").addEventListener("input", soon);
   document.querySelectorAll(".view button").forEach(btn => {
     btn.setAttribute("aria-pressed", btn.dataset.view === view);
     btn.addEventListener("click", () => {

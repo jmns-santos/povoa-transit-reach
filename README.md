@@ -10,7 +10,7 @@ Protótipo da Câmara Municipal da Póvoa de Varzim.
 |---|---|---|
 | Metro do Porto | **Real** | GTFS oficial da Metro do Porto |
 | Autocarros (UNIR) | **Real**, filtrado à zona | GTFS estático oficial da UNIR — cobre toda a Área Metropolitana do Porto (12 067 paragens); filtrado às viagens que tocam a Póvoa/Vila do Conde e zona próxima antes de entrar no pipeline (ver nota abaixo) |
-| Fiabilidade (atrasos/cancelamentos) | **Não incluída** (todos os níveis = horário) | a UNIR tem GTFS-RT em produção (posições de veículos), mas falta a agregação por paragem+linha+hora |
+| Fiabilidade (atrasos/cancelamentos) | **Não incluída** — o painel mostra sempre o horário teórico | a UNIR tem GTFS-RT em produção (posições de veículos), mas falta a agregação por paragem+linha+hora |
 | Rede viária (carro e a pé) | **Real** (geometria e classificação), velocidades por tipo de via assumidas | ver nota sobre a rede viária municipal abaixo |
 | População em grelha | **Real** | BGRI 2021 (Censos), por subsecção estatística — ver nota abaixo |
 | Pontos de interesse | Opcional, script pronto | OpenStreetMap (Overpass) — ver "Pontos de interesse" abaixo |
@@ -23,14 +23,12 @@ A área de estudo cobre agora todo o concelho da Póvoa de Varzim (as 7 freguesi
 
 **Nota sobre a rede viária municipal.** `pipeline/build_road_real.py` lê um shapefile da rede viária municipal (geometria de cada troço + classificação por tipo de via, sentido, e lista de modos de transporte autorizados por troço) e gera o grafo routável. A geometria, a topologia (que ruas se cruzam) e a classificação (que troços são só pedonais/cicláveis, que sentidos são permitidos, que vias são auto-estrada) são reais. O que **não** é real: os campos de velocidade/tempo do próprio ficheiro vinham todos com o mesmo valor genérico (50 km/h, incluindo em troços pedonais) — claramente um valor de teste, nunca calibrado — por isso as velocidades usadas vêm de uma tabela por tipo de via (suposição documentada no próprio script), aplicada sobre a topologia real. `pipeline/build_road_demo.py` (grelha sintética) fica como alternativa de reserva, caso não haja shapefile disponível.
 
-**Nota sobre o Google Maps Platform.** Há uma chave de API do Google Maps Platform disponível, criada para testar a Air Quality API — não para routing. O crédito experimental de 300 $/90 dias já deve ter expirado; resta o limite gratuito mensal permanente por API. As APIs de rotas/distâncias (Directions, Distance Matrix) podiam, em teoria, calibrar ou validar pontualmente as velocidades assumidas por tipo de via — mas essa chamada teria de correr a partir de uma máquina com rede sem restrições (não é alcançável a partir deste pipeline de desenvolvimento), e sempre sem exceder o limite gratuito mensal nem fazer upgrade da conta.
-
 **Nota sobre o INE/Censos 2021.** `pipeline/importar_censos2021.py` lê um ficheiro BGRI 2021 (GeoPackage/Shapefile, por subsecção estatística), filtra ao concelho da Póvoa de Varzim, soma a população residente à grelha fina do projeto e atualiza `data/tp/meta.json`. A fonte pode ser o download público do INE (http://mapas.ine.pt/download/index2021.phtml — a 2026-11-09 esse portal estava temporariamente em manutenção) ou qualquer outro extrato do mesmo BGRI 2021 com geometria e um campo de população residente; o script detecta automaticamente os nomes de coluna mais comuns (ver "Preencher a população" abaixo).
 
 ## Como usar
 
 Abrir `index.html` (ou a página publicada). Quatro modos no painel à esquerda:
-- **Transporte público** — Connection Scan sobre o horário combinado (Metro + UNIR, ambos reais), com o controlo de fiabilidade (ainda sem efeito real, ver tabela acima).
+- **Transporte público** — Connection Scan sobre o horário combinado (Metro + UNIR, ambos reais), horário teórico (ver "Fiabilidade" na tabela acima).
 - **De carro** — Dijkstra sobre a rede viária municipal real, só nas vias com acesso automóvel, a velocidades assumidas por tipo de via.
 - **A pé** — Dijkstra sobre a mesma rede real, incluindo passeios, ciclovias e atalhos só pedonais que o carro não pode usar; exclui auto-estradas.
 - **Comparar** — transporte público e carro sobrepostos no mesmo mapa (TP a verde-água, carro a laranja).
@@ -100,13 +98,13 @@ Corre a partir de uma máquina com acesso normal à internet (este ambiente de d
 
 ## O que falta para ficar mais completo
 
-1. **Fiabilidade real**: construir, a partir do histórico de GTFS-RT já em produção, uma agregação por paragem+linha+hora (mediana, p80/p90/p95, taxa de cancelamento) e passá-la a `build_explore_povoa.py --fiabilidade ficheiro.csv` (colunas: `route_id,stop_id,hour,delay_p50_s,delay_p90_s,cancel_rate` — ver a função `load_reliability` para o formato exato esperado).
+1. **Fiabilidade real**: construir, a partir do histórico de GTFS-RT já em produção, uma agregação por paragem+linha+hora (mediana, p80/p90/p95, taxa de cancelamento) e passá-la a `build_explore_povoa.py --fiabilidade ficheiro.csv` (colunas: `route_id,stop_id,hour,delay_p50_s,delay_p90_s,cancel_rate` — ver a função `load_reliability` para o formato exato esperado). O seletor de fiabilidade foi retirado do painel por não ter ainda dados reais por trás; ao ligar esta agregação, é preciso voltar a acrescentar o controlo ao `index.html`.
 2. ~~**Rede viária real**~~ — feito: geometria e classificação reais (`build_road_real.py`). Falta: velocidades por troço calibradas (hoje são uma suposição por tipo de via, ver nota acima), capacidade por troço.
 3. ~~**População em grelha**~~ — feito: BGRI 2021 já importado (64 255 habitantes no concelho, por 793 subsecções estatísticas).
 4. **Calibração pontual com o Google Maps Platform**: usar a Directions/Distance Matrix API para validar as velocidades sintéticas contra algumas rotas reais — a correr a partir de uma máquina com acesso de rede normal, e sem exceder o limite gratuito mensal.
 5. **Pontos de interesse**: script pronto (`importar_poi_osm.py`), falta correr numa máquina com acesso normal à internet para gerar `data/poi/poi.json` (ver secção abaixo). Sem esse ficheiro, a camada fica simplesmente desligada (o painel não mostra o controlo).
 
-Nada disto exige mudar o front-end: `index.html` já lê o formato final; só os pipelines em `pipeline/` precisam de outra fonte.
+Fora a fiabilidade (item 1), nada disto exige mudar o front-end: `index.html` já lê o formato final; só os pipelines em `pipeline/` precisam de outra fonte.
 
 ## Publicar
 
