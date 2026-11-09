@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+r"""
 Importa a população residente dos Censos 2021 (BGRI — Base Geográfica de
 Referenciação de Informação, ao nível da subsecção estatística) e preenche
 a grelha de população usada na secção "Pessoas alcançadas" do painel
@@ -52,10 +52,10 @@ META_PATH = os.path.join(HERE, "..", "data", "tp", "meta.json")
 DICOFRE_CONCELHO = "1313"  # Póvoa de Varzim
 
 CANDIDATOS_COLUNA_POP = [
-    "N_INDIVIDUOS_RESIDENT", "N_INDIVIDUOS", "RESIDENTES_N", "POP_RESIDENTE",
-    "N_RESIDENT", "RESIDENTES", "POPULACAO_RESIDENTE", "POP21",
+    "N_INDIVIDU", "N_INDIVIDUOS_RESIDENT", "N_INDIVIDUOS", "RESIDENTES_N",
+    "POP_RESIDENTE", "N_RESIDENT", "RESIDENTES", "POPULACAO_RESIDENTE", "POP21",
 ]
-CANDIDATOS_COLUNA_DICOFRE = ["DICOFRE", "DTMNFR21", "DTMNFR", "DICOFRE21", "BGRI21", "BGRI"]
+CANDIDATOS_COLUNA_DICOFRE = ["DTMN21", "DICOFRE", "DTMNFR21", "DTMNFR", "DICOFRE21", "BGRI21", "BGRI"]
 
 
 def b64(a):
@@ -67,10 +67,13 @@ def escolher_coluna(colunas, candidatos, rotulo):
     for cand in candidatos:
         if cand.lower() in cols_lower:
             return cols_lower[cand.lower()]
-    # tentativa por substring
+    # tentativa por substring (nos dois sentidos — nomes de colunas de shapefile
+    # são truncados a 10 caracteres, por isso o candidato pode ser mais longo
+    # do que a coluna real, ex. "N_INDIVIDUOS" vira "n_individu")
     for c in colunas:
         for cand in candidatos:
-            if cand.lower() in c.lower():
+            cl, canl = c.lower(), cand.lower()
+            if canl in cl or (len(cl) >= 8 and cl in canl):
                 return c
     print(f"\nNão consegui identificar com confiança a coluna de {rotulo}.")
     print("Colunas disponíveis no ficheiro:")
@@ -119,10 +122,13 @@ def main():
         print("Nenhuma subsecção encontrada — confirma o nome/formato da coluna de código com --dicofre.")
         sys.exit(1)
 
+    # centróide calculado ANTES de reprojetar (mais exato num CRS projetado em
+    # metros do que em graus), e só depois convertido para WGS84
+    centroides = gdf.geometry.centroid
     if gdf.crs is None:
         print("Aviso: o ficheiro não indica o sistema de coordenadas (CRS); a assumir WGS84 (EPSG:4326).")
     elif gdf.crs.to_epsg() != 4326:
-        gdf = gdf.to_crs(epsg=4326)
+        centroides = centroides.to_crs(epsg=4326)
 
     # lê a mesma BOX/DLAT/DLON usada no resto do pipeline, a partir do meta.json já gerado
     with open(META_PATH, encoding="utf-8") as f:
@@ -133,7 +139,6 @@ def main():
     NCELL = ROWS * COLS
 
     pop = np.zeros(NCELL, dtype=np.float64)
-    centroides = gdf.geometry.centroid
     fora = 0
     for geom, valor in zip(centroides, gdf[col_pop]):
         try:
@@ -152,6 +157,7 @@ def main():
     print(f"População total somada à grelha: {int(pop.sum())}")
 
     meta["pop"] = b64(pop.astype(np.uint16))
+    meta["has_population"] = True
     with open(META_PATH, "w", encoding="utf-8") as f:
         json.dump(meta, f, separators=(",", ":"))
     print(f"\nOK — {META_PATH} atualizado. Volta a publicar data/tp/meta.json (é o único ficheiro que muda).")

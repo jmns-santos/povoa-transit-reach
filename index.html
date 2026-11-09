@@ -484,7 +484,7 @@ Promise.all([
       });
     }
 
-    // estatísticas de população — só mostra se houver grelha real (ainda não há)
+    // estatísticas de população — só mostra se houver grelha real (ver data/tp/meta.json)
     const totalPop = pop.reduce((a, b) => a + b, 0);
     if (!totalPop) {
       $("statsh").textContent = "Pessoas alcançadas";
