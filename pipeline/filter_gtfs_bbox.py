@@ -72,6 +72,7 @@ def main():
     kept_trips = [t for t in trips if t["trip_id"] in trips_touching]
     kept_route_ids = {t["route_id"] for t in kept_trips}
     kept_service_ids = {t["service_id"] for t in kept_trips}
+    kept_shape_ids = {t["shape_id"] for t in kept_trips if t.get("shape_id")}
 
     routes = read_rows(args.gtfs_in, "routes.txt")
     kept_routes = [r for r in routes if r["route_id"] in kept_route_ids]
@@ -81,6 +82,11 @@ def main():
     calendar_dates = read_rows(args.gtfs_in, "calendar_dates.txt")
     kept_caldates = [c for c in calendar_dates if c["service_id"] in kept_service_ids]
 
+    # shapes.txt (geometria do percurso) — opcional: nem toda fonte GTFS tem.
+    # Mantém só os pontos dos shape_id usados pelas viagens filtradas.
+    shapes = read_rows(args.gtfs_in, "shapes.txt")
+    kept_shapes = [p for p in shapes if p["shape_id"] in kept_shape_ids]
+
     os.makedirs(args.gtfs_out, exist_ok=True)
     write_rows(args.gtfs_out, "stops.txt", kept_stops)
     write_rows(args.gtfs_out, "routes.txt", kept_routes)
@@ -88,9 +94,11 @@ def main():
     write_rows(args.gtfs_out, "stop_times.txt", kept_stop_times)
     write_rows(args.gtfs_out, "calendar.txt", kept_calendar)
     write_rows(args.gtfs_out, "calendar_dates.txt", kept_caldates)
+    write_rows(args.gtfs_out, "shapes.txt", kept_shapes)
 
     print(f"Saída: {len(kept_stops)} paragens, {len(kept_routes)} linhas, {len(kept_trips)} viagens, "
-          f"{len(kept_stop_times)} passagens -> {os.path.abspath(args.gtfs_out)}")
+          f"{len(kept_stop_times)} passagens, {len(kept_shapes)} pontos de shape "
+          f"-> {os.path.abspath(args.gtfs_out)}")
 
 
 if __name__ == "__main__":

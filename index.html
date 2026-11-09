@@ -82,6 +82,17 @@
   .poi-legend span { display: flex; align-items: center; gap: 5px; font: 500 11px 'Open Sans', sans-serif; color: var(--text2); }
   .poi-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 
+  .layers-title { font: 600 11px 'Open Sans', sans-serif; letter-spacing: 1px; color: var(--text2); text-transform: uppercase; margin: 16px 0 6px; }
+  .layer-row { display: flex; align-items: center; gap: 8px; cursor: pointer; font: 600 13px 'Open Sans', sans-serif; color: var(--text); margin: 6px 0; }
+  .layer-row input[type=checkbox] { accent-color: var(--blue); width: 15px; height: 15px; cursor: pointer; flex: none; }
+  .layer-sub { font: 400 11.5px 'Open Sans', sans-serif; color: var(--text2); margin: -2px 0 2px 23px; }
+  .layer-legend { display: flex; flex-wrap: wrap; gap: 6px 10px; margin: 2px 0 2px 23px; }
+  .layer-legend span { display: flex; align-items: center; gap: 5px; font: 500 11px 'Open Sans', sans-serif; color: var(--text2); }
+  .layer-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .layer-legend i.ln { width: 12px; height: 2px; border-radius: 1px; }
+  .sim-clock { font: 700 12px 'Open Sans', sans-serif; color: var(--aqua); margin-left: 23px; }
+  .sim-dot { border-radius: 50%; border: 1.5px solid #fff; box-shadow: 0 0 6px rgba(0,0,0,.5); }
+
   .stats { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 14px; }
   .stats h2 { font: 600 12px 'Open Sans', sans-serif; letter-spacing: 2px; color: var(--text2); margin: 0 0 10px; text-transform: uppercase; }
   .row { display: grid; grid-template-columns: 54px 1fr 74px; align-items: center; gap: 8px; margin: 6px 0; font-size: 13px; }
@@ -159,13 +170,41 @@
     <div class="note" id="note"></div>
   </div>
 
+  <div class="layers-title">Camadas de contexto</div>
+
   <div class="poi-ctl" id="poi-ctl" style="display:none">
-    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font:600 13px 'Open Sans',sans-serif;color:var(--text)">
-      <input type="checkbox" id="poi-toggle">
+    <label class="layer-row">
+      <input type="checkbox" id="poi-toggle" checked>
       <span>Pontos de interesse (OpenStreetMap)</span>
     </label>
     <div class="poi-legend" id="poi-legend"></div>
   </div>
+
+  <label class="layer-row" id="stops-row" style="display:none">
+    <input type="checkbox" id="stops-toggle">
+    <span>Paragens de transporte público</span>
+  </label>
+  <div class="layer-legend" id="stops-legend"></div>
+
+  <label class="layer-row" id="lines-row" style="display:none">
+    <input type="checkbox" id="lines-toggle">
+    <span>Linhas de transporte público</span>
+  </label>
+  <div class="layer-sub" id="lines-sub" style="display:none">Mov Cávado: sem geometria oficial de percurso — aproximada por segmentos retos entre paragens.</div>
+  <div class="layer-legend" id="lines-legend"></div>
+
+  <label class="layer-row" id="road-row" style="display:none">
+    <input type="checkbox" id="road-toggle">
+    <span>Rede viária (troços reais)</span>
+  </label>
+
+  <label class="layer-row" id="sim-row" style="display:none">
+    <input type="checkbox" id="sim-toggle">
+    <span>Simulação em tempo real</span>
+  </label>
+  <div class="layer-sub" id="sim-sub" style="display:none">Não são posições reais (sem GTFS tempo-real) — mostra onde cada veículo devia estar agora, segundo o horário do dia de referência.</div>
+  <div class="sim-clock" id="sim-clock" style="display:none"></div>
+  <div class="layer-legend" id="sim-legend"></div>
 
   <details>
     <summary>Como isto é calculado</summary>
@@ -221,7 +260,9 @@ Promise.all([
   fetch("data/tp/meta.json").then(r => r.json()),
   fetch("data/road/graph.json").then(r => r.json()),
   fetch("data/poi/poi.json").then(r => r.ok ? r.json() : null).catch(() => null),
-]).then(([M, G, POI]) => {
+  fetch("data/tp/lines.json").then(r => r.ok ? r.json() : null).catch(() => null),
+  fetch("data/tp/live.json").then(r => r.ok ? r.json() : null).catch(() => null),
+]).then(([M, G, POI, LINES, LIVE]) => {
   const badgeText = { real: "DADOS REAIS", misto: "METRO REAL + AUTOCARRO DEMO", demo: "DEMONSTRAÇÃO" }[M.source] || "DEMONSTRAÇÃO";
   const badgeColor = { real: "#2FE38A", misto: "#7FD6FF", demo: "#FFC94A" }[M.source] || "#FFC94A";
   $("demo-badge").textContent = badgeText;
@@ -627,11 +668,13 @@ Promise.all([
     } catch (e) { $("destino-resultado").textContent = "Não encontrei esse destino na área."; }
   });
 
-  // pontos de interesse (OpenStreetMap, opcional — só aparece se data/poi/poi.json existir)
+  // pontos de interesse (OpenStreetMap, opcional — só aparece se data/poi/poi.json existir).
+  // Camada de contexto, por isso começa ligada (o utilizador pode desligá-la).
   if (POI && POI.points && POI.points.length) {
     const POI_COLORS = { praia: "#FFD24A", patrimonio: "#C98CFF", alojamento: "#4AC9FF",
-      restauracao: "#FF8A4A", saude: "#FF5C7A", servicos: "#8A95B8", lazer: "#5CE0A0", comercio: "#B8A25C" };
-    const poiLayer = L.layerGroup();
+      restauracao: "#FF8A4A", saude: "#FF5C7A", educacao: "#6CD4FF", multibancos: "#9AE65C",
+      aeroportos: "#FF6CD4", servicos: "#8A95B8", lazer: "#5CE0A0", comercio: "#B8A25C" };
+    const poiLayer = L.layerGroup().addTo(map);
     POI.points.forEach(p => {
       L.circleMarker([p.lat, p.lon], {
         radius: 5, weight: 1.5, color: "#fff", fillColor: POI_COLORS[p.cat] || "#B8A25C",
@@ -643,6 +686,118 @@ Promise.all([
       `<span><i style="background:${POI_COLORS[cat] || "#B8A25C"}"></i>${POI.labels[cat]}</span>`).join("");
     $("poi-toggle").addEventListener("change", ev => {
       if (ev.target.checked) poiLayer.addTo(map); else map.removeLayer(poiLayer);
+    });
+  }
+
+  // cores por operadora, reaproveitadas nas camadas de paragens, linhas e simulação
+  const OP_COLORS = { metro: "#4AC9FF", unir: "#FFD24A", cavado: "#FF6B9D", outro: "#8A95B8" };
+  const OP_NAMES = (M.operadoras || (LIVE && LIVE.operadoras) || { metro: "Metro do Porto", unir: "UNIR", cavado: "Mov Cávado" });
+  const ctxCanvas = L.canvas({ padding: .3 });
+
+  // ---------------- paragens de transporte público (dados já carregados: sLat/sLon/M.stop_*)
+  if (M.stop_name && M.stop_op) {
+    const stopsLayer = L.layerGroup();
+    for (let i = 0; i < NS; i++) {
+      const op = M.stop_op[i] || "outro";
+      L.circleMarker([sLat[i], sLon[i]], {
+        renderer: ctxCanvas, radius: 3, weight: 1, color: "#fff",
+        fillColor: OP_COLORS[op] || OP_COLORS.outro, fillOpacity: .9, opacity: .7,
+      }).bindTooltip(`${M.stop_name[i]} — ${OP_NAMES[op] || op}`, { direction: "top", offset: [0, -4] }).addTo(stopsLayer);
+    }
+    $("stops-row").style.display = "flex";
+    $("stops-legend").innerHTML = Object.keys(OP_NAMES).map(op =>
+      `<span><i style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("");
+    $("stops-toggle").addEventListener("change", ev => {
+      if (ev.target.checked) stopsLayer.addTo(map); else map.removeLayer(stopsLayer);
+    });
+  }
+
+  // ---------------- linhas de transporte público (data/tp/lines.json — opcional)
+  if (LINES && LINES.lines && LINES.lines.length) {
+    const linesLayer = L.layerGroup();
+    LINES.lines.forEach(ln => {
+      L.polyline(ln.coords, {
+        renderer: ctxCanvas, color: OP_COLORS[ln.op] || OP_COLORS.outro, weight: 2.5, opacity: .65,
+        dashArray: ln.approx ? "2 5" : null,
+      }).bindTooltip(`${ln.route}${ln.long_name ? " — " + ln.long_name : ""} (${OP_NAMES[ln.op] || ln.op}${ln.approx ? ", aproximada" : ""})`,
+        { sticky: true }).addTo(linesLayer);
+    });
+    $("lines-row").style.display = "flex";
+    $("lines-sub").style.display = "block";
+    $("lines-legend").innerHTML = Object.keys(OP_NAMES).map(op =>
+      `<span><i class="ln" style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("");
+    $("lines-toggle").addEventListener("change", ev => {
+      if (ev.target.checked) linesLayer.addTo(map); else map.removeLayer(linesLayer);
+    });
+  }
+
+  // ---------------- rede viária (troços reais do grafo de carro/pé já carregado — nLat/nLon/eu/ev)
+  {
+    const roadNetLayer = L.layerGroup();
+    const seen = new Set();
+    for (let k = 0; k < eu.length; k++) {
+      const u = eu[k], v = ev[k], key = u < v ? u * 1e7 + v : v * 1e7 + u;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      L.polyline([[nLat[u], nLon[u]], [nLat[v], nLon[v]]],
+        { renderer: ctxCanvas, color: "#6B7390", weight: 1, opacity: .55, interactive: false }).addTo(roadNetLayer);
+    }
+    $("road-row").style.display = "flex";
+    $("road-toggle").addEventListener("change", ev => {
+      if (ev.target.checked) roadNetLayer.addTo(map); else map.removeLayer(roadNetLayer);
+    });
+  }
+
+  // ---------------- simulação em tempo real (data/tp/live.json — opcional)
+  if (LIVE && LIVE.trip_op && LIVE.trip_op.length) {
+    const vStart = b64(LIVE.visit_start, Uint32Array), vU = b64(LIVE.visit_u, Uint16Array), vT = b64(LIVE.visit_t, Uint32Array);
+    const nTrips = LIVE.trip_op.length;
+    const simLayer = L.layerGroup();
+    let simTimer = null;
+
+    function nowSec() {
+      const d = new Date();
+      return d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds();
+    }
+
+    function tick() {
+      simLayer.clearLayers();
+      const t = nowSec();
+      $("sim-clock").textContent = `A simular: ${fmtT(t)} (hora do dispositivo)`;
+      let nAtivos = 0;
+      for (let i = 0; i < nTrips; i++) {
+        const s0 = vStart[i], s1 = vStart[i + 1];
+        if (s1 - s0 < 2) continue;
+        const tFirst = vT[s0], tLast = vT[s1 - 1];
+        if (t < tFirst || t > tLast) continue;
+        // encontra o segmento [j, j+1] que contém t (poucas paragens por viagem, busca linear é suficiente)
+        let j = s0;
+        while (j < s1 - 2 && vT[j + 1] < t) j++;
+        const ta = vT[j], tb = vT[j + 1], ua = vU[j], ub = vU[j + 1];
+        const f = tb > ta ? (t - ta) / (tb - ta) : 0;
+        const lat = sLat[ua] + (sLat[ub] - sLat[ua]) * f, lon = sLon[ua] + (sLon[ub] - sLon[ua]) * f;
+        const op = LIVE.trip_op[i];
+        L.circleMarker([lat, lon], {
+          radius: 5, className: "sim-dot", weight: 1.5, color: "#fff",
+          fillColor: OP_COLORS[op] || OP_COLORS.outro, fillOpacity: .95, opacity: .95,
+        }).bindTooltip(`${LIVE.trip_mode[i]} ${LIVE.trip_line[i]} — ${OP_NAMES[op] || op}`, { direction: "top", offset: [0, -6] }).addTo(simLayer);
+        nAtivos++;
+      }
+      if (!nAtivos) $("sim-clock").textContent += " — nenhum veículo em circulação a esta hora";
+    }
+
+    $("sim-row").style.display = "flex";
+    $("sim-sub").style.display = "block";
+    $("sim-legend").innerHTML = Object.keys(OP_NAMES).map(op =>
+      `<span><i style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("");
+    $("sim-toggle").addEventListener("change", ev => {
+      if (ev.target.checked) {
+        simLayer.addTo(map); $("sim-clock").style.display = "block";
+        tick(); simTimer = setInterval(tick, 5000);
+      } else {
+        map.removeLayer(simLayer); $("sim-clock").style.display = "none";
+        clearInterval(simTimer); simTimer = null;
+      }
     });
   }
 

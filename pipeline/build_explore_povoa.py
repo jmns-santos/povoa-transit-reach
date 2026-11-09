@@ -44,6 +44,15 @@ LEVELS = ["Horário", "1 em 2 dias", "4 em 5 dias", "9 em 10 dias", "19 em 20 di
 
 MODE_NAMES = {0: "Elétrico", 1: "Metro", 2: "Comboio", 3: "Autocarro", 4: "Ferry", 5: "Teleférico", 6: "Teleférico suspenso", 7: "Funicular"}
 
+# operadora de cada paragem/viagem, a partir do prefixo que o combine_gtfs.py põe no id
+# (ex. "unir_prg:bar:3" -> "unir") — só serve para colorir/legendar camadas no mapa.
+OPERADORAS = {"metro": "Metro do Porto", "unir": "UNIR", "cavado": "Mov Cávado"}
+
+
+def op_of(prefixed_id):
+    prefix = str(prefixed_id).split("_", 1)[0]
+    return prefix if prefix in OPERADORAS else "outro"
+
 
 def b64(a):
     return base64.b64encode(np.ascontiguousarray(a).tobytes()).decode()
@@ -207,6 +216,35 @@ def main():
     out_dir = args.out
     os.makedirs(os.path.join(out_dir, "c"), exist_ok=True)
 
+    # data/tp/live.json — sequência de paragens+hora de cada viagem do dia de referência,
+    # para a simulação dinâmica ("o que deveria estar a acontecer agora", segundo o horário
+    # real): o browser interpola a posição do veículo em linha reta entre as duas paragens
+    # que está a percorrer à hora simulada (não segue a curva exata da via entre paragens —
+    # só a camada "Linhas" faz isso, com a geometria de percurso real quando existe).
+    # Reaproveita "con" (já ordenado, com u/v/t): cada viagem é a cadeia das suas ligações.
+    trip_op, trip_line, trip_mode, starts, visit_u, visit_t = [], [], [], [0], [], []
+    for _t, g in con.groupby("t", sort=False):
+        first = g.iloc[0]
+        trip_op.append(op_of(first["trip"]))
+        trip_line.append(str(first["line"]))
+        trip_mode.append(str(first["mode"]))
+        visit_u.append(int(first["u"])); visit_t.append(int(first["dep_s"]))
+        for row in g.itertuples():
+            visit_u.append(int(row.v)); visit_t.append(int(row.arr_s))
+        starts.append(len(visit_u))
+    live = {
+        "trip_op": trip_op, "trip_line": trip_line, "trip_mode": trip_mode,
+        "visit_start": b64(np.array(starts, dtype=np.uint32)),
+        "visit_u": b64(np.array(visit_u, dtype=np.uint16)),
+        "visit_t": b64(np.array(visit_t, dtype=np.uint32)),
+        "operadoras": OPERADORAS,
+        "note": "Posição simulada a partir do horário real do dia de referência (não é GTFS-RT; "
+                "não há posições ao vivo). Entre paragens, a posição é interpolada em linha reta "
+                "pelo tempo decorrido, não pela geometria exata da via.",
+    }
+    import json as _json
+    _json.dump(live, open(os.path.join(out_dir, "live.json"), "w"), separators=(",", ":"))
+
     hours = con["dep_s"] // 3600
     for h in sorted(hours.unique()):
         m = (hours == h).to_numpy()
@@ -233,12 +271,15 @@ def main():
             t = pd.DataFrame({"mode": con["mode"], "h": con["h"], "d": buf[q] / 60}).groupby(["h", "mode"])["d"].mean().round(1)
             mode_delay[lvl] = {int(h): t.loc[h].to_dict() for h in t.index.get_level_values(0).unique()}
 
+    stop_op = stops["stop"].map(op_of)
+
     import json
     meta = {
         "box": list(BOX), "dlat": DLAT, "dlon": DLON, "rows": rows, "cols": cols,
         "day": service_date.strftime("%A %d %b %Y"), "city": "Póvoa de Varzim",
         "levels": LEVELS, "quantiles": Q, "hours": [int(h) for h in sorted(hours.unique())],
         "stop_lat": b64(stops["stop_lat"].to_numpy(np.float32)), "stop_lon": b64(stops["stop_lon"].to_numpy(np.float32)),
+        "stop_name": stops["name"].tolist(), "stop_op": stop_op.tolist(), "operadoras": OPERADORAS,
         "pop": b64(cell_pop), "mode_delay": mode_delay,
         "source": args.fonte, "has_reliability": has_reliability, "has_population": False,
         "generated_at": datetime.now().astimezone().isoformat(),

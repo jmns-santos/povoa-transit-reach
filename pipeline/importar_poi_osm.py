@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 Descarrega pontos de interesse (praias, património, alojamento, restauração,
-saúde, serviços públicos, lazer, comércio) do OpenStreetMap, via Overpass
-API, para a área de estudo do projeto, e gera data/poi/poi.json.
+saúde, educação, multibancos, aeroportos, serviços públicos, lazer, comércio)
+do OpenStreetMap, via Overpass API, para a área de estudo do projeto, e gera
+data/poi/poi.json.
 
 OpenStreetMap é mantido continuamente pela comunidade (ao contrário de um
 levantamento manual pontual) — por isso é a fonte certa para esta camada de
@@ -44,6 +45,10 @@ CATEGORIAS = {
                      ("amenity", "fast_food")],
     "saude": [("amenity", "hospital"), ("amenity", "pharmacy"), ("amenity", "clinic"),
               ("amenity", "doctors")],
+    "educacao": [("amenity", "school"), ("amenity", "kindergarten"), ("amenity", "college"),
+                 ("amenity", "university")],
+    "multibancos": [("amenity", "atm")],
+    "aeroportos": [("aeroway", "aerodrome")],
     "servicos": [("amenity", "townhall"), ("amenity", "library"), ("amenity", "post_office"),
                  ("amenity", "bank"), ("amenity", "police"), ("amenity", "fire_station")],
     "lazer": [("leisure", "park"), ("leisure", "garden"), ("leisure", "nature_reserve"),
@@ -55,7 +60,8 @@ CATEGORIAS = {
 
 LABELS = {
     "praia": "Praias", "patrimonio": "Património", "alojamento": "Alojamento",
-    "restauracao": "Restauração", "saude": "Saúde", "servicos": "Serviços públicos",
+    "restauracao": "Restauração", "saude": "Saúde", "educacao": "Educação",
+    "multibancos": "Multibancos", "aeroportos": "Aeroportos", "servicos": "Serviços públicos",
     "lazer": "Lazer", "comercio": "Comércio e combustível",
 }
 

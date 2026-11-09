@@ -14,9 +14,13 @@ Protótipo da Câmara Municipal da Póvoa de Varzim.
 | Autocarros (UNIR) | **Real**, filtrado à zona | GTFS oficial da UNIR, filtrado por coordenadas à Póvoa/Vila do Conde |
 | Autocarros (Mov Cávado) | **Real**, filtrado à zona | GTFS oficial da AITC/Mov Cávado (linhas 106/107/111/120, Braga–Barcelos–Esposende–Viana do Castelo), filtrado por coordenadas |
 | Fiabilidade (atrasos/cancelamentos) | **Não incluída** — mostra sempre o horário teórico | falta agregação histórica por paragem+linha+hora |
-| Rede viária (carro e a pé) | **Real** (geometria e classificação); velocidades por tipo de via assumidas | shapefile da rede viária municipal |
+| Rede viária (carro e a pé) | **Real** (geometria e classificação); velocidades por tipo de via e atraso por cruzamento assumidos | shapefile da rede viária municipal |
 | População em grelha | **Real** | BGRI 2021 (Censos), por subsecção estatística |
-| Pontos de interesse | Opcional, script pronto | OpenStreetMap (Overpass) |
+| Pontos de interesse | Opcional, script pronto, camada ligada por omissão | OpenStreetMap (Overpass) |
+| Linhas de transporte público | **Real** (Metro, UNIR); **aproximada** (Mov Cávado, sem shapes.txt na fonte) | GTFS `shapes.txt` |
+| Simulação em tempo real | Simulada a partir do horário (não é GTFS-RT) | horário real do dia de referência |
+
+
 
 Área de estudo: concelho da Póvoa de Varzim (7 freguesias) + Vila do Conde.
 
@@ -34,7 +38,12 @@ Clicar no mapa ou arrastar o marcador branco muda o ponto de partida; a pesquisa
 
 **Chegar a um destino.** O segundo campo de pesquisa ("Chegar a") aceita uma morada/local ou coordenadas `lat, lon`, e mostra o tempo estimado de chegada a esse ponto a partir da partida escolhida, no(s) modo(s) ativo(s).
 
-**Pontos de interesse** (praias, património, alojamento, restauração, saúde, serviços públicos, lazer, comércio) — camada opcional, via OpenStreetMap, só aparece se `data/poi/poi.json` existir (ver `pipeline/importar_poi_osm.py`).
+**Camadas de contexto** (painel à esquerda, por baixo das estatísticas):
+- **Pontos de interesse** (praias, património, alojamento, restauração, saúde, educação, multibancos, aeroportos, serviços públicos, lazer, comércio) — via OpenStreetMap, ligada por omissão; só aparece se `data/poi/poi.json` existir (ver `pipeline/importar_poi_osm.py`).
+- **Paragens de transporte público** — todas as paragens do horário combinado, coloridas por operadora.
+- **Linhas de transporte público** — uma polilinha por percurso; geometria real para o Metro e a UNIR (têm `shapes.txt`), aproximada por segmentos retos entre paragens para o Mov Cávado (a fonte da AITC não inclui `shapes.txt`).
+- **Rede viária (troços reais)** — os troços do grafo routável de carro/a pé, para conferir visualmente que as isócronas seguem a rede.
+- **Simulação em tempo real** — mostra, para a hora atual do dispositivo, onde cada veículo (Metro/UNIR/Cavado) devia estar segundo o horário real do dia de referência. **Não são posições reais** (não há integração GTFS tempo-real nesta versão) — é uma simulação a partir do horário estático, e entre duas paragens a posição é interpolada em linha reta pelo tempo decorrido, não pela curva exata da via.
 
 ## Estrutura
 
@@ -42,12 +51,15 @@ Clicar no mapa ou arrastar o marcador branco muda o ponto de partida; a pesquisa
 index.html                      página única (mapa Leaflet, motor CSA + Dijkstra, tudo em JS puro)
 data/
   tp/meta.json, tp/c/HH.json    dados de transporte público (por hora)
+  tp/lines.json                 uma polilinha por percurso (camada "Linhas de transporte público")
+  tp/live.json                  horário por viagem do dia de referência (camada "Simulação em tempo real")
   road/graph.json               grafo da rede viária (nós + arestas, carro e a pé)
 pipeline/
   build_demo_gtfs.py            gera um GTFS sintético de reserva (só se não houver um GTFS real)
-  filter_gtfs_bbox.py           filtra um GTFS grande (ex. UNIR, toda a AMP) às viagens perto da área de estudo
-  combine_gtfs.py                junta vários GTFS (ex. Metro + UNIR, ambos reais) num só, com prefixos
-  build_explore_povoa.py        lê o GTFS combinado → data/tp/*
+  filter_gtfs_bbox.py           filtra um GTFS grande (ex. UNIR, toda a AMP) às viagens perto da área de estudo (inclui shapes.txt)
+  combine_gtfs.py                junta vários GTFS (ex. Metro + UNIR + Cávado, todos reais) num só, com prefixos (inclui shapes.txt)
+  build_explore_povoa.py        lê o GTFS combinado → data/tp/meta.json, tp/c/*, tp/live.json
+  build_lines.py                lê o GTFS combinado → data/tp/lines.json (linhas, reais ou aproximadas)
   build_road_real.py            lê a rede viária municipal real (shapefile) → data/road/graph.json
   build_road_demo.py            alternativa de reserva: grelha sintética (carro + a pé), só se não houver shapefile
   importar_censos2021.py        lê um ficheiro BGRI 2021 do INE e preenche a população em data/tp/meta.json
@@ -72,11 +84,14 @@ python3 combine_gtfs.py --out ../data_src/gtfs_combined \
     unir=../data_src/gtfs_unir_filtrado metro=<pasta ou .zip do GTFS real do Metro> \
     cavado=../data_src/gtfs_cavado_filtrado
 
-# 3. gerar os dados de transporte público e a rede viária
+# 3. gerar os dados de transporte público, as linhas e a rede viária
 python3 build_explore_povoa.py ../data_src/gtfs_combined --dia 20261020 --fonte real
+python3 build_lines.py ../data_src/gtfs_combined
 python3 build_road_real.py <shapefile .shp da rede viária municipal>
 # (ou, só se não houver shapefile disponível: python3 build_road_demo.py)
 ```
+
+`build_explore_povoa.py` regenera `data/tp/meta.json` do zero — apaga sempre o campo de população, por isso corre sempre `importar_censos2021.py` a seguir (ver abaixo).
 
 `--dia` tem de estar dentro da validade do `calendar.txt` de todos os GTFS combinados (uma terça-feira normal, na interseção dos vários calendários).
 
@@ -96,7 +111,7 @@ pip install requests
 python importar_poi_osm.py
 ```
 
-Gera `data/poi/poi.json`. Pode voltar a correr-se de vez em quando para atualizar a camada.
+Gera `data/poi/poi.json` (praias, património, alojamento, restauração, saúde, educação, multibancos, aeroportos, serviços públicos, lazer, comércio). Pode voltar a correr-se de vez em quando para atualizar a camada. Este ambiente de desenvolvimento não consegue chegar à Overpass API (rede bloqueada) — o script tem de correr numa máquina com acesso normal à internet; o ficheiro gerado (`data/poi/poi.json`) é depois copiado para o projeto e publicado normalmente.
 
 ## Publicar
 

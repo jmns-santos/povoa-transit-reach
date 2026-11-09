@@ -55,7 +55,7 @@ def main():
     args = ap.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
-    combined = {name: [] for name in list(TABLES) + ["stop_times.txt"]}
+    combined = {name: [] for name in list(TABLES) + ["stop_times.txt", "shapes.txt"]}
     fieldnames = {}
 
     def add_fieldnames(table, rows):
@@ -98,6 +98,8 @@ def main():
             r["trip_id"] = f"{prefix}_{r['trip_id']}"
             r["route_id"] = f"{prefix}_{r['route_id']}"
             r["service_id"] = f"{prefix}_{r['service_id']}"
+            if r.get("shape_id"):
+                r["shape_id"] = f"{prefix}_{r['shape_id']}"
         combined["trips.txt"] += trips
         add_fieldnames("trips.txt", trips)
 
@@ -108,7 +110,15 @@ def main():
         combined["stop_times.txt"] += sts
         add_fieldnames("stop_times.txt", sts)
 
-        print(f"{prefix}: {len(stops)} paragens, {len(routes)} linhas, {len(trips)} viagens, {len(sts)} passagens")
+        # shapes.txt (geometria do percurso) — opcional: nem toda fonte tem.
+        shapes = read_rows(path, "shapes.txt")
+        for r in shapes:
+            r["shape_id"] = f"{prefix}_{r['shape_id']}"
+        combined["shapes.txt"] += shapes
+        add_fieldnames("shapes.txt", shapes)
+
+        print(f"{prefix}: {len(stops)} paragens, {len(routes)} linhas, {len(trips)} viagens, {len(sts)} passagens"
+              + (f", {len(shapes)} pontos de shape" if shapes else ""))
 
     for table, rows in combined.items():
         if not rows:
