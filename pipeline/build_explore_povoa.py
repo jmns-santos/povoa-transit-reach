@@ -34,7 +34,7 @@ import pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 # caixa geográfica: Póvoa de Varzim + Vila do Conde + margem
-BOX = (41.300, -8.820, 41.470, -8.650)   # (sul, oeste, norte, este)
+BOX = (41.280, -8.820, 41.470, -8.580)   # (sul, oeste, norte, este) — todo o concelho da Póvoa de Varzim (inclui Balazar/Rates, a leste) + Vila do Conde
 DLAT = 0.0018                             # ~200 m
 LAT0 = 41.37
 DLON = round(200 / (111320 * np.cos(np.radians(LAT0))), 6)  # ~200 m a esta latitude
