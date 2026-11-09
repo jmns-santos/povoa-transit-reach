@@ -115,7 +115,6 @@
 
 <aside id="panel">
   <div class="brand">
-    <span class="kicker">Alcance de transportes · Póvoa de Varzim</span>
     <span class="demo-badge" id="demo-badge">DEMONSTRAÇÃO</span>
   </div>
   <h1>A que distância se chega numa hora?</h1>
@@ -327,6 +326,22 @@ Promise.all([
   const eu = b64(G.edge_u, Uint32Array), ev = b64(G.edge_v, Uint32Array), ew = b64(G.edge_w, Float32Array);
   const ewWalk = G.edge_w_walk ? b64(G.edge_w_walk, Float32Array) : ew;  // mesma topologia de vias, à velocidade de marcha
   const cellNode = b64(G.cell_node, Uint32Array);
+  // nem toda a célula da grelha fina tem um troço de rede perto (ex. mar, ou território sem
+  // dados de rede viária); sem isto, essas células herdavam o tempo do nó mais próximo por mais
+  // longe que estivesse, dando isócronas a aparecer no mar ou fora de qualquer via real.
+  const ROAD_SNAP_MAX_M = 300;
+  const cellSnapOK = new Uint8Array(NCELL);
+  {
+    const fineCols = G.fine_cols;
+    for (let r = 0; r < G.fine_rows; r++)
+      for (let c = 0; c < fineCols; c++) {
+        const cell = r * COLS + c;
+        if (cell >= NCELL) continue;
+        const node = cellNode[r * fineCols + c];
+        const dx = nLon[node] * KX - cx(cell), dy = nLat[node] * KY - cy(cell);
+        if (Math.hypot(dx, dy) <= ROAD_SNAP_MAX_M) cellSnapOK[cell] = 1;
+      }
+  }
   // lista de adjacência (de carro e a pé partilham a topologia; só o peso muda)
   const adjStart = new Int32Array(NN + 1);
   for (let k = 0; k < eu.length; k++) adjStart[eu[k] + 1]++;
@@ -387,7 +402,7 @@ Promise.all([
     for (let r = 0; r < G.fine_rows; r++)
       for (let c = 0; c < fineCols; c++) {
         const cell = r * COLS + c; // grid fino TP e rede viária partilham box/dlat/dlon
-        if (cell >= NCELL) continue;
+        if (cell >= NCELL || !cellSnapOK[cell]) continue;
         const node = cellNode[r * fineCols + c];
         const v = dist[node];
         if (v < tt[cell]) tt[cell] = v;
