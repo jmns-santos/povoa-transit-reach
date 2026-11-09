@@ -1,0 +1,4 @@
+route_id,route_short_name,route_long_name,route_type,route_color
+L1,L1,Estela - Póvoa - Vila do Conde,3,1E88E5
+L2,L2,Póvoa - Terroso - Beiriz,3,43A047
+L3,L3,Circular urbana Póvoa,3,F4511E

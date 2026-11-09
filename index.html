@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Póvoa Transit Reach</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23fff' stroke='%23000' stroke-width='4'/%3E%3C/svg%3E">
+<meta name="description" content="Escolhe um ponto na Póvoa de Varzim e vê até onde chegas em transporte público, de carro ou a pé, dentro de uma hora.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A que distância se chega numa hora? Póvoa Transit Reach">
+<meta property="og:description" content="Escolhe um ponto na Póvoa de Varzim ou Vila do Conde: até onde o transporte público, a rede viária e o acesso a pé te levam em 20–60 minutos.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B0E1A; --panel: rgba(11, 14, 26, .92); --text: #E6E8F0; --text2: #8A90A8; --rule: #1E2440;
+    --blue: #596FFF; --aqua: #26FFDB; --pink: #FF3396; --orange: #FFA726; --walk: #B39DFF;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 400 15px/1.45 'IBM Plex Sans', system-ui, sans-serif; }
+  #map { position: fixed; inset: 0; background: var(--bg); }
+  .leaflet-container { background: var(--bg); font: inherit; }
+  .leaflet-control-attribution { background: rgba(11,14,26,.75) !important; color: var(--text2) !important; font-size: 11px; }
+  .leaflet-control-attribution a { color: var(--text2) !important; }
+  .leaflet-bar a { background: var(--panel); color: var(--text); border-color: var(--rule); }
+  .leaflet-bar a:hover { background: #151B36; color: var(--text); }
+
+  #panel {
+    position: fixed; top: 16px; left: 16px; width: 390px; max-height: calc(100% - 32px); overflow: auto;
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 18px; padding: 22px 22px 18px;
+    backdrop-filter: blur(8px); z-index: 1000; box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  }
+  .brand { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .kicker { font: 600 11px 'Chakra Petch', sans-serif; letter-spacing: 3px; color: var(--text2); text-transform: uppercase; }
+  .demo-badge { font: 700 10.5px 'JetBrains Mono', monospace; color: #1a1406; background: #FFC94A; border-radius: 999px; padding: 3px 9px; letter-spacing: .3px; }
+  h1 { font: 700 26px/1.15 'Chakra Petch', sans-serif; margin: 6px 0 6px; letter-spacing: .3px; }
+  .lead { color: var(--text2); margin: 0 0 14px; font-size: 13.5px; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+  .search { display: flex; gap: 6px; margin: 0 0 6px; }
+  .search input { flex: 1; min-width: 0; font: 400 14px 'IBM Plex Sans', sans-serif; color: var(--text); background: #11162B; border: 1px solid var(--rule); border-radius: 10px; padding: 9px 11px; }
+  .search input::placeholder { color: var(--text2); }
+  .search button { font: 600 13px 'IBM Plex Sans', sans-serif; color: #fff; background: var(--blue); border: 0; border-radius: 10px; padding: 0 14px; cursor: pointer; }
+  .where { font-size: 12.5px; color: var(--text2); min-height: 18px; }
+  .where b { color: var(--text); font-weight: 500; }
+
+  .view { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); border-radius: 12px; padding: 3px; margin: 12px 0 4px; gap: 2px; }
+  .view button { font: 600 12.5px 'IBM Plex Sans', sans-serif; color: var(--text2); background: none; border: 0; border-radius: 9px; padding: 8px 4px; cursor: pointer; }
+  .view button[aria-pressed="true"] { background: #1A2147; color: var(--text); }
+  .view button[data-view="road"][aria-pressed="true"] { background: rgba(255, 167, 38, .16); color: var(--orange); }
+  .view button[data-view="walk"][aria-pressed="true"] { background: rgba(179, 157, 255, .16); color: var(--walk); }
+  .view button[data-view="compare"][aria-pressed="true"] { background: rgba(255, 51, 150, .12); color: #FF86BD; }
+
+  .ctl { margin: 16px 0 6px; }
+  .ctl.disabled { opacity: .35; pointer-events: none; }
+  .ctl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .ctl-head label { font-weight: 600; font-size: 14px; }
+  .val { font: 700 15px 'JetBrains Mono', monospace; color: var(--aqua); white-space: nowrap; }
+  .hint { color: var(--text2); font-size: 12.5px; margin-top: 4px; min-height: 18px; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 30px; background: transparent; margin: 6px 0 0; cursor: pointer; }
+  input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--rule), #2F3A8B); }
+  input[type=range]::-moz-range-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--rule), #2F3A8B); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--text); border: 4px solid var(--blue); margin-top: -8px; box-shadow: 0 0 12px rgba(89,111,255,.6); }
+  input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--text); border: 4px solid var(--blue); box-shadow: 0 0 12px rgba(89,111,255,.6); }
+  .ticks { display: flex; justify-content: space-between; font: 500 10.5px 'JetBrains Mono', monospace; color: var(--text2); margin-top: -2px; }
+  .modes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .modes span { font-size: 12px; color: var(--text2); background: #11162B; border: 1px solid var(--rule); border-radius: 999px; padding: 2px 9px; }
+  .modes b { font: 700 12px 'JetBrains Mono', monospace; color: var(--text); margin-left: 4px; }
+  .modes .lbl { background: none; border: 0; padding: 2px 0; }
+
+  .legend { display: grid; gap: 3px; margin: 20px 0 4px; }
+  .legend div { height: 10px; border-radius: 2px; }
+  .legend-l { display: grid; font: 500 11px 'JetBrains Mono', monospace; color: var(--text2); }
+  .legend-title { font: 600 11px 'Chakra Petch', sans-serif; letter-spacing: 1px; color: var(--text2); text-transform: uppercase; margin: 14px 0 4px; }
+
+  .stats { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 14px; }
+  .stats h2 { font: 600 12px 'Chakra Petch', sans-serif; letter-spacing: 2px; color: var(--text2); margin: 0 0 10px; text-transform: uppercase; }
+  .row { display: grid; grid-template-columns: 54px 1fr 74px; align-items: center; gap: 8px; margin: 6px 0; font-size: 13px; }
+  .row .k { font: 500 12px 'JetBrains Mono', monospace; color: var(--text2); }
+  .bar { position: relative; height: 12px; background: #11162B; border-radius: 3px; overflow: hidden; }
+  .bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; transition: width .3s ease; }
+  .bar i.ghost { background: transparent; border: 1px dashed #4B5DD7; }
+  .row .v { font: 700 13px 'JetBrains Mono', monospace; text-align: right; }
+  .note { color: var(--text2); font-size: 12px; margin-top: 8px; }
+
+  details { margin-top: 14px; border-top: 1px solid var(--rule); padding-top: 12px; color: var(--text2); font-size: 12.5px; }
+  summary { cursor: pointer; color: var(--text); font-weight: 500; font-size: 13px; }
+  details p { margin: 8px 0; }
+  .foot { margin-top: 12px; color: var(--text2); font-size: 11.5px; }
+  .busy { position: fixed; right: 18px; bottom: 34px; z-index: 900; font: 500 12px 'JetBrains Mono', monospace; color: var(--text2); background: var(--panel); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; display: none; }
+
+  .origin { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 4px solid #000;
+            box-shadow: 0 0 0 3px rgba(255,255,255,.3), 0 0 18px rgba(255,255,255,.5); cursor: grab; }
+
+  @media (max-width: 720px) {
+    #panel { top: auto; bottom: 0; left: 0; right: 0; width: auto; max-height: 58%; border-radius: 18px 18px 0 0; padding: 16px; }
+    h1 { font-size: 21px; }
+    .lead { display: none; }
+    .leaflet-control-zoom { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="map" role="application" aria-label="Mapa"></div>
+<div class="busy" id="busy">a carregar…</div>
+
+<aside id="panel">
+  <div class="brand">
+    <span class="kicker">Alcance de transportes · Póvoa de Varzim</span>
+    <span class="demo-badge" id="demo-badge">DEMONSTRAÇÃO</span>
+  </div>
+  <h1>A que distância se chega numa hora?</h1>
+  <p class="lead">Escolhe um ponto no mapa e vê até onde chegas em transporte público, de carro ou a pé, num dia útil — e compara.</p>
+
+  <form class="search" id="search">
+    <input id="q" type="search" autocomplete="off" placeholder="Morada ou local, ex. Câmara Municipal" aria-label="Morada">
+    <button type="submit">Ir</button>
+  </form>
+  <div class="where" id="where"></div>
+
+  <div class="view" role="group" aria-label="Modo">
+    <button type="button" data-view="tp" aria-pressed="true">Transporte público</button>
+    <button type="button" data-view="road" aria-pressed="false">De carro</button>
+    <button type="button" data-view="walk" aria-pressed="false">A pé</button>
+    <button type="button" data-view="compare" aria-pressed="false">Comparar</button>
+  </div>
+
+  <div class="ctl" id="rel-ctl">
+    <div class="ctl-head"><label for="rel">Preciso de chegar a horas</label><span class="val" id="relv"></span></div>
+    <input id="rel" type="range" min="0" max="4" step="1" value="0" aria-describedby="relh">
+    <div class="ticks"><span>horário</span><span>1/2</span><span>4/5</span><span>9/10</span><span>19/20</span></div>
+    <div class="hint" id="relh"></div>
+    <div class="modes" id="modes" aria-live="polite"></div>
+  </div>
+
+  <div class="ctl">
+    <div class="ctl-head"><label for="dep">Partir às</label><span class="val" id="depv"></span></div>
+    <input id="dep" type="range" min="0" max="72" step="1" value="12">
+    <div class="ticks"><span>05:00</span><span>09:30</span><span>14:00</span><span>18:30</span><span>23:00</span></div>
+  </div>
+
+  <div class="legend-title" id="legend-title-tp">Transporte público</div>
+  <div class="legend" id="legend"></div>
+  <div class="legend-l" id="legend-l"></div>
+  <div class="legend-title" id="legend-title-road" style="display:none">De carro</div>
+  <div class="legend" id="legend-road" style="display:none"></div>
+  <div class="legend-l" id="legend-l-road" style="display:none"></div>
+
+  <div class="stats" id="stats-block">
+    <h2 id="statsh"></h2>
+    <div id="rows"></div>
+    <div class="note" id="note"></div>
+  </div>
+
+  <details>
+    <summary>Como isto é calculado</summary>
+    <p><b>Transporte público:</b> o browser percorre o horário do dia útil de referência (Connection Scan) a partir da hora de partida escolhida, e encontra a chegada mais cedo a cada paragem dentro de uma hora. Acesso a pé: 4,8 km/h por um caminho 1,3× a linha reta, até 1 km de/para paragens; mudar de veículo demora pelo menos 2 minutos. O <b>Metro do Porto</b> e os <b>autocarros da UNIR</b> usam agora GTFS <b>real</b> dos dois operadores (dia de referência: terça-feira, ver legenda/badge); a UNIR cobre toda a Área Metropolitana do Porto, por isso foi filtrada às linhas que tocam a Póvoa de Varzim/Vila do Conde e zona próxima antes de entrar aqui.</p>
+    <p><b>Fiabilidade:</b> ainda não há dados reais de atraso/cancelamento agregados por paragem, linha e hora (só existem posições brutas de GTFS-RT) — por isso todos os níveis acima de "horário" dão hoje o mesmo resultado que o horário teórico. Quando essa agregação existir, cada nível vai atrasar a chegada de cada troço pelo atraso típico nesse nível de fiabilidade.</p>
+    <p><b>De carro</b> e <b>a pé:</b> Dijkstra sobre uma rede viária <b>sintética</b> (grelha de ruas locais a 22 km/h, com cruzamentos, e alguns eixos a 65 km/h a imitar vias principais; o modo a pé usa a mesma topologia a 4,8 km/h, sem o atalho dos eixos rápidos) — ainda não é o OSM real nem a rede viária municipal. A fonte municipal que teria essa rede real com velocidade e capacidade por troço também ainda só foi testada com uma rede sintética (não é uma limitação só desta ferramenta). Numa área deste tamanho, de carro cobre-se rapidamente a maior parte da área em 60 min — é precisamente o contraste que vale a pena ver contra o transporte público e contra o alcance a pé. O modo a pé também não distingue passeios, atravessamentos nem atalhos só pedonais (praças, parques): segue as mesmas vias do carro. Ver o README do projeto para o que falta para usar a rede viária real.</p>
+    <p>Esta versão cobre a Póvoa de Varzim e Vila do Conde (moldura tracejada); o alcance é cortado na borda.</p>
+  </details>
+  <div class="foot">Protótipo — ver README no repositório para o estado de cada fonte de dados. Inspirado em <a href="https://github.com/ilyas-ku/rhein-main-transit-reach" target="_blank" rel="noopener" style="color:inherit">rhein-main-transit-reach</a> / <a href="https://github.com/ilyas-ku/munich-transit-reach" target="_blank" rel="noopener" style="color:inherit">munich-transit-reach</a> (ilyas-ku), com <a href="https://leafletjs.com/" target="_blank" rel="noopener" style="color:inherit">Leaflet</a>. Basemap © <a href="https://www.esri.com" style="color:inherit">Esri</a>, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" style="color:inherit">OpenStreetMap</a> contributors. Geocodificação Nominatim.</div>
+</aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-array@3.2.4/dist/d3-array.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-contour@4.0.2/dist/d3-contour.min.js"></script>
+<script>
+// ------------------------------------------------------------------ settings
+const BANDS = [20, 30, 40, 50, 60];
+const COLORS = ["#26FFDB", "#12DDBE", "#07B89C", "#05927B", "#066E5E"];
+const FILL = [.38, .31, .25, .20, .16];
+const ROAD_COLORS = ["#FFD08A", "#FFB74D", "#FFA726", "#FB8C00", "#EF6C00"];
+const ROAD_FILL = [.34, .28, .22, .18, .14];
+const WALK_COLORS = ["#E3DAFF", "#C9B8FF", "#B39DFF", "#9676F2", "#7A54E0"];
+const WALK_FILL = [.36, .30, .24, .19, .15];
+const RISK = [5, 10, 20], RISK_COLORS = ["#AC1E63", "#D5287C", "#FF3396"], RISK_FILL = [.22, .30, .40];
+const WALK = 80 / 60 / 1.3;                       // m/s a pé: 4,8 km/h com desvio 1,3x
+const ACCESS_M = 1000, TRANSFER_M = 400, BUFFER_S = 120, HORIZON_S = 3600;
+const START = [41.3793, -8.7649];                 // Câmara Municipal da Póvoa de Varzim
+const LEVELS = ["Horário", "1 em 2 dias", "4 em 5 dias", "9 em 10 dias", "19 em 20 dias"];
+const HINTS = [
+  "Horário teórico: o que o planeador promete.",
+  "Chegar a horas num dia típico: metade dos dias corre pior. (ainda = horário, sem dados reais de atraso)",
+  "Chegar a horas 4 em 5 dias: cerca de uma vez por semana chegas atrasado. (ainda = horário, sem dados reais de atraso)",
+  "Chegar a horas 9 em 10 dias: cerca de duas vezes por mês chegas atrasado. (ainda = horário, sem dados reais de atraso)",
+  "Chegar a horas 19 em 20 dias: cerca de uma vez por mês chegas atrasado. (ainda = horário, sem dados reais de atraso)",
+];
+const MODES_PT = { "Autocarro": "Autocarro", "Elétrico": "Elétrico", "Metro": "Metro", "Comboio": "Comboio", "Ferry": "Ferry" };
+
+// ------------------------------------------------------------------ state
+const $ = id => document.getElementById(id);
+const b64 = (s, Type) => { const u = Uint8Array.from(atob(s), c => c.charCodeAt(0)); return new Type(u.buffer); };
+let origin = START.slice(), placeName = "Câmara Municipal, Póvoa de Varzim";
+let view = "tp";
+const hash = location.hash.slice(1).split(",");
+if (hash.length >= 2 && !isNaN(+hash[0])) {
+  origin = [+hash[0], +hash[1]]; placeName = "";
+  if (hash[2] !== undefined) $("dep").value = hash[2];
+  if (hash[3] !== undefined) $("rel").value = hash[3];
+  if (["tp", "road", "walk", "compare"].includes(hash[4])) view = hash[4];
+}
+
+// ------------------------------------------------------------------ map (mapa base escuro)
+const map = L.map("map", { zoomControl: false, minZoom: 10, maxZoom: 17 });
+L.control.zoom({ position: "topright" }).addTo(map);
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/";
+L.tileLayer(ESRI + "World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+  attribution: 'Basemap © <a href="https://www.esri.com">Esri</a>, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 17, maxNativeZoom: 16 }).addTo(map);
+map.setView([origin[0] - .01, origin[1] - .01], 12);
+if (innerWidth <= 720) map.setView([origin[0] - .05, origin[1]], 11);
+L.tileLayer(ESRI + "World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", { maxZoom: 17, maxNativeZoom: 16, pane: "shadowPane", opacity: .9 }).addTo(map);
+
+const fmtT = s => `${String(Math.floor(s / 3600)).padStart(2, "0")}:${String(Math.floor(s % 3600 / 60)).padStart(2, "0")}`;
+
+Promise.all([
+  fetch("data/tp/meta.json").then(r => r.json()),
+  fetch("data/road/graph.json").then(r => r.json()),
+]).then(([M, G]) => {
+  const badgeText = { real: "DADOS REAIS", misto: "METRO REAL + AUTOCARRO DEMO", demo: "DEMONSTRAÇÃO" }[M.source] || "DEMONSTRAÇÃO";
+  const badgeColor = { real: "#2FE38A", misto: "#7FD6FF", demo: "#FFC94A" }[M.source] || "#FFC94A";
+  $("demo-badge").textContent = badgeText;
+  $("demo-badge").style.background = badgeColor;
+
+  const [S, W, N, E] = M.box, DLAT = M.dlat, DLON = M.dlon, ROWS = M.rows, COLS = M.cols;
+  L.rectangle([[S, W], [N, E]], { color: "#8A90A8", weight: 1, dashArray: "5 6", fill: false, interactive: false }).addTo(map);
+
+  const LAT0 = (S + N) / 2, KX = Math.cos(LAT0 * Math.PI / 180) * 111320, KY = 110574;
+  const sLat = b64(M.stop_lat, Float32Array), sLon = b64(M.stop_lon, Float32Array), NS = sLat.length;
+  const sx = new Float64Array(NS), sy = new Float64Array(NS);
+  for (let i = 0; i < NS; i++) { sx[i] = sLon[i] * KX; sy[i] = sLat[i] * KY; }
+  const pop = b64(M.pop, Uint16Array);
+  const NCELL = ROWS * COLS;
+  const cx = c => (W + (c % COLS + .5) * DLON) * KX, cy = c => (S + (Math.floor(c / COLS) + .5) * DLAT) * KY;
+
+  // ---------------- transporte público: stop -> cells (egress) e stop -> stop (transfers)
+  const dr = Math.ceil(ACCESS_M / (DLAT * KY)) + 1, dc = Math.ceil(ACCESS_M / (DLON * KX)) + 1;
+  const scStart = new Int32Array(NS + 1), scCell = [], scWalk = [];
+  for (let i = 0; i < NS; i++) {
+    const r0 = Math.floor((sLat[i] - S) / DLAT), c0 = Math.floor((sLon[i] - W) / DLON);
+    for (let r = Math.max(0, r0 - dr); r <= Math.min(ROWS - 1, r0 + dr); r++)
+      for (let c = Math.max(0, c0 - dc); c <= Math.min(COLS - 1, c0 + dc); c++) {
+        const cell = r * COLS + c, d = Math.hypot(cx(cell) - sx[i], cy(cell) - sy[i]);
+        if (d <= ACCESS_M) { scCell.push(cell); scWalk.push(d / WALK); }
+      }
+    scStart[i + 1] = scCell.length;
+  }
+  const SC_CELL = Int32Array.from(scCell), SC_WALK = Float32Array.from(scWalk);
+  const bucket = new Map(), key = (x, y) => Math.floor(x / TRANSFER_M) + "," + Math.floor(y / TRANSFER_M);
+  for (let i = 0; i < NS; i++) { const k = key(sx[i], sy[i]); (bucket.get(k) || bucket.set(k, []).get(k)).push(i); }
+  const fp = Array.from({ length: NS }, () => []);
+  for (let i = 0; i < NS; i++) {
+    const bx = Math.floor(sx[i] / TRANSFER_M), by = Math.floor(sy[i] / TRANSFER_M);
+    for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++)
+      for (const j of bucket.get((bx + a) + "," + (by + b)) || []) {
+        const d = Math.hypot(sx[i] - sx[j], sy[i] - sy[j]);
+        if (d <= TRANSFER_M) fp[i].push(j, d / WALK);
+      }
+  }
+
+  const chunks = new Map();
+  function chunk(h) {
+    if (!chunks.has(h)) {
+      const name = String(h).padStart(2, "0");
+      chunks.set(h, M.hours.includes(h) ? fetch(`data/tp/c/${name}.json`).then(r => r.json()).then(J => ({
+        u: b64(J.u, Uint16Array), v: b64(J.v, Uint16Array), dep: b64(J.dep, Uint16Array), arr: b64(J.arr, Uint16Array),
+        trip: b64(J.trip, Uint16Array), q: M.quantiles.map(q => b64(J[q], Uint8Array)) })) : Promise.resolve(null));
+    }
+    return chunks.get(h);
+  }
+
+  const ready = new Float64Array(NS), alight = new Float64Array(NS), onTrip = new Uint8Array(65536);
+  function reachTP(parts, T, level) {
+    ready.fill(Infinity); alight.fill(Infinity); onTrip.fill(0);
+    const ox = origin[1] * KX, oy = origin[0] * KY;
+    for (let i = 0; i < NS; i++) {
+      const d = Math.hypot(sx[i] - ox, sy[i] - oy);
+      if (d <= ACCESS_M) ready[i] = T + d / WALK;
+    }
+    const end = T + HORIZON_S;
+    for (const P of parts) {
+      if (!P) continue;
+      const q = level > 0 ? P.q[level - 1] : null;
+      for (let k = 0; k < P.u.length; k++) {
+        const dep = P.dep[k] * 10;
+        if (dep < T) continue;
+        if (dep > end) break;
+        const t = P.trip[k];
+        if (!onTrip[t]) { if (dep < ready[P.u[k]]) continue; onTrip[t] = 1; }
+        const a = P.arr[k] * 10 + (q ? q[k] * 10 : 0), v = P.v[k];
+        if (a >= end || a >= alight[v]) continue;
+        alight[v] = a;
+        const f = fp[v];
+        for (let j = 0; j < f.length; j += 2) {
+          const r = a + f[j + 1] + BUFFER_S;
+          if (r < ready[f[j]]) ready[f[j]] = r;
+        }
+      }
+    }
+    const tt = new Float32Array(NCELL).fill(Infinity);
+    for (let i = 0; i < NS; i++) {
+      if (alight[i] >= end) continue;
+      for (let k = scStart[i]; k < scStart[i + 1]; k++) {
+        const v = alight[i] - T + SC_WALK[k];
+        if (v < tt[SC_CELL[k]]) tt[SC_CELL[k]] = v;
+      }
+    }
+    const r0 = Math.floor((origin[0] - S) / DLAT), c0 = Math.floor((origin[1] - W) / DLON);
+    const wr = Math.ceil(HORIZON_S * WALK / (DLAT * KY)), wc = Math.ceil(HORIZON_S * WALK / (DLON * KX));
+    for (let r = Math.max(0, r0 - wr); r <= Math.min(ROWS - 1, r0 + wr); r++)
+      for (let c = Math.max(0, c0 - wc); c <= Math.min(COLS - 1, c0 + wc); c++) {
+        const cell = r * COLS + c, v = Math.hypot(cx(cell) - ox, cy(cell) - oy) / WALK;
+        if (v < tt[cell]) tt[cell] = v;
+      }
+    return tt;
+  }
+
+  // ---------------- de carro: Dijkstra O(V^2) sobre a rede sintética (poucos nós)
+  const NN = G.n_nodes;
+  const nLat = b64(G.node_lat, Float32Array), nLon = b64(G.node_lon, Float32Array);
+  const eu = b64(G.edge_u, Uint32Array), ev = b64(G.edge_v, Uint32Array), ew = b64(G.edge_w, Float32Array);
+  const ewWalk = G.edge_w_walk ? b64(G.edge_w_walk, Float32Array) : ew;  // mesma topologia de vias, à velocidade de marcha
+  const cellNode = b64(G.cell_node, Uint32Array);
+  // lista de adjacência (de carro e a pé partilham a topologia; só o peso muda)
+  const adjStart = new Int32Array(NN + 1);
+  for (let k = 0; k < eu.length; k++) adjStart[eu[k] + 1]++;
+  for (let i = 0; i < NN; i++) adjStart[i + 1] += adjStart[i];
+  const adjTo = new Uint32Array(eu.length), adjW = new Float32Array(eu.length), adjWWalk = new Float32Array(eu.length);
+  const cursor = adjStart.slice(0, NN);
+  for (let k = 0; k < eu.length; k++) {
+    const u = eu[k];
+    adjTo[cursor[u]] = ev[k]; adjW[cursor[u]] = ew[k]; adjWWalk[cursor[u]] = ewWalk[k];
+    cursor[u]++;
+  }
+
+  function nearestRoadNode(lat, lon) {
+    let best = -1, bd = Infinity;
+    const ox = lon * KX, oy = lat * KY;
+    for (let i = 0; i < NN; i++) {
+      const d = Math.hypot(nLon[i] * KX - ox, nLat[i] * KY - oy);
+      if (d < bd) { bd = d; best = i; }
+    }
+    return best;
+  }
+
+  function reachRoad(T, weights) {
+    const dist = new Float64Array(NN).fill(Infinity);
+    const visited = new Uint8Array(NN);
+    const startNode = nearestRoadNode(origin[0], origin[1]);
+    dist[startNode] = 0;
+    for (let iter = 0; iter < NN; iter++) {
+      let u = -1, best = Infinity;
+      for (let i = 0; i < NN; i++) if (!visited[i] && dist[i] < best) { best = dist[i]; u = i; }
+      if (u === -1 || best > HORIZON_S) break;
+      visited[u] = 1;
+      for (let k = adjStart[u]; k < adjStart[u + 1]; k++) {
+        const v = adjTo[k], nd = dist[u] + weights[k];
+        if (nd < dist[v]) dist[v] = nd;
+      }
+    }
+    const tt = new Float32Array(NCELL).fill(Infinity);
+    const fineCols = G.fine_cols;
+    for (let r = 0; r < G.fine_rows; r++)
+      for (let c = 0; c < fineCols; c++) {
+        const cell = r * COLS + c; // grid fino TP e rede viária partilham box/dlat/dlon
+        if (cell >= NCELL) continue;
+        const node = cellNode[r * fineCols + c];
+        const v = dist[node];
+        if (v < tt[cell]) tt[cell] = v;
+      }
+    return tt;
+  }
+
+  // ------------------------------------------------------------------ desenho
+  const contour = d3.contours().size([COLS, ROWS]).smooth(true);
+  const toLatLng = ring => ring.map(([x, y]) => [S + y * DLAT, W + x * DLON]);
+  const bandLayer = L.layerGroup().addTo(map), roadLayer = L.layerGroup().addTo(map), riskLayer = L.layerGroup().addTo(map);
+  function rings(layer, values, thresholds, style) {
+    layer.clearLayers();
+    const shapes = contour.thresholds(thresholds)(values).sort((a, b) => a.value - b.value);
+    shapes.forEach((sh, k) => {
+      const inner = k + 1 < shapes.length ? shapes[k + 1].coordinates : [];
+      const polys = sh.coordinates.concat(inner).map(p => p.map(toLatLng));
+      if (polys.length) L.polygon(polys, { ...style(k), fillRule: "evenodd", interactive: false, smoothFactor: .6 }).addTo(layer);
+    });
+  }
+  function legendInto(elId, elLId, cols, labels) {
+    $(elId).style.gridTemplateColumns = $(elLId).style.gridTemplateColumns = `repeat(${cols.length}, 1fr)`;
+    $(elId).innerHTML = cols.map(c => `<div style="background:${c}"></div>`).join("");
+    $(elLId).innerHTML = labels.map(t => `<span>${t}</span>`).join("");
+  }
+  function legend() {
+    const labels = BANDS.map((b, i) => i === BANDS.length - 1 ? b + " min" : b);
+    if (view === "tp") legendInto("legend", "legend-l", COLORS, labels);
+    else if (view === "road") legendInto("legend", "legend-l", ROAD_COLORS, labels);
+    else if (view === "walk") legendInto("legend", "legend-l", WALK_COLORS, labels);
+    else { legendInto("legend", "legend-l", COLORS, labels); legendInto("legend-road", "legend-l-road", ROAD_COLORS, labels); }
+    $("legend-title-road").style.display = view === "compare" ? "" : "none";
+    $("legend-road").style.display = view === "compare" ? "" : "none";
+    $("legend-l-road").style.display = view === "compare" ? "" : "none";
+    $("legend-title-tp").textContent = { road: "De carro", walk: "A pé" }[view] || "Transporte público";
+  }
+
+  const marker = L.marker(origin, { draggable: true, keyboard: true, zIndexOffset: 1000, title: "Partida",
+    icon: L.divIcon({ className: "", iconSize: [30, 30], iconAnchor: [15, 15], html: '<div class="origin"></div>' }) }).addTo(map);
+  marker.on("dragend", () => { const p = marker.getLatLng(); setOrigin([p.lat, p.lng], ""); });
+  map.on("click", ev => setOrigin([ev.latlng.lat, ev.latlng.lng], ""));
+
+  const inside = p => p[0] > S && p[0] < N && p[1] > W && p[1] < E;
+  function setOrigin(p, name) { origin = p; placeName = name; marker.setLatLng(p); draw(); }
+
+  let seq = 0;
+  async function draw() {
+    const my = ++seq, level = +$("rel").value, T0 = 5 * 3600 + 15 * 60 * +$("dep").value, h = Math.floor(T0 / 3600);
+    $("relv").textContent = LEVELS[level];
+    $("relh").textContent = HINTS[level];
+    $("depv").textContent = fmtT(T0);
+    $("rel-ctl").classList.toggle("disabled", view === "road" || view === "walk");
+    const md = (view !== "road" && view !== "walk" && level > 0) ? (M.mode_delay[LEVELS[level]]?.[h] || {}) : {};
+    $("modes").innerHTML = Object.keys(md).length === 0 ? "" : `<span class="lbl">Atraso médio por troço:</span>` +
+      Object.keys(md).sort((a, b) => md[b] - md[a]).map(m => `<span>${MODES_PT[m] || m}<b>+${md[m].toFixed(1)} min</b></span>`).join("");
+    $("where").innerHTML = inside(origin)
+      ? `Partida: <b>${placeName || origin[0].toFixed(4) + ", " + origin[1].toFixed(4)}</b><br>Clica no mapa ou arrasta o ponto branco para mudar a partida.`
+      : "Fora da área com dados — escolhe um ponto na Póvoa de Varzim ou Vila do Conde.";
+    legend();
+    history.replaceState(null, "", `${location.search}#${origin[0].toFixed(5)},${origin[1].toFixed(5)},${$("dep").value},${level},${view}`);
+    bandLayer.clearLayers(); roadLayer.clearLayers(); riskLayer.clearLayers();
+    if (!inside(origin)) { $("rows").innerHTML = ""; return; }
+
+    $("busy").style.display = (view !== "road" && view !== "walk" && !(chunks.has(h) && chunks.has(h + 1))) ? "block" : "none";
+    let tt = null, base = null, ttRoad = null, ttWalk = null;
+    if (view === "tp" || view === "compare") {
+      const parts = await Promise.all([chunk(h), chunk(h + 1)]);
+      $("busy").style.display = "none";
+      if (my !== seq) return;
+      tt = reachTP(parts, T0, level);
+      base = level > 0 ? reachTP(parts, T0, 0) : tt;
+    }
+    if (view === "road" || view === "compare") {
+      ttRoad = reachRoad(T0, adjW);
+    }
+    if (view === "walk") {
+      ttWalk = reachRoad(T0, adjWWalk);
+    }
+    if (my !== seq) return;
+
+    if (view === "tp") {
+      const grid = new Float64Array(NCELL);
+      for (let c = 0; c < NCELL; c++) grid[c] = tt[c] <= 3600 ? -Math.ceil(tt[c] / 60) : -999;
+      rings(bandLayer, grid, BANDS.map(b => -b - .5), k => {
+        const i = BANDS.length - 1 - k;
+        return { color: COLORS[i], weight: 1.4, opacity: .95, fillColor: COLORS[i], fillOpacity: FILL[i] };
+      });
+    } else if (view === "road") {
+      const grid = new Float64Array(NCELL);
+      for (let c = 0; c < NCELL; c++) grid[c] = ttRoad[c] <= 3600 ? -Math.ceil(ttRoad[c] / 60) : -999;
+      rings(bandLayer, grid, BANDS.map(b => -b - .5), k => {
+        const i = BANDS.length - 1 - k;
+        return { color: ROAD_COLORS[i], weight: 1.4, opacity: .95, fillColor: ROAD_COLORS[i], fillOpacity: ROAD_FILL[i] };
+      });
+    } else if (view === "walk") {
+      const grid = new Float64Array(NCELL);
+      for (let c = 0; c < NCELL; c++) grid[c] = ttWalk[c] <= 3600 ? -Math.ceil(ttWalk[c] / 60) : -999;
+      rings(bandLayer, grid, BANDS.map(b => -b - .5), k => {
+        const i = BANDS.length - 1 - k;
+        return { color: WALK_COLORS[i], weight: 1.4, opacity: .95, fillColor: WALK_COLORS[i], fillOpacity: WALK_FILL[i] };
+      });
+    } else {
+      const gridTP = new Float64Array(NCELL), gridRoad = new Float64Array(NCELL);
+      for (let c = 0; c < NCELL; c++) {
+        gridTP[c] = tt[c] <= 3600 ? -Math.ceil(tt[c] / 60) : -999;
+        gridRoad[c] = ttRoad[c] <= 3600 ? -Math.ceil(ttRoad[c] / 60) : -999;
+      }
+      rings(bandLayer, gridTP, BANDS.map(b => -b - .5), k => {
+        const i = BANDS.length - 1 - k;
+        return { color: COLORS[i], weight: 1.4, opacity: .95, fillColor: COLORS[i], fillOpacity: FILL[i] * .7 };
+      });
+      rings(roadLayer, gridRoad, BANDS.map(b => -b - .5), k => {
+        const i = BANDS.length - 1 - k;
+        return { color: ROAD_COLORS[i], weight: 1.6, opacity: .95, fillColor: ROAD_COLORS[i], fillOpacity: 0 };
+      });
+    }
+
+    // estatísticas de população — só mostra se houver grelha real (ainda não há)
+    const totalPop = pop.reduce((a, b) => a + b, 0);
+    if (!totalPop) {
+      $("statsh").textContent = "Pessoas alcançadas";
+      $("rows").innerHTML = "";
+      $("note").textContent = "Ainda sem grelha de população (falta ligar dados do INE/Censos) — ver README.";
+      return;
+    }
+    $("statsh").textContent = "Pessoas que vivem a menos de";
+    $("note").textContent = "Contorno tracejado: o mesmo segundo o horário.";
+    const now = BANDS.map(() => 0), was = BANDS.map(() => 0);
+    const ref = view === "road" ? ttRoad : view === "walk" ? ttWalk : tt;
+    const refBase = (view === "road" || view === "walk") ? ref : base;
+    const curColors = view === "road" ? ROAD_COLORS : view === "walk" ? WALK_COLORS : COLORS;
+    for (let c = 0; c < NCELL; c++) {
+      if (!pop[c]) continue;
+      BANDS.forEach((b, i) => { if (ref[c] <= b * 60) now[i] += pop[c]; if (refBase[c] <= b * 60) was[i] += pop[c]; });
+    }
+    const max = Math.max(1, ...was);
+    $("rows").innerHTML = BANDS.map((b, i) => `<div class="row"><span class="k">${b} min</span>
+      <span class="bar"><i class="ghost" style="width:${was[i] / max * 100}%"></i><i style="width:${now[i] / max * 100}%;background:${curColors[i]}"></i></span>
+      <span class="v">${now[i]}</span></div>`).join("");
+  }
+
+  let pending = 0;
+  const soon = () => { cancelAnimationFrame(pending); pending = requestAnimationFrame(draw); };
+  $("rel").addEventListener("input", soon); $("dep").addEventListener("input", soon);
+  document.querySelectorAll(".view button").forEach(btn => {
+    btn.setAttribute("aria-pressed", btn.dataset.view === view);
+    btn.addEventListener("click", () => {
+      view = btn.dataset.view;
+      document.querySelectorAll(".view button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+      draw();
+    });
+  });
+  $("search").addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const q = $("q").value.trim();
+    if (!q) return;
+    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&bounded=1&countrycodes=pt` +
+                `&viewbox=${W},${N},${E},${S}&accept-language=pt-PT&q=${encodeURIComponent(q)}`;
+    try {
+      const res = await (await fetch(url)).json();
+      if (!res.length) { $("where").textContent = "Não encontrei nada na área para isso."; return; }
+      const p = [+res[0].lat, +res[0].lon];
+      map.setView(p, Math.max(map.getZoom(), 13));
+      setOrigin(p, res[0].display_name.split(",").slice(0, 2).join(","));
+    } catch (e) { $("where").textContent = "Não encontrei nada na área para isso."; }
+  });
+  draw();
+});
+</script>
+</body>
+</html>

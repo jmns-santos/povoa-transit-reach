@@ -1,0 +1,797 @@
+route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,shape_id
+ln:3001:0,ut3:AS,AS:3001:0:1:1400,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AS,AS:3001:0:1:1200,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AS,AS:3001:0:1:0800,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AS,AS:3001:0:1:1800,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AS,AS:3001:0:1:1300,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AU,AU:3001:0:1:1800,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AU,AU:3001:0:1:1600,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AU,AU:3001:0:1:2000,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AU,AU:3001:0:1:1000,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AU,AU:3001:0:1:0800,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AU,AU:3001:0:1:1200,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AU,AU:3001:0:1:1400,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AU,AU:3001:0:1:0600,Portas Fronhas (Metro) (via Travassos),3001,0,rt:3001:0:1
+ln:3001:0,ut3:AS,AS:3001:0:2:1100,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AS,AS:3001:0:2:1300,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AS,AS:3001:0:2:0700,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AS,AS:3001:0:2:1700,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AU,AU:3001:0:2:0700,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AU,AU:3001:0:2:0900,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AU,AU:3001:0:2:2100,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AU,AU:3001:0:2:1100,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AU,AU:3001:0:2:1900,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AU,AU:3001:0:2:1500,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AU,AU:3001:0:2:1700,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:0,ut3:AU,AU:3001:0:2:1300,Paranho (via Travassos),3001,1,rt:3001:0:2
+ln:3001:1,ut3:E1,E1:3001:1:1:1700,Largo das Dores,3001,0,rt:3001:1:1
+ln:3001:1,ut3:E1,E1:3001:1:1:0740,Largo das Dores,3001,0,rt:3001:1:1
+ln:3001:1,ut3:E1,E1:3001:1:1:1240,Largo das Dores,3001,0,rt:3001:1:1
+ln:3001:1,ut3:E1,E1:3001:1:2:1200,Rua de Santo António,3001,1,rt:3001:1:2
+ln:3001:1,ut3:E1,E1:3001:1:2:1830,Rua de Santo António,3001,1,rt:3001:1:2
+ln:3002:0,ut3:AD,AD:3002:0:1:0745,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AD,AD:3002:0:1:2000,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AS,AS:3002:0:1:2000,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AS,AS:3002:0:1:0615,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AS,AS:3002:0:1:1015,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AS,AS:3002:0:1:1445,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AU,AU:3002:0:1:2015,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AU,AU:3002:0:1:1615,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AU,AU:3002:0:1:1245,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AU,AU:3002:0:1:0615,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AU,AU:3002:0:1:0745,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AU,AU:3002:0:1:0915,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AU,AU:3002:0:1:1045,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AU,AU:3002:0:1:1445,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AU,AU:3002:0:1:1745,Portas Fronhas (Metro) (via Giesteira),3002,0,rt:3002:0:1
+ln:3002:0,ut3:AD,AD:3002:0:2:0830,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AD,AD:3002:0:2:2045,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AS,AS:3002:0:2:2045,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AS,AS:3002:0:2:1900,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AS,AS:3002:0:2:1400,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AS,AS:3002:0:2:0700,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AU,AU:3002:0:2:1130,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AU,AU:3002:0:2:0700,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AU,AU:3002:0:2:0830,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AU,AU:3002:0:2:1000,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AU,AU:3002:0:2:1400,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AU,AU:3002:0:2:1530,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AU,AU:3002:0:2:1700,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AU,AU:3002:0:2:1830,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:0,ut3:AU,AU:3002:0:2:2100,Agra (via Giesteira),3002,1,rt:3002:0:2
+ln:3002:1,ut3:E1,E1:3002:1:1:1415,Xisto,3002,0,rt:3002:1:1
+ln:3002:1,ut3:E1,E1:3002:1:2:1830,Sistelos,3002,1,rt:3002:1:2
+ln:3002:2,ut3:E1,E1:3002:2:1:1845,Largo das Dores,3002,0,rt:3002:2:1
+ln:3002:2,ut3:E1,E1:3002:2:1:0815,Largo das Dores,3002,0,rt:3002:2:1
+ln:3002:2,ut3:E1,E1:3002:2:2:0740,Sistelos,3002,1,rt:3002:2:2
+ln:3002:2,ut3:E1,E1:3002:2:2:1325,Sistelos,3002,1,rt:3002:2:2
+ln:3003:0,ut3:AD,AD:3003:0:1:0900,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AD,AD:3003:0:1:2030,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AS,AS:3003:0:1:1330,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AS,AS:3003:0:1:1830,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AS,AS:3003:0:1:2120,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AS,AS:3003:0:1:0800,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AU,AU:3003:0:1:1500,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AU,AU:3003:0:1:1700,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AU,AU:3003:0:1:1830,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AU,AU:3003:0:1:1945,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AU,AU:3003:0:1:0830,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AU,AU:3003:0:1:0700,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AU,AU:3003:0:1:1030,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AU,AU:3003:0:1:1205,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AU,AU:3003:0:1:1315,Portas Fronhas (Metro) (via Guardães),3003,0,rt:3003:0:1
+ln:3003:0,ut3:AD,AD:3003:0:2:1900,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AD,AD:3003:0:2:0735,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AS,AS:3003:0:2:1200,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AS,AS:3003:0:2:1700,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AS,AS:3003:0:2:2000,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AS,AS:3003:0:2:0640,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AU,AU:3003:0:2:1500,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AU,AU:3003:0:2:1700,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AU,AU:3003:0:2:1830,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AU,AU:3003:0:2:1945,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AU,AU:3003:0:2:0710,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AU,AU:3003:0:2:0830,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AU,AU:3003:0:2:1030,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AU,AU:3003:0:2:1200,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:0,ut3:AU,AU:3003:0:2:1330,Balazar (via Guardães),3003,1,rt:3003:0:2
+ln:3003:1,ut3:E1,E1:3003:1:1:0800,Escola Agrícola,3003,0,rt:3003:1:1
+ln:3003:1,ut3:E1,E1:3003:1:2:0840,Gandra,3003,1,rt:3003:1:2
+ln:3003:2,ut3:E1,E1:3003:2:1:1300,Escola EB 2/3 Rates,3003,0,rt:3003:2:1
+ln:3003:2,ut3:E1,E1:3003:2:2:1330,Gandra,3003,1,rt:3003:2:2
+ln:3004:0,ut3:AS,AS:3004:0:1:0800,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AS,AS:3004:0:1:1910,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AS,AS:3004:0:1:1310,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AU,AU:3004:0:1:0700,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AU,AU:3004:0:1:1115,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AU,AU:3004:0:1:1320,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AU,AU:3004:0:1:1600,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AU,AU:3004:0:1:1745,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AU,AU:3004:0:1:2000,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AU,AU:3004:0:1:0845,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AU,AU:3004:0:1:0945,Portas Fronhas (Metro) (via Águas Férreas),3004,0,rt:3004:0:1
+ln:3004:0,ut3:AS,AS:3004:0:2:0655,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AS,AS:3004:0:2:1800,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AS,AS:3004:0:2:1100,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AU,AU:3004:0:2:1100,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AU,AU:3004:0:2:0700,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AU,AU:3004:0:2:1630,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AU,AU:3004:0:2:1320,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AU,AU:3004:0:2:1000,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AU,AU:3004:0:2:0830,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AU,AU:3004:0:2:1815,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:0,ut3:AU,AU:3004:0:2:2000,Balazar (via Águas Férreas),3004,1,rt:3004:0:2
+ln:3004:1,ut3:E1,E1:3004:1:1:1205,Parque Industrial de Laundos - 3,3004,0,rt:3004:1:1
+ln:3004:1,ut3:E1,E1:3004:1:2:1240,Travessa de São Pedro,3004,1,rt:3004:1:2
+ln:3004:2,ut3:E1,E1:3004:2:1:0805,Escola EB 2/3 Rates,3004,0,rt:3004:2:1
+ln:3004:2,ut3:E1,E1:3004:2:2:0820,Travessa de São Pedro,3004,1,rt:3004:2:2
+ln:3005:0,ut3:AS,AS:3005:0:1:0800,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AS,AS:3005:0:1:2000,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AS,AS:3005:0:1:1200,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AU,AU:3005:0:1:1620,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AU,AU:3005:0:1:2020,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AU,AU:3005:0:1:0730,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AU,AU:3005:0:1:1000,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AU,AU:3005:0:1:1220,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AU,AU:3005:0:1:1420,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AU,AU:3005:0:1:1820,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AU,AU:3005:0:1:0530,Portas Fronhas (Metro) (via Barranha),3005,0,rt:3005:0:1
+ln:3005:0,ut3:AS,AS:3005:0:2:1100,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AS,AS:3005:0:2:0700,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AS,AS:3005:0:2:1900,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AU,AU:3005:0:2:1920,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AU,AU:3005:0:2:0845,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AU,AU:3005:0:2:1100,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AU,AU:3005:0:2:1320,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AU,AU:3005:0:2:1520,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AU,AU:3005:0:2:1720,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AU,AU:3005:0:2:2120,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3005:0,ut3:AU,AU:3005:0:2:0630,Águas Férreas (via Barranha),3005,1,rt:3005:0:2
+ln:3006:0,ut3:AU,AU:3006:0:1:0630,Portas Fronhas (Metro) (via Aguçadora),3006,0,rt:3006:0:1
+ln:3006:0,ut3:AU,AU:3006:0:2:1945,Esposende (CCT) (via Aguçadora),3006,1,rt:3006:0:2
+ln:3006:1,ut3:AU,AU:3006:1:1:1205,Portas Fronhas (Metro),3006,0,rt:3006:1:1
+ln:3006:1,ut3:AU,AU:3006:1:1:1430,Portas Fronhas (Metro),3006,0,rt:3006:1:1
+ln:3006:1,ut3:AU,AU:3006:1:1:0720,Portas Fronhas (Metro),3006,0,rt:3006:1:1
+ln:3006:1,ut3:AU,AU:3006:1:2:0615,Apúlia - Mudos,3006,1,rt:3006:1:2
+ln:3006:1,ut3:AU,AU:3006:1:2:1045,Apúlia - Mudos,3006,1,rt:3006:1:2
+ln:3006:1,ut3:AU,AU:3006:1:2:1325,Apúlia - Mudos,3006,1,rt:3006:1:2
+ln:3006:2,ut3:AD,AD:3006:2:1:1400,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AD,AD:3006:2:1:0800,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AD,AD:3006:2:1:1900,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AS,AS:3006:2:1:1000,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AS,AS:3006:2:1:1900,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AS,AS:3006:2:1:0800,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AS,AS:3006:2:1:1700,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AS,AS:3006:2:1:1400,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AU,AU:3006:2:1:1045,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AU,AU:3006:2:1:0845,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AU,AU:3006:2:1:0945,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AU,AU:3006:2:1:1245,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AU,AU:3006:2:1:1545,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AU,AU:3006:2:1:1645,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AU,AU:3006:2:1:1745,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AU,AU:3006:2:1:1845,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AU,AU:3006:2:1:2020,Portas Fronhas (Metro),3006,0,rt:3006:2:1
+ln:3006:2,ut3:AD,AD:3006:2:2:1800,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AD,AD:3006:2:2:1100,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AD,AD:3006:2:2:0700,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AS,AS:3006:2:2:1600,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AS,AS:3006:2:2:1800,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AS,AS:3006:2:2:0700,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AS,AS:3006:2:2:0900,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AS,AS:3006:2:2:1100,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AU,AU:3006:2:2:1145,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AU,AU:3006:2:2:1445,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AU,AU:3006:2:2:1545,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AU,AU:3006:2:2:1645,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AU,AU:3006:2:2:0745,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AU,AU:3006:2:2:1745,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AU,AU:3006:2:2:1845,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AU,AU:3006:2:2:0845,Contriz -1,3006,1,rt:3006:2:2
+ln:3006:2,ut3:AU,AU:3006:2:2:0945,Contriz -1,3006,1,rt:3006:2:2
+ln:3301:0,ut3:AD,AD:3301:0:1:0915,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:1145,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:2115,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:2015,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:1800,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:1645,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:1415,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:1300,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:0700,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:1030,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:1530,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:1915,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:1:0800,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:2015,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:0800,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:1300,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:1030,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:0700,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:1145,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:1530,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:2115,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:1415,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:0915,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:1645,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:1800,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AS,AS:3301:0:1:1915,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1240,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1710,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1740,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1820,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1900,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1930,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:2000,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:2040,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:2120,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0455,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0525,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0555,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0630,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0655,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0740,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0800,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0830,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0900,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:0930,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1000,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1030,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1100,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1140,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1210,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1310,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1340,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1420,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1500,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1540,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1610,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AU,AU:3301:0:1:1640,Vila do Conde (Metro),3301,0,rt:3301:0:1
+ln:3301:0,ut3:AD,AD:3301:0:2:1030,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:1415,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:0600,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:1300,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:1645,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:2015,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:0700,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:1915,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:2115,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:0915,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:1800,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:1530,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:0800,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AD,AD:3301:0:2:1145,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:0800,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:1415,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:1800,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:2115,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:0700,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:0915,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:0600,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:1030,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:1145,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:1530,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:1915,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:2015,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:1300,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AS,AS:3301:0:2:1645,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1600,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:2120,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1240,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1310,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1340,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1420,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1500,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1530,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:2040,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1630,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1700,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1030,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1730,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1800,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1830,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1900,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1930,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:2000,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:0555,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:0630,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:0655,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:0740,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:0815,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:0855,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:0930,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1000,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1100,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1140,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:0,ut3:AU,AU:3301:0:2:1210,Aguçadoura,3301,1,rt:3301:0:2
+ln:3301:1,ut3:E1,E1:3301:1:1:0730,Rocha Peixoto Norte,3301,0,rt:3301:1:1
+ln:3301:1,ut3:E1,E1:3301:1:2:0800,Barranha,3301,1,rt:3301:1:2
+ln:3302:0,ut3:AD,AD:3302:0:1:1900,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AD,AD:3302:0:1:1500,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AD,AD:3302:0:1:1000,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AD,AD:3302:0:1:0800,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:1700,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:2000,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:1900,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:0800,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:2100,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:0900,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:1000,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:1200,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:1400,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AS,AS:3302:0:1:1800,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1600,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1830,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:0630,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:0700,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:0730,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:0800,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:0830,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:0900,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:0930,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1000,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1030,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1100,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1130,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1200,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1230,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1300,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1330,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1400,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1430,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1500,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1530,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1630,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1700,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1730,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1800,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1900,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:1930,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:2000,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:2030,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AU,AU:3302:0:1:2100,Areia / Varziela (Metro),3302,0,rt:3302:0:1
+ln:3302:0,ut3:AD,AD:3302:0:2:2000,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1400,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1900,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1930,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:2000,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:2030,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:2100,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1830,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1730,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1700,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1630,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1600,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1530,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1500,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:0630,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:0700,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:0730,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:0800,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:0830,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:0900,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:0930,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1000,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1030,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1100,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1130,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1200,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1230,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1430,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1330,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1300,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3302:0,ut3:AU,AU:3302:0:2:1800,Amorim (Zona Industrial),3302,1,rt:3302:0:2
+ln:3304:0,ut3:AD,AD:3304:0:3:1540,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AD,AD:3304:0:3:0900,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AD,AD:3304:0:3:2040,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AD,AD:3304:0:3:1220,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:0920,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:1200,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:1320,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:1440,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:1600,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:1720,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:1840,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:0800,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:2000,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:2120,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:2240,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AS,AS:3304:0:3:1040,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1200,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:2120,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:2200,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:2240,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1400,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1120,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:0720,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1040,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1000,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1240,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1320,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:0600,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:0920,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:0840,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:0800,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:0640,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1440,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1520,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1600,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1640,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1720,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1800,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1840,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:1920,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:2000,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3304:0,ut3:AU,AU:3304:0:3:2040,Circular | Póvoa de Varzim,3304,0,rt:3304:0:3
+ln:3305:0,ut3:AD,AD:3305:0:3:1930,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AD,AD:3305:0:3:1430,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AD,AD:3305:0:3:0750,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AD,AD:3305:0:3:1110,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:1800,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:1120,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:1000,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:0840,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:2200,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:2040,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:1920,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:0720,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:1640,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:1520,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:1400,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AS,AS:3305:0:3:1240,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:0740,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1300,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1220,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1140,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1100,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1020,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:0940,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:0900,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:0820,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:0700,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:0620,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:2020,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:2100,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:2140,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:2220,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:2300,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1940,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1900,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1820,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1740,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1700,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1620,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1540,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1500,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1420,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3305:0,ut3:AU,AU:3305:0:3:1340,Circular | Póvoa de Varzim,3305,0,rt:3305:0:3
+ln:3308:0,ut3:AS,AS:3308:0:1:1810,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AS,AS:3308:0:1:0700,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AS,AS:3308:0:1:0820,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AS,AS:3308:0:1:1250,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AS,AS:3308:0:1:1410,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AU,AU:3308:0:1:1910,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AU,AU:3308:0:1:1800,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AU,AU:3308:0:1:0710,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AU,AU:3308:0:1:1000,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AU,AU:3308:0:1:1130,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AU,AU:3308:0:1:1630,Vila do Conde (Centro),3308,0,rt:3308:0:1
+ln:3308:0,ut3:AS,AS:3308:0:2:1850,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AS,AS:3308:0:2:0740,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AS,AS:3308:0:2:0910,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AS,AS:3308:0:2:1730,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AS,AS:3308:0:2:1330,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AU,AU:3308:0:2:0910,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AU,AU:3308:0:2:2000,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AU,AU:3308:0:2:1055,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AU,AU:3308:0:2:1155,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AU,AU:3308:0:2:1230,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AU,AU:3308:0:2:1435,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AU,AU:3308:0:2:1550,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AU,AU:3308:0:2:1810,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3308:0,ut3:AU,AU:3308:0:2:1845,Póvoa de Varzim (CCT),3308,1,rt:3308:0:2
+ln:3309:0,ut3:AU,AU:3309:0:1:1400,Vila do Conde (Centro) (via Escolas),3309,0,rt:3309:0:1
+ln:3309:0,ut3:AU,AU:3309:0:1:1515,Vila do Conde (Centro) (via Escolas),3309,0,rt:3309:0:1
+ln:3309:0,ut3:AU,AU:3309:0:1:1610,Vila do Conde (Centro) (via Escolas),3309,0,rt:3309:0:1
+ln:3309:0,ut3:AU,AU:3309:0:1:1710,Vila do Conde (Centro) (via Escolas),3309,0,rt:3309:0:1
+ln:3309:0,ut3:AU,AU:3309:0:1:0810,Vila do Conde (Centro) (via Escolas),3309,0,rt:3309:0:1
+ln:3309:0,ut3:AU,AU:3309:0:1:0900,Vila do Conde (Centro) (via Escolas),3309,0,rt:3309:0:1
+ln:3309:0,ut3:AU,AU:3309:0:1:1230,Vila do Conde (Centro) (via Escolas),3309,0,rt:3309:0:1
+ln:3309:0,ut3:AU,AU:3309:0:1:1325,Vila do Conde (Centro) (via Escolas),3309,0,rt:3309:0:1
+ln:3309:0,ut3:AU,AU:3309:0:2:1405,Póvoa de Varzim (CCT) (via Escolas),3309,1,rt:3309:0:2
+ln:3309:0,ut3:AU,AU:3309:0:2:1650,Póvoa de Varzim (CCT) (via Escolas),3309,1,rt:3309:0:2
+ln:3309:0,ut3:AU,AU:3309:0:2:1720,Póvoa de Varzim (CCT) (via Escolas),3309,1,rt:3309:0:2
+ln:3309:0,ut3:AU,AU:3309:0:2:0750,Póvoa de Varzim (CCT) (via Escolas),3309,1,rt:3309:0:2
+ln:3309:0,ut3:AU,AU:3309:0:2:0940,Póvoa de Varzim (CCT) (via Escolas),3309,1,rt:3309:0:2
+ln:3309:0,ut3:AU,AU:3309:0:2:0845,Póvoa de Varzim (CCT) (via Escolas),3309,1,rt:3309:0:2
+ln:3309:0,ut3:AU,AU:3309:0:2:1310,Póvoa de Varzim (CCT) (via Escolas),3309,1,rt:3309:0:2
+ln:3503:0,ut3:AD,AD:3503:0:1:1430,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:0730,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:0830,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:0930,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:1030,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:1130,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:1230,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:1330,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:1630,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:1730,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:1830,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:1:1930,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:1430,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:0830,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:1130,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:1030,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:1630,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:0930,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:1330,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:0730,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:1730,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:1830,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:1930,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AS,AS:3503:0:1:1230,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:0600,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:0630,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:0700,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:0730,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:0800,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:0830,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:0900,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:0930,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1430,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1500,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1800,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1300,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1330,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1400,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1900,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1930,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:2000,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:2030,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1830,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1530,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1600,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1630,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1700,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1730,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1000,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1030,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1100,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1130,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1200,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AU,AU:3503:0:1:1230,Hospital São João,3503,0,rt:3503:0:1
+ln:3503:0,ut3:AD,AD:3503:0:2:0830,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:1430,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:1630,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:1730,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:1830,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:1930,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:0730,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:0930,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:1030,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:1130,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:1230,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AD,AD:3503:0:2:1330,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:1430,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:1330,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:1230,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:1130,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:1030,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:0930,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:1930,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:1830,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:1730,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:0730,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:1630,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AS,AS:3503:0:2:0830,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1445,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1415,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1345,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1315,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1245,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1215,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1145,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1115,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1045,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1015,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:0945,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:0915,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:0845,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1845,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:0745,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:0715,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:0645,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:0615,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:0815,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1915,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1945,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:2015,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:2045,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1815,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1745,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1715,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1645,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1615,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1545,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3503:0,ut3:AU,AU:3503:0:2:1515,Póvoa de Varzim (CCT),3503,1,rt:3503:0:2
+ln:3504:0,ut3:AD,AD:3504:0:1:1730,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AD,AD:3504:0:1:1900,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AD,AD:3504:0:1:1250,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AD,AD:3504:0:1:0930,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AD,AD:3504:0:1:1400,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AD,AD:3504:0:1:0830,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AS,AS:3504:0:1:1400,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AS,AS:3504:0:1:1730,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AS,AS:3504:0:1:0830,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AS,AS:3504:0:1:0930,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AS,AS:3504:0:1:1250,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AS,AS:3504:0:1:1900,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:1815,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:1730,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:1545,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:1500,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:0715,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:1230,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:0945,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:0900,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:0745,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:1900,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:1315,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AU,AU:3504:0:1:0630,Póvoa de Varzim (CCT),3504,0,rt:3504:0:1
+ln:3504:0,ut3:AD,AD:3504:0:2:1600,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AD,AD:3504:0:2:1130,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AD,AD:3504:0:2:0800,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AD,AD:3504:0:2:1915,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AD,AD:3504:0:2:1730,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AD,AD:3504:0:2:1230,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AS,AS:3504:0:2:1915,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AS,AS:3504:0:2:1130,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AS,AS:3504:0:2:1730,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AS,AS:3504:0:2:1600,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AS,AS:3504:0:2:1230,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AS,AS:3504:0:2:0800,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:1930,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:1845,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:1700,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:1615,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:1440,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:1350,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:1200,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:1015,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:0915,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:0830,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:0800,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3504:0,ut3:AU,AU:3504:0:2:0630,Santo Tirso (ERF),3504,1,rt:3504:0:2
+ln:3514:0,ut3:AU,AU:3514:0:1:1450,Vila do Conde (Escolas) (via Seixo),3514,0,rt:3514:0:1
+ln:3514:0,ut3:AU,AU:3514:0:1:0820,Vila do Conde (Escolas) (via Seixo),3514,0,rt:3514:0:1
+ln:3514:0,ut3:AU,AU:3514:0:1:1725,Vila do Conde (Escolas) (via Seixo),3514,0,rt:3514:0:1
+ln:3514:0,ut3:AU,AU:3514:0:1:1320,Vila do Conde (Escolas) (via Seixo),3514,0,rt:3514:0:1
+ln:3514:0,ut3:AU,AU:3514:0:1:1835,Vila do Conde (Escolas) (via Seixo),3514,0,rt:3514:0:1
+ln:3514:0,ut3:AU,AU:3514:0:1:0655,Vila do Conde (Escolas) (via Seixo),3514,0,rt:3514:0:1
+ln:3514:0,ut3:AU,AU:3514:0:1:0950,Vila do Conde (Escolas) (via Seixo),3514,0,rt:3514:0:1
+ln:3514:0,ut3:AU,AU:3514:0:1:1220,Vila do Conde (Escolas) (via Seixo),3514,0,rt:3514:0:1
+ln:3514:0,ut3:E1,E1:3514:0:1:1635,Vila do Conde (Escolas) (via Seixo),3514,0,rt:3514:0:1
+ln:3514:0,ut3:AU,AU:3514:0:2:1830,Junqueira (via Seixo),3514,1,rt:3514:0:2
+ln:3514:0,ut3:AU,AU:3514:0:2:1615,Junqueira (via Seixo),3514,1,rt:3514:0:2
+ln:3514:0,ut3:AU,AU:3514:0:2:1110,Junqueira (via Seixo),3514,1,rt:3514:0:2
+ln:3514:0,ut3:AU,AU:3514:0:2:1725,Junqueira (via Seixo),3514,1,rt:3514:0:2
+ln:3514:0,ut3:AU,AU:3514:0:2:1340,Junqueira (via Seixo),3514,1,rt:3514:0:2
+ln:3514:0,ut3:AU,AU:3514:0:2:1205,Junqueira (via Seixo),3514,1,rt:3514:0:2
+ln:3514:0,ut3:AU,AU:3514:0:2:0840,Junqueira (via Seixo),3514,1,rt:3514:0:2
+ln:3514:0,ut3:AU,AU:3514:0:2:0700,Junqueira (via Seixo),3514,1,rt:3514:0:2
+ln:3514:0,ut3:E1,E1:3514:0:2:1515,Junqueira (via Seixo),3514,1,rt:3514:0:2
+ln:3517:0,ut3:AD,AD:3517:0:1:1910,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AD,AD:3517:0:1:0930,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AD,AD:3517:0:1:1700,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AD,AD:3517:0:1:1310,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AD,AD:3517:0:1:0700,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AS,AS:3517:0:1:1910,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AS,AS:3517:0:1:1700,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AS,AS:3517:0:1:0930,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AS,AS:3517:0:1:1310,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AS,AS:3517:0:1:0700,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AU,AU:3517:0:1:0735,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AU,AU:3517:0:1:1415,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AU,AU:3517:0:1:1245,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AU,AU:3517:0:1:0620,Vila do Conde (Escolas) (via Junqueira),3517,0,rt:3517:0:1
+ln:3517:0,ut3:AD,AD:3517:0:2:1840,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AD,AD:3517:0:2:0900,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AD,AD:3517:0:2:1630,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AD,AD:3517:0:2:1235,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AS,AS:3517:0:2:0900,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AS,AS:3517:0:2:1235,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AS,AS:3517:0:2:1630,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AS,AS:3517:0:2:1840,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AU,AU:3517:0:2:2005,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AU,AU:3517:0:2:0700,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AU,AU:3517:0:2:1835,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AU,AU:3517:0:2:1330,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3517:0,ut3:AU,AU:3517:0:2:1200,Fontaínhas (via Junqueira),3517,1,rt:3517:0:2
+ln:3535:0,ut3:AD,AD:3535:0:1:1215,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:1815,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:1945,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:2200,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:0515,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:0615,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:0715,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:0845,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:1115,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:1345,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:1:1715,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:1945,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:2200,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:1715,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:1815,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:0515,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:0615,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:0715,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:0845,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:1115,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:1215,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AS,AS:3535:0:1:1345,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:1715,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:1815,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:1945,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:2200,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:0515,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:0615,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:0715,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:0845,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:1115,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:1215,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AU,AU:3535:0:1:1345,"Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",3535,0,rt:3535:0:1
+ln:3535:0,ut3:AD,AD:3535:0:2:1700,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:1830,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:1930,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:2050,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:0515,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:0615,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:0715,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:0830,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:1000,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:1230,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AD,AD:3535:0:2:1330,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:1230,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:0515,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:0615,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:0715,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:0830,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:1000,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:1330,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:1700,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:1830,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:1930,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AS,AS:3535:0:2:2050,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:1700,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:2050,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:1930,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:1830,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:0515,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:0615,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:0715,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:0830,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:1000,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:1230,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:0,ut3:AU,AU:3535:0:2:1330,Póvoa de Varzim (CCT),3535,1,rt:3535:0:2
+ln:3535:1,ut3:AD,AD:3535:1:1:1620,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AD,AD:3535:1:1:2435,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AD,AD:3535:1:1:2535,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AD,AD:3535:1:1:2630,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AS,AS:3535:1:1:2630,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AS,AS:3535:1:1:1620,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AS,AS:3535:1:1:2435,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AS,AS:3535:1:1:2535,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AU,AU:3535:1:1:2630,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AU,AU:3535:1:1:1620,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AU,AU:3535:1:1:2435,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AU,AU:3535:1:1:2535,Campanhã Estação,3535,0,rt:3535:1:1
+ln:3535:1,ut3:AD,AD:3535:1:2:0200,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AD,AD:3535:1:2:1455,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AD,AD:3535:1:2:2300,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AD,AD:3535:1:2:0100,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AS,AS:3535:1:2:0200,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AS,AS:3535:1:2:1455,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AS,AS:3535:1:2:2300,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AS,AS:3535:1:2:0100,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AU,AU:3535:1:2:1455,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AU,AU:3535:1:2:0100,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AU,AU:3535:1:2:2300,Aeroporto,3535,1,rt:3535:1:2
+ln:3535:1,ut3:AU,AU:3535:1:2:0200,Aeroporto,3535,1,rt:3535:1:2

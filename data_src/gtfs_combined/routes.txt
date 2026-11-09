@@ -1,0 +1,36 @@
+route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_color,route_url,route_text_color
+unir_ln:3001:0,unir,3001,Paranho - Portas Fronhas (Metro) (via Travassos),Linha base 3001 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3001:1,unir,3001,Rua de Santo António - Largo das Dores,Linha parcelar de  3001 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3002:0,unir,3002,Agra - Portas Fronhas (Metro) (via Giesteira),Linha base 3002 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3002:1,unir,3002,Sistelos - Xisto,Linha parcelar de  3002 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3002:2,unir,3002,Sistelos - Largo das Dores,Linha parcelar de  3002 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3003:0,unir,3003,Balazar - Portas Fronhas (Metro) (via Guardães),Linha base 3003 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3003:1,unir,3003,Gandra - Escola Agrícola,Linha parcelar de  3003 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3003:2,unir,3003,Gandra - Escola EB 2/3 Rates,Linha parcelar de  3003 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3004:0,unir,3004,Balazar - Portas Fronhas (Metro) (via Águas Férreas),Linha base 3004 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3004:1,unir,3004,Travessa de São Pedro - Parque Industrial de Laundos - 3,Linha parcelar de  3004 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3004:2,unir,3004,Travessa de São Pedro - Escola EB 2/3 Rates,Linha parcelar de  3004 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3005:0,unir,3005,Águas Férreas - Portas Fronhas (Metro) (via Barranha),Linha base 3005 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3006:0,unir,3006,Esposende (CCT) - Portas Fronhas (Metro) (via Aguçadora),Linha base 3006 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3006:1,unir,3006,Apúlia - Mudos - Portas Fronhas (Metro),Linha parcelar de  3006 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3006:2,unir,3006,Contriz -1 - Portas Fronhas (Metro),Linha parcelar de  3006 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3301:0,unir,3301,Aguçadoura - Vila do Conde (Metro),Linha base 3301 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3301:1,unir,3301,Barranha - Rocha Peixoto Norte,Linha parcelar de  3301 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3302:0,unir,3302,Amorim (Zona Industrial) - Areia / Varziela (Metro),Linha base 3302 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3304:0,unir,3304,Circular | Póvoa de Varzim,Linha base 3304 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3305:0,unir,3305,Circular | Póvoa de Varzim,Linha base 3305 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3308:0,unir,3308,Póvoa de Varzim (CCT) - Vila do Conde (Centro),Linha base 3308 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3309:0,unir,3309,Póvoa de Varzim (CCT) - Vila do Conde (Centro) (via Escolas),Linha base 3309 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3503:0,unir,3503,Póvoa de Varzim (CCT) - Hospital São João,Linha base 3503 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3504:0,unir,3504,Santo Tirso (ERF) - Póvoa de Varzim (CCT),Linha base 3504 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3514:0,unir,3514,Junqueira - Vila do Conde (Escolas) (via Seixo),Linha base 3514 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3517:0,unir,3517,Fontaínhas - Vila do Conde (Escolas) (via Junqueira),Linha base 3517 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3535:0,unir,3535,"Póvoa de Varzim (CCT) - Campanhã (Estação) (via Vila do Conde, Aeroporto e Polo Universitário)",Linha base 3535 da Unidade Territorial UT3,3,9eb0db,,
+unir_ln:3535:1,unir,3535,Aeroporto - Campanhã Estação,Linha parcelar de  3535 da Unidade Territorial UT3,3,9eb0db,,
+metro_A,,A, - ,,1,199FDA,,FFFFFF
+metro_B,,B, - ,,1,C63920,,FFFFFF
+metro_Bexp,,Bx, - ,,1,C63920,,FFFFFF
+metro_C,,C, - ,,1,A3BE31,,FFFFFF
+metro_D,,D, - ,,1,EBBC14,,FFFFFF
+metro_E,,E, - ,,1,736EB0,,FFFFFF
+metro_F,,F, - ,,1,EE731C,,FFFFFF

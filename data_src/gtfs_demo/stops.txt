@@ -1,0 +1,10 @@
+stop_id,stop_name,stop_lat,stop_lon
+est01,Estela,41.446,-8.784
+avm01,A Ver-o-Mar,41.365,-8.76
+pov01,Póvoa de Varzim - Câmara,41.3793,-8.7649
+pov02,Póvoa de Varzim - Estação,41.3815,-8.76
+pov03,Póvoa de Varzim - Hospital,41.385,-8.755
+ter01,Terroso,41.395,-8.75
+bei01,Beiriz,41.39,-8.73
+vdc01,Vila do Conde - Centro,41.3523,-8.7438
+vdc02,Vila do Conde - Estação,41.348,-8.74
