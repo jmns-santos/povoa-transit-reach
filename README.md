@@ -12,6 +12,7 @@ Protótipo da Câmara Municipal da Póvoa de Varzim.
 |---|---|---|
 | Metro do Porto | **Real** | GTFS oficial da Metro do Porto |
 | Autocarros (UNIR) | **Real**, filtrado à zona | GTFS oficial da UNIR, filtrado por coordenadas à Póvoa/Vila do Conde |
+| Autocarros (Mov Cávado) | **Real**, filtrado à zona | GTFS oficial da AITC/Mov Cávado (linhas 106/107/111/120, Braga–Barcelos–Esposende–Viana do Castelo), filtrado por coordenadas |
 | Fiabilidade (atrasos/cancelamentos) | **Não incluída** — mostra sempre o horário teórico | falta agregação histórica por paragem+linha+hora |
 | Rede viária (carro e a pé) | **Real** (geometria e classificação); velocidades por tipo de via assumidas | shapefile da rede viária municipal |
 | População em grelha | **Real** | BGRI 2021 (Censos), por subsecção estatística |
@@ -24,7 +25,7 @@ Tudo ficheiro estático (`data/tp/*.json`, `data/road/graph.json`) gerado pelo p
 ## Como usar
 
 Abrir `index.html` (ou a página publicada). Quatro modos no painel à esquerda:
-- **Transporte público** — Connection Scan sobre o horário combinado (Metro + UNIR, ambos reais), horário teórico (ver "Fiabilidade" na tabela acima).
+- **Transporte público** — Connection Scan sobre o horário combinado (Metro + UNIR + Mov Cávado, todos reais), horário teórico (ver "Fiabilidade" na tabela acima).
 - **De carro** — Dijkstra sobre a rede viária municipal real, só nas vias com acesso automóvel, a velocidades assumidas por tipo de via.
 - **A pé** — Dijkstra sobre a mesma rede real, incluindo passeios, ciclovias e atalhos só pedonais que o carro não pode usar; exclui auto-estradas.
 - **Comparar** — transporte público e carro sobrepostos no mesmo mapa (TP a verde-água, carro a laranja).
@@ -62,9 +63,14 @@ cd pipeline
 python3 filter_gtfs_bbox.py <pasta ou .zip do GTFS da UNIR> ../data_src/gtfs_unir_filtrado \
     --box 41.18 -8.94 41.59 -8.53
 
-# 2. combinar com o Metro real
+# 1b. filtrar o GTFS do Mov Cávado (AITC) à mesma zona
+python3 filter_gtfs_bbox.py <pasta ou .zip do GTFS do Mov Cávado> ../data_src/gtfs_cavado_filtrado \
+    --box 41.18 -8.94 41.59 -8.53
+
+# 2. combinar Metro + UNIR + Mov Cávado, todos reais
 python3 combine_gtfs.py --out ../data_src/gtfs_combined \
-    unir=../data_src/gtfs_unir_filtrado metro=<pasta ou .zip do GTFS real do Metro>
+    unir=../data_src/gtfs_unir_filtrado metro=<pasta ou .zip do GTFS real do Metro> \
+    cavado=../data_src/gtfs_cavado_filtrado
 
 # 3. gerar os dados de transporte público e a rede viária
 python3 build_explore_povoa.py ../data_src/gtfs_combined --dia 20261020 --fonte real
@@ -72,7 +78,7 @@ python3 build_road_real.py <shapefile .shp da rede viária municipal>
 # (ou, só se não houver shapefile disponível: python3 build_road_demo.py)
 ```
 
-`--dia` tem de estar dentro da validade do `calendar.txt` de todos os GTFS combinados (uma terça-feira normal, na interseção dos dois calendários).
+`--dia` tem de estar dentro da validade do `calendar.txt` de todos os GTFS combinados (uma terça-feira normal, na interseção dos vários calendários).
 
 ### Preencher a população (Censos 2021)
 
@@ -94,12 +100,13 @@ Gera `data/poi/poi.json`. Pode voltar a correr-se de vez em quando para atualiza
 
 ## Publicar
 
-Site estático. GitHub Pages: Settings → Pages → Deploy from a branch → `clean-main`, pasta raiz. Pode ser embebido num iframe (ex. noutra aplicação municipal), ao contrário do planeador do Metro do Porto.
+Site estático. GitHub Pages: Settings → Pages → Deploy from a branch → `main`, pasta raiz. Pode ser embebido num iframe (ex. noutra aplicação municipal), ao contrário do planeador do Metro do Porto.
 
 ## Fontes e licenças
 
 - Metro do Porto: GTFS oficial (`agency.txt`: Metro do Porto, https://www.metrodoporto.pt).
 - UNIR Mobilidade da Área Metropolitana do Porto: GTFS oficial (https://unirmobilidade.pt), filtrado à zona de estudo.
+- AITC/Mov Cávado: GTFS oficial (https://aitc.cimcavado.pt), filtrado à zona de estudo.
 - Mapa base: Esri (World Dark Gray Canvas + Reference), © Esri, HERE, Garmin, © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors.
 - Geocodificação: Nominatim.
 - Pontos de interesse: OpenStreetMap, © colaboradores do OpenStreetMap (ODbL) — camada opcional, via Overpass API (ver "Pontos de interesse" acima).
