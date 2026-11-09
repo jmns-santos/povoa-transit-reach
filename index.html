@@ -26,6 +26,10 @@
   .leaflet-control-attribution a { color: var(--text2) !important; }
   .leaflet-bar a { background: var(--panel); color: var(--text); border-color: var(--rule); }
   .leaflet-bar a:hover { background: #151B36; color: var(--text); }
+  /* o painel flutuante "Camadas de contexto" tem de ficar por cima do painel esquerdo (que no
+     telemóvel passa a folha inferior, #panel, com z-index:1000) quando aberto, senão a folha
+     inferior tapa a parte de baixo do painel e torna-o impossível de usar no telemóvel */
+  .leaflet-top.leaflet-right { z-index: 1050; }
 
   #panel {
     position: fixed; top: 16px; left: 16px; width: 390px; max-height: calc(100% - 32px); overflow: auto;
@@ -90,8 +94,51 @@
   .layer-legend span { display: flex; align-items: center; gap: 5px; font: 500 11px 'Open Sans', sans-serif; color: var(--text2); }
   .layer-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
   .layer-legend i.ln { width: 12px; height: 2px; border-radius: 1px; }
-  .sim-clock { font: 700 12px 'Open Sans', sans-serif; color: var(--aqua); margin-left: 23px; }
+  .sim-clock { font: 700 12px 'Open Sans', sans-serif; color: var(--aqua); margin: 4px 0 2px 23px; }
   .sim-dot { border-radius: 50%; border: 1.5px solid #fff; box-shadow: 0 0 6px rgba(0,0,0,.5); }
+  .layer-moved-note { color: var(--text2); font-size: 12px; margin: 14px 0 0; }
+  .layer-row.always-on { opacity: .9; cursor: default; }
+  .layer-row input[type=checkbox]:disabled { cursor: default; opacity: .8; }
+
+  /* ---------------- camadas de contexto: painel flutuante sobre o mapa ---------------- */
+  .ctx-ctl-wrap { font: 400 15px 'Open Sans', sans-serif; }
+  .ctx-ctl-btn {
+    font: 600 12.5px 'Open Sans', sans-serif; color: var(--text); background: var(--panel); border: 1px solid var(--rule);
+    border-radius: 12px; padding: 9px 13px; cursor: pointer; backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgba(0,0,0,.4); display: flex; align-items: center; gap: 7px; white-space: nowrap;
+  }
+  .ctx-ctl-btn:hover { background: #151B36; }
+  .ctx-ctl-body {
+    display: none; margin-top: 8px; width: 290px; max-width: calc(100vw - 32px); max-height: min(72vh, 620px); overflow: auto;
+    background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; padding: 14px 16px 10px;
+    backdrop-filter: blur(8px); box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  }
+  .ctx-ctl-body.open { display: block; }
+  .ctx-sec { border-top: 1px solid var(--rule); padding-top: 10px; margin-top: 10px; }
+  .ctx-sec:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+  .sim-controls { margin: 8px 0 2px 23px; display: flex; flex-direction: column; gap: 8px; }
+  .sim-controls-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .sim-btn {
+    font: 600 12px 'Open Sans', sans-serif; color: var(--text); background: #151B36; border: 1px solid var(--rule);
+    border-radius: 8px; padding: 5px 10px; cursor: pointer; flex: none;
+  }
+  .sim-btn:hover { background: #1E2653; }
+  .sim-controls select {
+    font: 600 12px 'Open Sans', sans-serif; color: var(--text); background: #151B36; border: 1px solid var(--rule);
+    border-radius: 8px; padding: 5px 7px; cursor: pointer;
+  }
+  .sim-controls label.chk { display: flex; align-items: center; gap: 5px; font: 500 12px 'Open Sans', sans-serif; color: var(--text2); cursor: pointer; }
+  .sim-controls input[type=range] { height: 20px; }
+  .tt-stop { font-weight: 600; }
+  .tt-lines { margin-top: 3px; font-size: 12px; }
+  .tt-lines .ln-row { display: flex; align-items: center; gap: 5px; margin: 1px 0; }
+  .tt-lines i.dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex: none; }
+  .veh-icon { filter: drop-shadow(0 1px 3px rgba(0,0,0,.6)); }
+
+  @media (max-width: 720px) {
+    .ctx-ctl-btn { font-size: 12px; padding: 8px 11px; }
+    .ctx-ctl-body { width: 270px; }
+  }
 
   .stats { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 14px; }
   .stats h2 { font: 600 12px 'Open Sans', sans-serif; letter-spacing: 2px; color: var(--text2); margin: 0 0 10px; text-transform: uppercase; }
@@ -170,41 +217,7 @@
     <div class="note" id="note"></div>
   </div>
 
-  <div class="layers-title">Camadas de contexto</div>
-
-  <div class="poi-ctl" id="poi-ctl" style="display:none">
-    <label class="layer-row">
-      <input type="checkbox" id="poi-toggle" checked>
-      <span>Pontos de interesse (OpenStreetMap)</span>
-    </label>
-    <div class="poi-legend" id="poi-legend"></div>
-  </div>
-
-  <label class="layer-row" id="stops-row" style="display:none">
-    <input type="checkbox" id="stops-toggle">
-    <span>Paragens de transporte público</span>
-  </label>
-  <div class="layer-legend" id="stops-legend"></div>
-
-  <label class="layer-row" id="lines-row" style="display:none">
-    <input type="checkbox" id="lines-toggle">
-    <span>Linhas de transporte público</span>
-  </label>
-  <div class="layer-sub" id="lines-sub" style="display:none">Mov Cávado: sem geometria oficial de percurso — aproximada por segmentos retos entre paragens.</div>
-  <div class="layer-legend" id="lines-legend"></div>
-
-  <label class="layer-row" id="road-row" style="display:none">
-    <input type="checkbox" id="road-toggle">
-    <span>Rede viária (troços reais)</span>
-  </label>
-
-  <label class="layer-row" id="sim-row" style="display:none">
-    <input type="checkbox" id="sim-toggle">
-    <span>Simulação em tempo real</span>
-  </label>
-  <div class="layer-sub" id="sim-sub" style="display:none">Não são posições reais (sem GTFS tempo-real) — mostra onde cada veículo devia estar agora, segundo o horário do dia de referência.</div>
-  <div class="sim-clock" id="sim-clock" style="display:none"></div>
-  <div class="layer-legend" id="sim-legend"></div>
+  <p class="layer-moved-note">As camadas de contexto (paragens, linhas, rede viária, pontos de interesse e a simulação em tempo real) estão agora num painel sobre o mapa, canto superior direito — "Camadas de contexto".</p>
 
   <details>
     <summary>Como isto é calculado</summary>
@@ -668,7 +681,102 @@ Promise.all([
     } catch (e) { $("destino-resultado").textContent = "Não encontrei esse destino na área."; }
   });
 
-  // pontos de interesse (OpenStreetMap, opcional — só aparece se data/poi/poi.json existir).
+  // ---------------- painel flutuante "Camadas de contexto" (sobre o mapa, não no painel esquerdo)
+  const ctxControl = L.control({ position: "topright" });
+  ctxControl.onAdd = function () {
+    const div = L.DomUtil.create("div", "ctx-ctl-wrap");
+    div.innerHTML = `<button type="button" id="ctx-ctl-btn" class="ctx-ctl-btn">🗺️ Camadas de contexto <span id="ctx-ctl-arrow">▾</span></button>
+      <div id="ctx-ctl-body" class="ctx-ctl-body"></div>`;
+    L.DomEvent.disableClickPropagation(div);
+    L.DomEvent.disableScrollPropagation(div);
+    return div;
+  };
+  ctxControl.addTo(map);
+  const ctxBody = $("ctx-ctl-body");
+  $("ctx-ctl-btn").addEventListener("click", () => {
+    const open = ctxBody.classList.toggle("open");
+    $("ctx-ctl-arrow").textContent = open ? "▴" : "▾";
+  });
+  const ctxSec = html => ctxBody.insertAdjacentHTML("beforeend", `<div class="ctx-sec">${html}</div>`);
+
+  // cores por operadora e por linha, reaproveitadas nas camadas de paragens, linhas e simulação
+  const OP_COLORS = { metro: "#4AC9FF", unir: "#FFD24A", cavado: "#FF6B9D", outro: "#8A95B8" };
+  const OP_NAMES = (M.operadoras || (LIVE && LIVE.operadoras) || { metro: "Metro do Porto", unir: "UNIR", cavado: "Mov Cávado" });
+  const OP_HUE = { metro: 200, unir: 45, cavado: 335, outro: 230 };
+  const ctxCanvas = L.canvas({ padding: .3 });
+  function hash01(seed) {
+    let h = 0; const s = String(seed);
+    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+    return (h % 1000) / 1000;
+  }
+  // cor por linha: a família de tons fica dentro da cor da operadora (Metro/UNIR/Cávado),
+  // mas cada número de linha tem o seu próprio tom dentro dessa família.
+  function lineColor(op, route) {
+    const base = OP_HUE[op] ?? OP_HUE.outro, spread = 56;
+    const hue = (base - spread / 2 + hash01(op + "|" + route) * spread + 360) % 360;
+    return `hsl(${hue.toFixed(0)},78%,58%)`;
+  }
+  function vehicleIcon(mode, color) {
+    const isMetro = mode === "Metro" || mode === "Elétrico" || mode === "Comboio";
+    const svg = isMetro
+      ? `<svg viewBox="0 0 24 24" width="22" height="22"><rect x="2" y="4" width="20" height="14" rx="5" fill="${color}" stroke="#fff" stroke-width="1.2"/><rect x="4.5" y="6.5" width="6" height="5" rx="1" fill="rgba(255,255,255,.65)"/><rect x="13.5" y="6.5" width="6" height="5" rx="1" fill="rgba(255,255,255,.65)"/><circle cx="7" cy="19.5" r="1.6" fill="#11162B" stroke="#fff" stroke-width=".8"/><circle cx="17" cy="19.5" r="1.6" fill="#11162B" stroke="#fff" stroke-width=".8"/></svg>`
+      : `<svg viewBox="0 0 24 24" width="22" height="22"><rect x="2" y="5" width="20" height="12" rx="3" fill="${color}" stroke="#fff" stroke-width="1.2"/><rect x="4" y="7" width="16" height="5" rx="1" fill="rgba(255,255,255,.6)"/><circle cx="7" cy="18.5" r="2" fill="#11162B" stroke="#fff" stroke-width="1"/><circle cx="17" cy="18.5" r="2" fill="#11162B" stroke="#fff" stroke-width="1"/></svg>`;
+    return L.divIcon({ className: "veh-icon", iconSize: [22, 22], iconAnchor: [11, 11], html: svg });
+  }
+
+  // ---------------- relógio partilhado da simulação (tempo real, ajustável, acelerável) ----------------
+  // Alimenta tanto a camada de veículos em movimento como a indicação de próximas passagens
+  // ao passar o cursor sobre uma paragem — por isso corre sempre que há horário (LIVE), mesmo
+  // que a camada de veículos esteja desligada.
+  const HAS_LIVE = !!(LIVE && LIVE.trip_op && LIVE.trip_op.length);
+  let simState = { t: 0, speed: 1, playing: true, trail: false, visible: false, tMin: 0, tMax: 86400 };
+  let vStart, vU, vT, nTrips, stopVisits = null;
+  function nowSec() { const d = new Date(); return d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds(); }
+
+  if (HAS_LIVE) {
+    vStart = b64(LIVE.visit_start, Uint32Array); vU = b64(LIVE.visit_u, Uint16Array); vT = b64(LIVE.visit_t, Uint32Array);
+    nTrips = LIVE.trip_op.length;
+    let tMin = Infinity, tMax = -Infinity;
+    for (let k = 0; k < vT.length; k++) { if (vT[k] < tMin) tMin = vT[k]; if (vT[k] > tMax) tMax = vT[k]; }
+    simState.tMin = tMin; simState.tMax = tMax;
+    simState.t = Math.min(Math.max(nowSec(), tMin), tMax);
+
+    // próximas passagens por paragem: para cada viagem, guarda em cada nó visitado a hora de
+    // passagem e o destino final da viagem (para "a ideia é... entender para onde estão a ir
+    // os autocarros" ao passar o cursor sobre uma paragem).
+    stopVisits = Array.from({ length: NS }, () => []);
+    for (let i = 0; i < nTrips; i++) {
+      const s0 = vStart[i], s1 = vStart[i + 1];
+      if (s1 - s0 < 2) continue;
+      const destNode = vU[s1 - 1];
+      for (let j = s0; j < s1; j++) {
+        stopVisits[vU[j]].push({ t: vT[j], trip: i, dest: destNode, isLast: j === s1 - 1 });
+      }
+    }
+    for (let i = 0; i < NS; i++) stopVisits[i].sort((a, b) => a.t - b.t);
+  }
+
+  function stopTooltipHTML(i) {
+    const op = M.stop_op[i] || "outro";
+    let html = `<div class="tt-stop">${M.stop_name[i]} — ${OP_NAMES[op] || op}</div>`;
+    if (!HAS_LIVE) return html;
+    const visits = stopVisits[i];
+    let lo = 0, hi = visits.length;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (visits[mid].t < simState.t) lo = mid + 1; else hi = mid; }
+    const next = visits.slice(lo, lo + 5).filter(v => !v.isLast || v.dest === i);
+    if (!next.length) {
+      html += `<div class="tt-lines">Sem mais passagens previstas a partir das ${fmtT(simState.t)} (horário do dia de referência).</div>`;
+      return html;
+    }
+    html += `<div class="tt-lines">` + next.map(v => {
+      const op2 = LIVE.trip_op[v.trip], line = LIVE.trip_line[v.trip], mode = LIVE.trip_mode[v.trip];
+      const destName = v.dest !== i ? ` → ${M.stop_name[v.dest]}` : "";
+      return `<div class="ln-row"><i class="dot" style="background:${lineColor(op2, line)}"></i>${mode} ${line}${destName} — ${fmtT(v.t)}</div>`;
+    }).join("") + `</div>`;
+    return html;
+  }
+
+  // ---------------- pontos de interesse (OpenStreetMap, opcional — só aparece se data/poi/poi.json existir).
   // Camada de contexto, por isso começa ligada (o utilizador pode desligá-la).
   if (POI && POI.points && POI.points.length) {
     const POI_COLORS = { praia: "#FFD24A", patrimonio: "#C98CFF", alojamento: "#4AC9FF",
@@ -681,35 +789,39 @@ Promise.all([
         fillOpacity: .9, opacity: .9,
       }).bindTooltip(p.name, { direction: "top", offset: [0, -4] }).addTo(poiLayer);
     });
-    $("poi-ctl").style.display = "block";
-    $("poi-legend").innerHTML = Object.keys(POI.labels || {}).map(cat =>
-      `<span><i style="background:${POI_COLORS[cat] || "#B8A25C"}"></i>${POI.labels[cat]}</span>`).join("");
+    ctxSec(`<label class="layer-row"><input type="checkbox" id="poi-toggle" checked><span>Pontos de interesse (OpenStreetMap)</span></label>
+      <div class="poi-legend" id="poi-legend">${Object.keys(POI.labels || {}).map(cat =>
+        `<span><i style="background:${POI_COLORS[cat] || "#B8A25C"}"></i>${POI.labels[cat]}</span>`).join("")}</div>`);
     $("poi-toggle").addEventListener("change", ev => {
       if (ev.target.checked) poiLayer.addTo(map); else map.removeLayer(poiLayer);
     });
   }
 
-  // cores por operadora, reaproveitadas nas camadas de paragens, linhas e simulação
-  const OP_COLORS = { metro: "#4AC9FF", unir: "#FFD24A", cavado: "#FF6B9D", outro: "#8A95B8" };
-  const OP_NAMES = (M.operadoras || (LIVE && LIVE.operadoras) || { metro: "Metro do Porto", unir: "UNIR", cavado: "Mov Cávado" });
-  const ctxCanvas = L.canvas({ padding: .3 });
-
-  // ---------------- paragens de transporte público (dados já carregados: sLat/sLon/M.stop_*)
+  // ---------------- paragens de transporte público (sempre visíveis — pedido explícito: nunca
+  // desligar esta camada, para que, estando num sítio qualquer, se veja logo a paragem mais
+  // próxima) (dados já carregados: sLat/sLon/M.stop_*). As paragens, a rede viária e as linhas
+  // partilham o mesmo canvas (ctxCanvas) e o Leaflet dá prioridade de clique/hover ao que foi
+  // adicionado mais tarde a esse canvas. Como as paragens ficam sempre ligadas desde o início,
+  // mas as linhas só são adicionadas quando o utilizador as liga (mais tarde), é preciso devolver
+  // às paragens a prioridade sempre que a camada de linhas é ligada — ver bringStopsToFront().
+  let stopsLayerRef = null;
+  function bringStopsToFront() {
+    if (stopsLayerRef) stopsLayerRef.eachLayer(l => l.bringToFront());
+  }
   if (M.stop_name && M.stop_op) {
-    const stopsLayer = L.layerGroup();
+    stopsLayerRef = L.layerGroup().addTo(map);
     for (let i = 0; i < NS; i++) {
       const op = M.stop_op[i] || "outro";
-      L.circleMarker([sLat[i], sLon[i]], {
+      const mk = L.circleMarker([sLat[i], sLon[i]], {
         renderer: ctxCanvas, radius: 3, weight: 1, color: "#fff",
         fillColor: OP_COLORS[op] || OP_COLORS.outro, fillOpacity: .9, opacity: .7,
-      }).bindTooltip(`${M.stop_name[i]} — ${OP_NAMES[op] || op}`, { direction: "top", offset: [0, -4] }).addTo(stopsLayer);
+      }).bindTooltip("", { direction: "top", offset: [0, -4], sticky: true }).addTo(stopsLayerRef);
+      mk.on("mouseover click", () => mk.setTooltipContent(stopTooltipHTML(i)));
     }
-    $("stops-row").style.display = "flex";
-    $("stops-legend").innerHTML = Object.keys(OP_NAMES).map(op =>
-      `<span><i style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("");
-    $("stops-toggle").addEventListener("change", ev => {
-      if (ev.target.checked) stopsLayer.addTo(map); else map.removeLayer(stopsLayer);
-    });
+    ctxSec(`<label class="layer-row always-on"><input type="checkbox" checked disabled><span>Paragens de transporte público (sempre visíveis)</span></label>
+      <div class="layer-sub">Ao passar o cursor numa paragem: nome e próximas passagens por linha, com destino, a partir da hora simulada abaixo.</div>
+      <div class="layer-legend">${Object.keys(OP_NAMES).map(op =>
+        `<span><i style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("")}</div>`);
   }
 
   // ---------------- linhas de transporte público (data/tp/lines.json — opcional)
@@ -717,17 +829,17 @@ Promise.all([
     const linesLayer = L.layerGroup();
     LINES.lines.forEach(ln => {
       L.polyline(ln.coords, {
-        renderer: ctxCanvas, color: OP_COLORS[ln.op] || OP_COLORS.outro, weight: 2.5, opacity: .65,
+        renderer: ctxCanvas, color: lineColor(ln.op, ln.route), weight: 2.8, opacity: .75,
         dashArray: ln.approx ? "2 5" : null,
       }).bindTooltip(`${ln.route}${ln.long_name ? " — " + ln.long_name : ""} (${OP_NAMES[ln.op] || ln.op}${ln.approx ? ", aproximada" : ""})`,
         { sticky: true }).addTo(linesLayer);
     });
-    $("lines-row").style.display = "flex";
-    $("lines-sub").style.display = "block";
-    $("lines-legend").innerHTML = Object.keys(OP_NAMES).map(op =>
-      `<span><i class="ln" style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("");
+    ctxSec(`<label class="layer-row" id="lines-row"><input type="checkbox" id="lines-toggle"><span>Linhas de transporte público</span></label>
+      <div class="layer-sub">Cada linha tem um tom próprio dentro da cor da sua operadora. Mov Cávado: sem geometria oficial de percurso — aproximada por segmentos retos entre paragens (tracejado). As paragens ganham sempre prioridade ao cursor sobre uma linha.</div>
+      <div class="layer-legend">${Object.keys(OP_NAMES).map(op =>
+        `<span><i class="ln" style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("")}</div>`);
     $("lines-toggle").addEventListener("change", ev => {
-      if (ev.target.checked) linesLayer.addTo(map); else map.removeLayer(linesLayer);
+      if (ev.target.checked) { linesLayer.addTo(map); bringStopsToFront(); } else map.removeLayer(linesLayer);
     });
   }
 
@@ -742,62 +854,113 @@ Promise.all([
       L.polyline([[nLat[u], nLon[u]], [nLat[v], nLon[v]]],
         { renderer: ctxCanvas, color: "#6B7390", weight: 1, opacity: .55, interactive: false }).addTo(roadNetLayer);
     }
-    $("road-row").style.display = "flex";
+    ctxSec(`<label class="layer-row" id="road-row"><input type="checkbox" id="road-toggle"><span>Rede viária (troços reais)</span></label>`);
     $("road-toggle").addEventListener("change", ev => {
       if (ev.target.checked) roadNetLayer.addTo(map); else map.removeLayer(roadNetLayer);
     });
   }
 
-  // ---------------- simulação em tempo real (data/tp/live.json — opcional)
-  if (LIVE && LIVE.trip_op && LIVE.trip_op.length) {
-    const vStart = b64(LIVE.visit_start, Uint32Array), vU = b64(LIVE.visit_u, Uint16Array), vT = b64(LIVE.visit_t, Uint32Array);
-    const nTrips = LIVE.trip_op.length;
+  // ---------------- simulação em tempo real (data/tp/live.json — opcional) ----------------
+  // Distingue autocarro de metro (ícones), cores por linha, rasto opcional, e tempo ajustável
+  // e acelerável (não só a hora do dispositivo) — para analisar os fluxos de qualquer hora do dia.
+  if (HAS_LIVE) {
     const simLayer = L.layerGroup();
-    let simTimer = null;
+    const trailBuf = new Map();   // trip index -> [[lat,lon], ...] pontos recentes, para o rasto opcional
+    let lastWallMs = performance.now();
 
-    function nowSec() {
-      const d = new Date();
-      return d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds();
-    }
-
-    function tick() {
+    function renderVehicles() {
       simLayer.clearLayers();
-      const t = nowSec();
-      $("sim-clock").textContent = `A simular: ${fmtT(t)} (hora do dispositivo)`;
+      const t = simState.t;
       let nAtivos = 0;
       for (let i = 0; i < nTrips; i++) {
         const s0 = vStart[i], s1 = vStart[i + 1];
         if (s1 - s0 < 2) continue;
         const tFirst = vT[s0], tLast = vT[s1 - 1];
-        if (t < tFirst || t > tLast) continue;
-        // encontra o segmento [j, j+1] que contém t (poucas paragens por viagem, busca linear é suficiente)
+        if (t < tFirst || t > tLast) { if (!simState.trail) trailBuf.delete(i); continue; }
         let j = s0;
         while (j < s1 - 2 && vT[j + 1] < t) j++;
         const ta = vT[j], tb = vT[j + 1], ua = vU[j], ub = vU[j + 1];
         const f = tb > ta ? (t - ta) / (tb - ta) : 0;
         const lat = sLat[ua] + (sLat[ub] - sLat[ua]) * f, lon = sLon[ua] + (sLon[ub] - sLon[ua]) * f;
-        const op = LIVE.trip_op[i];
-        L.circleMarker([lat, lon], {
-          radius: 5, className: "sim-dot", weight: 1.5, color: "#fff",
-          fillColor: OP_COLORS[op] || OP_COLORS.outro, fillOpacity: .95, opacity: .95,
-        }).bindTooltip(`${LIVE.trip_mode[i]} ${LIVE.trip_line[i]} — ${OP_NAMES[op] || op}`, { direction: "top", offset: [0, -6] }).addTo(simLayer);
+        const op = LIVE.trip_op[i], line = LIVE.trip_line[i], mode = LIVE.trip_mode[i], color = lineColor(op, line);
+        if (simState.trail) {
+          const buf = trailBuf.get(i) || [];
+          buf.push([lat, lon]); if (buf.length > 8) buf.shift();
+          trailBuf.set(i, buf);
+          if (buf.length > 1) L.polyline(buf, { renderer: ctxCanvas, color, weight: 2, opacity: .4, dashArray: "1 4", interactive: false }).addTo(simLayer);
+        }
+        L.marker([lat, lon], { icon: vehicleIcon(mode, color), interactive: true, keyboard: false })
+          .bindTooltip(`${mode} ${line} → ${M.stop_name ? M.stop_name[vU[s1 - 1]] : ""} (${OP_NAMES[op] || op}) — ${fmtT(t)}`,
+            { direction: "top", offset: [0, -10] }).addTo(simLayer);
         nAtivos++;
       }
-      if (!nAtivos) $("sim-clock").textContent += " — nenhum veículo em circulação a esta hora";
+      return nAtivos;
     }
 
-    $("sim-row").style.display = "flex";
-    $("sim-sub").style.display = "block";
-    $("sim-legend").innerHTML = Object.keys(OP_NAMES).map(op =>
-      `<span><i style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("");
-    $("sim-toggle").addEventListener("change", ev => {
-      if (ev.target.checked) {
-        simLayer.addTo(map); $("sim-clock").style.display = "block";
-        tick(); simTimer = setInterval(tick, 5000);
-      } else {
-        map.removeLayer(simLayer); $("sim-clock").style.display = "none";
-        clearInterval(simTimer); simTimer = null;
+    function updateClockLabel(nAtivos) {
+      const estado = simState.playing ? `▶ ${simState.speed}× tempo real` : "⏸ pausado";
+      let txt = `A simular: ${fmtT(Math.round(simState.t))} — ${estado}`;
+      if (nAtivos !== null) txt += nAtivos ? ` — ${nAtivos} veículo(s) em circulação` : " — nenhum veículo em circulação a esta hora";
+      $("sim-clock").textContent = txt;
+    }
+
+    function clockTick() {
+      const nowMs = performance.now(), dtS = (nowMs - lastWallMs) / 1000;
+      lastWallMs = nowMs;
+      if (simState.playing) {
+        simState.t += dtS * simState.speed;
+        if (simState.t > simState.tMax) simState.t = simState.tMin + (simState.t - simState.tMax);
+        if (simState.t < simState.tMin) simState.t = simState.tMin;
+        const sl = $("sim-time"); if (sl) sl.value = Math.round(simState.t);
       }
+      const nAtivos = simState.visible ? renderVehicles() : null;
+      updateClockLabel(nAtivos);
+    }
+    setInterval(clockTick, 400);
+
+    ctxSec(`<label class="layer-row" id="sim-row"><input type="checkbox" id="sim-toggle"><span>Simulação em tempo real (autocarros e metro)</span></label>
+      <div class="layer-sub">Não são posições reais (sem GTFS tempo-real) — mostra onde cada veículo devia estar, segundo o horário do dia de referência, à hora simulada abaixo.</div>
+      <div class="sim-clock" id="sim-clock" style="display:none"></div>
+      <div class="sim-controls" id="sim-controls" style="display:none">
+        <input type="range" id="sim-time" min="${Math.floor(simState.tMin)}" max="${Math.ceil(simState.tMax)}" step="60" value="${Math.round(simState.t)}">
+        <div class="sim-controls-row">
+          <button type="button" class="sim-btn" id="sim-play">⏸ Pausar</button>
+          <button type="button" class="sim-btn" id="sim-now">Agora</button>
+          <select id="sim-speed">
+            <option value="1">1× (tempo real)</option>
+            <option value="10">10×</option>
+            <option value="60">60× (1 min/s)</option>
+            <option value="300">300×</option>
+            <option value="1800">1800×</option>
+          </select>
+        </div>
+        <label class="chk"><input type="checkbox" id="sim-trail"><span>Deixar rasto do movimento</span></label>
+      </div>
+      <div class="layer-legend">${Object.keys(OP_NAMES).map(op =>
+        `<span><i style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("")}</div>`);
+
+    $("sim-toggle").addEventListener("change", ev => {
+      simState.visible = ev.target.checked;
+      $("sim-clock").style.display = simState.visible ? "block" : "none";
+      $("sim-controls").style.display = simState.visible ? "flex" : "none";
+      if (simState.visible) { simLayer.addTo(map); renderVehicles(); }
+      else { map.removeLayer(simLayer); simLayer.clearLayers(); trailBuf.clear(); }
+    });
+    $("sim-play").addEventListener("click", () => {
+      simState.playing = !simState.playing;
+      $("sim-play").textContent = simState.playing ? "⏸ Pausar" : "▶ Retomar";
+    });
+    $("sim-now").addEventListener("click", () => {
+      simState.t = Math.min(Math.max(nowSec(), simState.tMin), simState.tMax);
+      simState.playing = true; $("sim-play").textContent = "⏸ Pausar";
+      $("sim-time").value = Math.round(simState.t);
+      trailBuf.clear();
+    });
+    $("sim-speed").addEventListener("change", ev => { simState.speed = +ev.target.value; });
+    $("sim-trail").addEventListener("change", ev => { simState.trail = ev.target.checked; if (!ev.target.checked) trailBuf.clear(); });
+    $("sim-time").addEventListener("input", ev => {
+      simState.t = +ev.target.value; trailBuf.clear();
+      if (simState.visible) renderVehicles();
     });
   }
 

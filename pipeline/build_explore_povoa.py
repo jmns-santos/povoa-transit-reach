@@ -186,6 +186,15 @@ def main():
     con["t"] = pd.factorize(con["trip"])[0]
     assert con["t"].max() < 65536
 
+    # linhas que passam por cada paragem (para o hover do mapa) — junta as linhas vistas
+    # como partida e como chegada em qualquer ligação que toque a paragem.
+    dep_lines = con.groupby("u")["line"].unique().to_dict()
+    arr_lines = con.groupby("v")["line"].unique().to_dict()
+    stop_lines = [
+        sorted(set(dep_lines.get(i, [])) | set(arr_lines.get(i, [])), key=str)
+        for i in range(len(stops))
+    ]
+
     dl = load_reliability(args.fiabilidade)
     if dl is not None and not dl.empty:
         dl[Q] = dl[Q].clip(lower=0, upper=1800)
@@ -279,7 +288,8 @@ def main():
         "day": service_date.strftime("%A %d %b %Y"), "city": "Póvoa de Varzim",
         "levels": LEVELS, "quantiles": Q, "hours": [int(h) for h in sorted(hours.unique())],
         "stop_lat": b64(stops["stop_lat"].to_numpy(np.float32)), "stop_lon": b64(stops["stop_lon"].to_numpy(np.float32)),
-        "stop_name": stops["name"].tolist(), "stop_op": stop_op.tolist(), "operadoras": OPERADORAS,
+        "stop_name": stops["name"].tolist(), "stop_op": stop_op.tolist(), "stop_lines": stop_lines,
+        "operadoras": OPERADORAS,
         "pop": b64(cell_pop), "mode_delay": mode_delay,
         "source": args.fonte, "has_reliability": has_reliability, "has_population": False,
         "generated_at": datetime.now().astimezone().isoformat(),
