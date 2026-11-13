@@ -729,7 +729,7 @@ Promise.all([
   // ao passar o cursor sobre uma paragem — por isso corre sempre que há horário (LIVE), mesmo
   // que a camada de veículos esteja desligada.
   const HAS_LIVE = !!(LIVE && LIVE.trip_op && LIVE.trip_op.length);
-  let simState = { t: 0, speed: 1, playing: true, trail: false, visible: false, tMin: 0, tMax: 86400 };
+  let simState = { t: 0, speed: 1, playing: true, trail: true, visible: false, tMin: 0, tMax: 86400 };
   let vStart, vU, vT, nTrips, stopVisits = null;
   function nowSec() { const d = new Date(); return d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds(); }
 
@@ -876,23 +876,32 @@ Promise.all([
         const s0 = vStart[i], s1 = vStart[i + 1];
         if (s1 - s0 < 2) continue;
         const tFirst = vT[s0], tLast = vT[s1 - 1];
-        if (t < tFirst || t > tLast) { if (!simState.trail) trailBuf.delete(i); continue; }
-        let j = s0;
-        while (j < s1 - 2 && vT[j + 1] < t) j++;
-        const ta = vT[j], tb = vT[j + 1], ua = vU[j], ub = vU[j + 1];
-        const f = tb > ta ? (t - ta) / (tb - ta) : 0;
-        const lat = sLat[ua] + (sLat[ub] - sLat[ua]) * f, lon = sLon[ua] + (sLon[ub] - sLon[ua]) * f;
         const op = LIVE.trip_op[i], line = LIVE.trip_line[i], mode = LIVE.trip_mode[i], color = lineColor(op, line);
-        if (simState.trail) {
-          const buf = trailBuf.get(i) || [];
-          buf.push([lat, lon]); if (buf.length > 8) buf.shift();
-          trailBuf.set(i, buf);
-          if (buf.length > 1) L.polyline(buf, { renderer: ctxCanvas, color, weight: 2, opacity: .4, dashArray: "1 4", interactive: false }).addTo(simLayer);
+        const ativo = t >= tFirst && t <= tLast;
+        if (ativo) {
+          let j = s0;
+          while (j < s1 - 2 && vT[j + 1] < t) j++;
+          const ta = vT[j], tb = vT[j + 1], ua = vU[j], ub = vU[j + 1];
+          const f = tb > ta ? (t - ta) / (tb - ta) : 0;
+          const lat = sLat[ua] + (sLat[ub] - sLat[ua]) * f, lon = sLon[ua] + (sLon[ub] - sLon[ua]) * f;
+          if (simState.trail) {
+            const buf = trailBuf.get(i) || [];
+            buf.push([lat, lon]);
+            trailBuf.set(i, buf);
+          }
+          L.marker([lat, lon], { icon: vehicleIcon(mode, color), interactive: true, keyboard: false })
+            .bindTooltip(`${mode} ${line} → ${M.stop_name ? M.stop_name[vU[s1 - 1]] : ""} (${OP_NAMES[op] || op}) — ${fmtT(t)}`,
+              { direction: "top", offset: [0, -10] }).addTo(simLayer);
+          nAtivos++;
+        } else if (!simState.trail) {
+          trailBuf.delete(i);
         }
-        L.marker([lat, lon], { icon: vehicleIcon(mode, color), interactive: true, keyboard: false })
-          .bindTooltip(`${mode} ${line} → ${M.stop_name ? M.stop_name[vU[s1 - 1]] : ""} (${OP_NAMES[op] || op}) — ${fmtT(t)}`,
-            { direction: "top", offset: [0, -10] }).addTo(simLayer);
-        nAtivos++;
+        // rasto acumulado: fica visível mesmo depois de a viagem terminar, para se ler o fluxo
+        // da rede ao longo do dia — não é só a "cauda" dos últimos pontos de uma viagem ativa.
+        if (simState.trail) {
+          const buf = trailBuf.get(i);
+          if (buf && buf.length > 1) L.polyline(buf, { renderer: ctxCanvas, color, weight: 2, opacity: .5, interactive: false }).addTo(simLayer);
+        }
       }
       return nAtivos;
     }
@@ -909,7 +918,7 @@ Promise.all([
       lastWallMs = nowMs;
       if (simState.playing) {
         simState.t += dtS * simState.speed;
-        if (simState.t > simState.tMax) simState.t = simState.tMin + (simState.t - simState.tMax);
+        if (simState.t > simState.tMax) { simState.t = simState.tMin + (simState.t - simState.tMax); trailBuf.clear(); }
         if (simState.t < simState.tMin) simState.t = simState.tMin;
         const sl = $("sim-time"); if (sl) sl.value = Math.round(simState.t);
       }
@@ -934,7 +943,7 @@ Promise.all([
             <option value="1800">1800×</option>
           </select>
         </div>
-        <label class="chk"><input type="checkbox" id="sim-trail"><span>Deixar rasto do movimento</span></label>
+        <label class="chk"><input type="checkbox" id="sim-trail" checked><span>Rasto do movimento (fica visível, mostra o fluxo da rede)</span></label>
       </div>
       <div class="layer-legend">${Object.keys(OP_NAMES).map(op =>
         `<span><i style="background:${OP_COLORS[op] || OP_COLORS.outro}"></i>${OP_NAMES[op]}</span>`).join("")}</div>`);
